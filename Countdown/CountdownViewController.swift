@@ -23,17 +23,12 @@ class CountdownViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
-        
-        
         datePicker.addTarget(self, action: Selector("datePickerChanged:"), forControlEvents: UIControlEvents.ValueChanged)
-        
         datePicker.datePickerMode = UIDatePickerMode.Date
         
         if (defaults.objectForKey("date") != nil) {
             date = defaults.objectForKey("date") as! NSDate
-            println("some stuff " + date.description)
-  //          dateDisplayLabel.text = date.description
+            dateDisplayLabel.text = date.description
         } else {
             date = datePicker.date
         }
@@ -41,50 +36,42 @@ class CountdownViewController: UIViewController {
   
     
     func datePickerChanged(datePicker:UIDatePicker) {
-        var dateFormatter = NSDateFormatter()
+        let dateFormatter = NSDateFormatter()
         
         dateFormatter.dateStyle = NSDateFormatterStyle.FullStyle
         
 
         
-        var futureDate = datePicker.date
-        var strDate = dateFormatter.stringFromDate(futureDate)
-        
-        var difference = futureDate.timeIntervalSinceNow
-        
-        
-        
-        var calendar: NSCalendar = NSCalendar.currentCalendar()
+//        let futureDate = datePicker.date
+//        var strDate = dateFormatter.stringFromDate(futureDate)
+//        var difference = futureDate.timeIntervalSinceNow
+//        var calendar: NSCalendar = NSCalendar.currentCalendar()
         
         
         let date = NSDate()
         let formatter = NSDateFormatter()
         formatter.timeStyle = .ShortStyle
-//        formatter.stringFromDate(date)
+        formatter.stringFromDate(date)
         
         
         
         
         
-        let components = NSCalendar.currentCalendar().components(.CalendarUnitSecond |
-            .CalendarUnitMinute | .CalendarUnitHour | .CalendarUnitDay |
-            .CalendarUnitMonth | .CalendarUnitYear, fromDate: date,
-            toDate: datePicker.date, options: nil)
+        let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day, .Month, .Year], fromDate: date,
+            toDate: datePicker.date, options: [])
         
-//        
-//        println("\(components.second) seconds")
-//        println("\(components.minute) minutes")
-//        println("\(components.hour) hours")
-//        println("\(components.day) days")
+        print("******************************************************")
+        print("\(components.second) seconds")
+        print("\(components.minute) minutes")
+        print("\(components.hour) hours")
+        print("\(components.day) days")
         
-//        timeLeft.text = String(hoursbetwee)
+//        timeLeft.text = String(hoursbetween)
         
         
         defaults.setObject(datePicker.date, forKey: "date")
         
-        var val = defaults.objectForKey("date") as! NSDate
-        println(val.description)
-        println("entered changed date")
+        let val = defaults.objectForKey("date") as! NSDate
 
     }
     

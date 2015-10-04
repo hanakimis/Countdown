@@ -159,6 +159,8 @@
 		809C66E41AAD862700B79D17 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Hana Kim";
 				TargetAttributes = {
@@ -410,6 +412,7 @@
 				809C670D1AAD862700B79D17 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		809C670E1AAD862700B79D17 /* Build configuration list for PBXNativeTarget "CountdownTests" */ = {
 			isa = XCConfigurationList;
@@ -418,6 +421,7 @@
 				809C67101AAD862700B79D17 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
