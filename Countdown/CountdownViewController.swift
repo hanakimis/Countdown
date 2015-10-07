@@ -11,59 +11,73 @@ import UIKit
 class CountdownViewController: UIViewController {
 
     
-    @IBOutlet weak var dateDisplayLabel: UILabel!
     @IBOutlet weak var datePicker: UIDatePicker!
     
+    
+    
+    @IBOutlet weak var todaysDateLabel: UILabel!
+    @IBOutlet weak var countdownDateLabel: UILabel!
+    
+    @IBOutlet weak var monthsLeftLabel: UILabel!
     @IBOutlet weak var daysLeftlabel: UILabel!
     @IBOutlet weak var hoursLeftLabel: UILabel!
     @IBOutlet weak var minutesLeftLabel: UILabel!
     @IBOutlet weak var secondsLeftLabel: UILabel!
     
     
-    
+    let formatter = NSDateFormatter()
     let defaults = NSUserDefaults.standardUserDefaults()
-    var date: NSDate!
+    var countdownDate: NSDate!
+    let today = NSDate()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        datePicker.addTarget(self, action: Selector("datePickerChanged:"), forControlEvents: UIControlEvents.ValueChanged)
-        datePicker.datePickerMode = UIDatePickerMode.Date
+        // setup the date style
+        formatter.dateStyle = .ShortStyle
+
         
+        // setup the datepicker
+        datePicker.datePickerMode = UIDatePickerMode.Date
+        datePicker.minimumDate = today
+        datePicker.addTarget(self, action: Selector("datePickerChanged:"), forControlEvents: UIControlEvents.ValueChanged)
+
+        
+        // update if a date has been stored
         if let myDate = defaults.objectForKey("date") {
-            date = myDate as! NSDate
-            dateDisplayLabel.text = myDate.description
+            countdownDate = myDate as! NSDate
+            datePicker.date = countdownDate
         } else {
-            date = datePicker.date
+            countdownDate = datePicker.date
         }
+        
+        //update the labels
+        updateDifferenceLabels()
+
     }
   
     
     func datePickerChanged(datePicker:UIDatePicker) {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = NSDateFormatterStyle.FullStyle
-        
-        // create a new date object for today
-        let today = NSDate()
-        let formatter = NSDateFormatter()
-        formatter.timeStyle = .ShortStyle
-        formatter.stringFromDate(today)
-        
-        
-        let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day, .Month, .Year], fromDate: today,
+        countdownDate = datePicker.date
+        defaults.setObject(countdownDate, forKey: "date")
+
+        updateDifferenceLabels()
+    }
+    
+    
+    func updateDifferenceLabels() {
+        let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day, .Month], fromDate: today,
             toDate: datePicker.date, options: [])
-        
+
+        monthsLeftLabel.text  = "\(components.month) months"
         daysLeftlabel.text    = "\(components.day) days"
         hoursLeftLabel.text   = "\(components.hour) hours"
         minutesLeftLabel.text = "\(components.minute) minutes"
         secondsLeftLabel.text = "\(components.second) seconds"
         
-        
-        defaults.setObject(datePicker.date, forKey: "date")
-        dateDisplayLabel.text = today.description
-        print("updated defaults date")
+        todaysDateLabel.text = formatter.stringFromDate(today)
+        countdownDateLabel.text = formatter.stringFromDate(countdownDate)
     }
-    
     
 
     override func didReceiveMemoryWarning() {
