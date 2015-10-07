@@ -14,10 +14,14 @@ class CountdownViewController: UIViewController {
     @IBOutlet weak var dateDisplayLabel: UILabel!
     @IBOutlet weak var datePicker: UIDatePicker!
     
-    @IBOutlet weak var timeLeft: UILabel!
+    @IBOutlet weak var daysLeftlabel: UILabel!
+    @IBOutlet weak var hoursLeftLabel: UILabel!
+    @IBOutlet weak var minutesLeftLabel: UILabel!
+    @IBOutlet weak var secondsLeftLabel: UILabel!
     
-    var defaults = NSUserDefaults.standardUserDefaults()
     
+    
+    let defaults = NSUserDefaults.standardUserDefaults()
     var date: NSDate!
     
     override func viewDidLoad() {
@@ -26,9 +30,9 @@ class CountdownViewController: UIViewController {
         datePicker.addTarget(self, action: Selector("datePickerChanged:"), forControlEvents: UIControlEvents.ValueChanged)
         datePicker.datePickerMode = UIDatePickerMode.Date
         
-        if (defaults.objectForKey("date") != nil) {
-            date = defaults.objectForKey("date") as! NSDate
-            dateDisplayLabel.text = date.description
+        if let myDate = defaults.objectForKey("date") {
+            date = myDate as! NSDate
+            dateDisplayLabel.text = myDate.description
         } else {
             date = datePicker.date
         }
@@ -37,42 +41,27 @@ class CountdownViewController: UIViewController {
     
     func datePickerChanged(datePicker:UIDatePicker) {
         let dateFormatter = NSDateFormatter()
-        
         dateFormatter.dateStyle = NSDateFormatterStyle.FullStyle
         
-
-        
-//        let futureDate = datePicker.date
-//        var strDate = dateFormatter.stringFromDate(futureDate)
-//        var difference = futureDate.timeIntervalSinceNow
-//        var calendar: NSCalendar = NSCalendar.currentCalendar()
-        
-        
-        let date = NSDate()
+        // create a new date object for today
+        let today = NSDate()
         let formatter = NSDateFormatter()
         formatter.timeStyle = .ShortStyle
-        formatter.stringFromDate(date)
+        formatter.stringFromDate(today)
         
         
-        
-        
-        
-        let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day, .Month, .Year], fromDate: date,
+        let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day, .Month, .Year], fromDate: today,
             toDate: datePicker.date, options: [])
         
-        print("******************************************************")
-        print("\(components.second) seconds")
-        print("\(components.minute) minutes")
-        print("\(components.hour) hours")
-        print("\(components.day) days")
-        
-//        timeLeft.text = String(hoursbetween)
+        daysLeftlabel.text    = "\(components.day) days"
+        hoursLeftLabel.text   = "\(components.hour) hours"
+        minutesLeftLabel.text = "\(components.minute) minutes"
+        secondsLeftLabel.text = "\(components.second) seconds"
         
         
         defaults.setObject(datePicker.date, forKey: "date")
-        
-        let val = defaults.objectForKey("date") as! NSDate
-
+        dateDisplayLabel.text = today.description
+        print("updated defaults date")
     }
     
     
