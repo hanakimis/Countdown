@@ -28,7 +28,9 @@ class CountdownViewController: UIViewController {
     let formatter = NSDateFormatter()
     let defaults = NSUserDefaults.standardUserDefaults()
     var countdownDate: NSDate!
-    let today = NSDate()
+    var today = NSDate()
+    
+    var temp = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +46,7 @@ class CountdownViewController: UIViewController {
 
         
         // update if a date has been stored
+        // need to do a check to see if the date is before today
         if let myDate = defaults.objectForKey("date") {
             countdownDate = myDate as! NSDate
             datePicker.date = countdownDate
@@ -51,23 +54,36 @@ class CountdownViewController: UIViewController {
             countdownDate = datePicker.date
         }
         
-        //update the labels
+        // update the labels
         updateDifferenceLabels()
 
+        // use a timer to update the times
+        let timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTime"), userInfo: nil, repeats: true)
+
+        
     }
   
     
     func datePickerChanged(datePicker:UIDatePicker) {
         countdownDate = datePicker.date
+        
+        
         defaults.setObject(countdownDate, forKey: "date")
 
         updateDifferenceLabels()
     }
     
     
+    func updateTime() {
+        updateDifferenceLabels()
+    }
+    
+    
     func updateDifferenceLabels() {
+        today = NSDate()
+        
         let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day, .Month], fromDate: today,
-            toDate: datePicker.date, options: [])
+            toDate: countdownDate, options: [])
 
         monthsLeftLabel.text  = "\(components.month) months"
         daysLeftlabel.text    = "\(components.day) days"
