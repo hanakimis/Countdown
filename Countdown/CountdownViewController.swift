@@ -10,26 +10,19 @@ import UIKit
 
 class CountdownViewController: UIViewController {
 
-    
     @IBOutlet weak var datePicker: UIDatePicker!
     
-    
-    
     @IBOutlet weak var todaysDateLabel: UILabel!
-    @IBOutlet weak var countdownDateLabel: UILabel!
-    
     @IBOutlet weak var monthsLeftLabel: UILabel!
     @IBOutlet weak var daysLeftlabel: UILabel!
     @IBOutlet weak var hoursLeftLabel: UILabel!
     @IBOutlet weak var minutesLeftLabel: UILabel!
     @IBOutlet weak var secondsLeftLabel: UILabel!
-    
     @IBOutlet weak var toggleDateChanger: UIButton!
+    
+    @IBOutlet weak var toggleDateChangerSmallWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var toggleDateChangerFullWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var updateDateBottomLayoutConstraint: NSLayoutConstraint!
-    
-    @IBOutlet weak var countdownDateLabelTopConstraint: NSLayoutConstraint!
-    
-    
     
     
     let formatter = NSDateFormatter()
@@ -42,7 +35,7 @@ class CountdownViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // setup the date style
         formatter.dateStyle = .ShortStyle
 
@@ -50,8 +43,7 @@ class CountdownViewController: UIViewController {
         // setup the datepicker
         datePicker.datePickerMode = UIDatePickerMode.Date
         datePicker.minimumDate = today
-        datePicker.addTarget(self, action: Selector("datePickerChanged:"), forControlEvents: UIControlEvents.ValueChanged)
-
+        
         
         // update if a date has been stored
         // need to do a check to see if the date is before today
@@ -66,21 +58,11 @@ class CountdownViewController: UIViewController {
         updateDifferenceLabels()
 
         // use a timer to update the times
-        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTime"), userInfo: nil, repeats: true)
+        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateDifferenceLabels"), userInfo: nil, repeats: true)
 
         closeDatePicker()
     }
   
-    
-    func datePickerChanged(datePicker:UIDatePicker) {
-        countdownDate = datePicker.date
-        
-        
-        defaults.setObject(countdownDate, forKey: "date")
-
-        updateDifferenceLabels()
-    }
-    
     
     @IBAction func toggleDateChangerClicked(sender: AnyObject) {
         if datePickerContainerOpen {
@@ -91,44 +73,49 @@ class CountdownViewController: UIViewController {
     }
     
     
+    @IBAction func chooseNewDate(sender: AnyObject) {
+        countdownDate = datePicker.date
+        defaults.setObject(countdownDate, forKey: "date")
+        updateDifferenceLabels()
+        closeDatePicker()
+    }
     
     
     func openDatePicker() {
-        datePicker.alpha = 1
-
 
         UIView.animateWithDuration(0.3, animations: { () -> Void in
-            // toggle the date picker size to small/ close datePicker
-            
+            self.toggleDateChanger.setTitle("X", forState: .Normal)
+            self.toggleDateChangerSmallWidthConstraint.priority = 750
+            self.toggleDateChangerFullWidthConstraint.priority = 250
             self.updateDateBottomLayoutConstraint.constant = 0
             
             self.view.layoutIfNeeded()
 
             // animate the countdown date label
             
+            self.datePicker.alpha = 1
+
             }) { (Bool) -> Void in
-                 // when finished, show the date picker
-                self.datePicker.alpha = 1
                 self.datePickerContainerOpen = true
         }
     }
     
     
     func closeDatePicker() {
-        datePicker.alpha = 0
         
-        updateDateBottomLayoutConstraint.constant = -160
-        countdownDateLabelTopConstraint.constant = 20
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.datePicker.alpha = 0
+            
+            self.toggleDateChanger.setTitle(self.formatter.stringFromDate(self.datePicker.date), forState: .Normal)
+            self.toggleDateChangerSmallWidthConstraint.priority = 250
+            self.toggleDateChangerFullWidthConstraint.priority = 750
+            self.updateDateBottomLayoutConstraint.constant = -160
         
-        self.view.layoutIfNeeded()
-        
-        datePickerContainerOpen = false
-    }
-    
-    
-    
-    func updateTime() {
-        updateDifferenceLabels()
+            self.view.layoutIfNeeded()
+            
+            }) { (Bool) -> Void in
+                self.datePickerContainerOpen = false
+        }
     }
     
     
@@ -145,7 +132,6 @@ class CountdownViewController: UIViewController {
         secondsLeftLabel.text = "\(components.second) seconds"
         
         todaysDateLabel.text = formatter.stringFromDate(today)
-        countdownDateLabel.text = formatter.stringFromDate(countdownDate)
     }
     
 

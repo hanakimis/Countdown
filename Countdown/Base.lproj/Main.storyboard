@@ -91,13 +91,6 @@
                                             <!--2015-03-09 07:46:50 +0000-->
                                         </date>
                                     </datePicker>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Countdown date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rsq-ZI-tow">
-                                        <rect key="frame" x="0.0" y="85" width="320" height="21"/>
-                                        <animations/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xe9-S1-elR">
                                         <rect key="frame" x="0.0" y="162" width="320" height="40"/>
                                         <animations/>
@@ -106,14 +99,17 @@
                                             <constraint firstAttribute="height" constant="40" id="7aO-Nd-uJT"/>
                                         </constraints>
                                         <state key="normal" title="Update Date"/>
+                                        <connections>
+                                            <action selector="chooseNewDate:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="egu-6N-Npb"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xbV-rd-7M1">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
+                                            <constraint firstAttribute="width" priority="250" constant="40" id="LN2-Rf-jv8"/>
                                             <constraint firstAttribute="height" constant="40" id="jWE-2F-ZNC"/>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="kB3-7c-n7m"/>
                                         </constraints>
                                         <state key="normal" title="Countdown date"/>
                                         <connections>
@@ -124,15 +120,12 @@
                                 <animations/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="xbV-rd-7M1" firstAttribute="width" secondItem="sbf-Ht-aDG" secondAttribute="width" id="Hkm-Qo-kDC"/>
+                                    <constraint firstItem="xbV-rd-7M1" firstAttribute="width" secondItem="sbf-Ht-aDG" secondAttribute="width" priority="750" id="Hkm-Qo-kDC"/>
                                     <constraint firstAttribute="trailing" secondItem="xbV-rd-7M1" secondAttribute="trailing" id="JDs-FN-ks8"/>
                                     <constraint firstItem="xbV-rd-7M1" firstAttribute="top" secondItem="sbf-Ht-aDG" secondAttribute="top" id="LXH-fQ-4hB"/>
-                                    <constraint firstItem="Rsq-ZI-tow" firstAttribute="width" secondItem="sbf-Ht-aDG" secondAttribute="width" id="M5w-AD-wdp"/>
                                     <constraint firstAttribute="height" constant="200" id="M7p-ld-xZw"/>
                                     <constraint firstAttribute="bottom" secondItem="Xe9-S1-elR" secondAttribute="bottom" id="Pni-F1-7Ms"/>
                                     <constraint firstItem="Xe9-S1-elR" firstAttribute="width" secondItem="sbf-Ht-aDG" secondAttribute="width" id="Q09-Xf-SqN"/>
-                                    <constraint firstItem="Rsq-ZI-tow" firstAttribute="leading" secondItem="sbf-Ht-aDG" secondAttribute="leading" id="VJf-4S-IUF"/>
-                                    <constraint firstItem="Rsq-ZI-tow" firstAttribute="top" secondItem="sbf-Ht-aDG" secondAttribute="top" constant="36" id="aHa-bd-ySn"/>
                                     <constraint firstItem="Xe9-S1-elR" firstAttribute="top" secondItem="uXt-Mh-gtL" secondAttribute="bottom" id="c7s-9c-Ray"/>
                                     <constraint firstItem="uXt-Mh-gtL" firstAttribute="leading" secondItem="sbf-Ht-aDG" secondAttribute="leading" id="es9-3g-OKo"/>
                                     <constraint firstItem="Xe9-S1-elR" firstAttribute="leading" secondItem="sbf-Ht-aDG" secondAttribute="leading" id="xXk-ho-Wab"/>
@@ -155,8 +148,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="countdownDateLabel" destination="Rsq-ZI-tow" id="ea3-8s-tyi"/>
-                        <outlet property="countdownDateLabelTopConstraint" destination="aHa-bd-ySn" id="F8j-CQ-5sb"/>
                         <outlet property="datePicker" destination="uXt-Mh-gtL" id="O9e-vX-ydT"/>
                         <outlet property="daysLeftlabel" destination="kRx-UY-CNC" id="mHJ-zU-csF"/>
                         <outlet property="hoursLeftLabel" destination="GF0-jI-lTn" id="Cvr-G1-mC2"/>
@@ -165,6 +156,8 @@
                         <outlet property="secondsLeftLabel" destination="lDN-0p-Sy1" id="L8e-7T-UmN"/>
                         <outlet property="todaysDateLabel" destination="AXy-m4-XD0" id="86z-bQ-Fpw"/>
                         <outlet property="toggleDateChanger" destination="xbV-rd-7M1" id="siI-H0-gW1"/>
+                        <outlet property="toggleDateChangerFullWidthConstraint" destination="Hkm-Qo-kDC" id="nGE-f5-A6a"/>
+                        <outlet property="toggleDateChangerSmallWidthConstraint" destination="LN2-Rf-jv8" id="Fs0-mx-KdT"/>
                         <outlet property="updateDateBottomLayoutConstraint" destination="dGF-tl-gFj" id="7dZ-8m-ble"/>
                     </connections>
                 </viewController>
