@@ -24,11 +24,19 @@ class CountdownViewController: UIViewController {
     @IBOutlet weak var minutesLeftLabel: UILabel!
     @IBOutlet weak var secondsLeftLabel: UILabel!
     
+    @IBOutlet weak var toggleDateChanger: UIButton!
+    @IBOutlet weak var updateDateBottomLayoutConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var countdownDateLabelTopConstraint: NSLayoutConstraint!
+    
+    
+    
     
     let formatter = NSDateFormatter()
     let defaults = NSUserDefaults.standardUserDefaults()
     var countdownDate: NSDate!
     var today = NSDate()
+    var datePickerContainerOpen = false
     
     var temp = 1
     
@@ -58,9 +66,9 @@ class CountdownViewController: UIViewController {
         updateDifferenceLabels()
 
         // use a timer to update the times
-        let timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTime"), userInfo: nil, repeats: true)
+        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTime"), userInfo: nil, repeats: true)
 
-        
+        closeDatePicker()
     }
   
     
@@ -72,6 +80,51 @@ class CountdownViewController: UIViewController {
 
         updateDifferenceLabels()
     }
+    
+    
+    @IBAction func toggleDateChangerClicked(sender: AnyObject) {
+        if datePickerContainerOpen {
+            closeDatePicker()
+        } else {
+            openDatePicker()
+        }
+    }
+    
+    
+    
+    
+    func openDatePicker() {
+        datePicker.alpha = 1
+
+
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            // toggle the date picker size to small/ close datePicker
+            
+            self.updateDateBottomLayoutConstraint.constant = 0
+            
+            self.view.layoutIfNeeded()
+
+            // animate the countdown date label
+            
+            }) { (Bool) -> Void in
+                 // when finished, show the date picker
+                self.datePicker.alpha = 1
+                self.datePickerContainerOpen = true
+        }
+    }
+    
+    
+    func closeDatePicker() {
+        datePicker.alpha = 0
+        
+        updateDateBottomLayoutConstraint.constant = -160
+        countdownDateLabelTopConstraint.constant = 20
+        
+        self.view.layoutIfNeeded()
+        
+        datePickerContainerOpen = false
+    }
+    
     
     
     func updateTime() {

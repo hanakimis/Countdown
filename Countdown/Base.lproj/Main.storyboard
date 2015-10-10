@@ -16,8 +16,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6iG-V7-3h9" userLabel="Countdown continainer">
-                                <rect key="frame" x="0.0" y="113" width="320" height="209"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Fz-fe-WGF" userLabel="today's date container">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="115"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Todays date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXy-m4-XD0">
+                                        <rect key="frame" x="0.0" y="47" width="320" height="21"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <animations/>
+                                <color key="backgroundColor" red="0.34601573210186476" green="1" blue="0.96118902692057229" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="AXy-m4-XD0" firstAttribute="leading" secondItem="9Fz-fe-WGF" secondAttribute="leading" id="En7-2R-ZQ8"/>
+                                    <constraint firstAttribute="height" constant="115" id="Hgl-md-Lnw"/>
+                                    <constraint firstItem="AXy-m4-XD0" firstAttribute="centerY" secondItem="9Fz-fe-WGF" secondAttribute="centerY" id="ezK-kV-nhf"/>
+                                    <constraint firstItem="AXy-m4-XD0" firstAttribute="width" secondItem="9Fz-fe-WGF" secondAttribute="width" id="fZm-Z3-OZe"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6iG-V7-3h9" userLabel="Countdown continainer">
+                                <rect key="frame" x="0.0" y="113" width="320" height="257"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Days" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kRx-UY-CNC">
                                         <rect key="frame" x="0.0" y="49" width="320" height="21"/>
@@ -59,50 +79,63 @@
                                 <color key="backgroundColor" red="0.24524334348307908" green="1" blue="0.16937954347974093" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sbf-Ht-aDG" userLabel="update date container">
-                                <rect key="frame" x="0.0" y="322" width="320" height="246"/>
+                                <rect key="frame" x="0.0" y="368" width="320" height="200"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Countdown date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rsq-ZI-tow">
-                                        <rect key="frame" x="0.0" y="36" width="320" height="21"/>
+                                    <datePicker contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="uXt-Mh-gtL">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="162"/>
                                         <animations/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="uXt-Mh-gtL">
-                                        <rect key="frame" x="0.0" y="84" width="320" height="162"/>
-                                        <animations/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="162" id="n07-WN-5gF"/>
+                                        </constraints>
                                         <date key="date" timeIntervalSinceReferenceDate="447580010.77614999">
                                             <!--2015-03-09 07:46:50 +0000-->
                                         </date>
                                     </datePicker>
-                                </subviews>
-                                <animations/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="Rsq-ZI-tow" firstAttribute="width" secondItem="sbf-Ht-aDG" secondAttribute="width" id="M5w-AD-wdp"/>
-                                    <constraint firstItem="Rsq-ZI-tow" firstAttribute="leading" secondItem="sbf-Ht-aDG" secondAttribute="leading" id="VJf-4S-IUF"/>
-                                    <constraint firstItem="Rsq-ZI-tow" firstAttribute="top" secondItem="sbf-Ht-aDG" secondAttribute="top" constant="36" id="aHa-bd-ySn"/>
-                                    <constraint firstAttribute="height" constant="246" id="kYh-82-qmp"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Fz-fe-WGF" userLabel="today's date container">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="115"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Todays date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXy-m4-XD0">
-                                        <rect key="frame" x="0.0" y="47" width="320" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Countdown date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rsq-ZI-tow">
+                                        <rect key="frame" x="0.0" y="85" width="320" height="21"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xe9-S1-elR">
+                                        <rect key="frame" x="0.0" y="162" width="320" height="40"/>
+                                        <animations/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="7aO-Nd-uJT"/>
+                                        </constraints>
+                                        <state key="normal" title="Update Date"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xbV-rd-7M1">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                        <animations/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="jWE-2F-ZNC"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="kB3-7c-n7m"/>
+                                        </constraints>
+                                        <state key="normal" title="Countdown date"/>
+                                        <connections>
+                                            <action selector="toggleDateChangerClicked:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="eOd-hb-ULY"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <animations/>
-                                <color key="backgroundColor" red="0.34601573210186476" green="1" blue="0.96118902692057229" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="AXy-m4-XD0" firstAttribute="leading" secondItem="9Fz-fe-WGF" secondAttribute="leading" id="En7-2R-ZQ8"/>
-                                    <constraint firstAttribute="height" constant="115" id="Hgl-md-Lnw"/>
-                                    <constraint firstItem="AXy-m4-XD0" firstAttribute="centerY" secondItem="9Fz-fe-WGF" secondAttribute="centerY" id="ezK-kV-nhf"/>
-                                    <constraint firstItem="AXy-m4-XD0" firstAttribute="width" secondItem="9Fz-fe-WGF" secondAttribute="width" id="fZm-Z3-OZe"/>
+                                    <constraint firstItem="xbV-rd-7M1" firstAttribute="width" secondItem="sbf-Ht-aDG" secondAttribute="width" id="Hkm-Qo-kDC"/>
+                                    <constraint firstAttribute="trailing" secondItem="xbV-rd-7M1" secondAttribute="trailing" id="JDs-FN-ks8"/>
+                                    <constraint firstItem="xbV-rd-7M1" firstAttribute="top" secondItem="sbf-Ht-aDG" secondAttribute="top" id="LXH-fQ-4hB"/>
+                                    <constraint firstItem="Rsq-ZI-tow" firstAttribute="width" secondItem="sbf-Ht-aDG" secondAttribute="width" id="M5w-AD-wdp"/>
+                                    <constraint firstAttribute="height" constant="200" id="M7p-ld-xZw"/>
+                                    <constraint firstAttribute="bottom" secondItem="Xe9-S1-elR" secondAttribute="bottom" id="Pni-F1-7Ms"/>
+                                    <constraint firstItem="Xe9-S1-elR" firstAttribute="width" secondItem="sbf-Ht-aDG" secondAttribute="width" id="Q09-Xf-SqN"/>
+                                    <constraint firstItem="Rsq-ZI-tow" firstAttribute="leading" secondItem="sbf-Ht-aDG" secondAttribute="leading" id="VJf-4S-IUF"/>
+                                    <constraint firstItem="Rsq-ZI-tow" firstAttribute="top" secondItem="sbf-Ht-aDG" secondAttribute="top" constant="36" id="aHa-bd-ySn"/>
+                                    <constraint firstItem="Xe9-S1-elR" firstAttribute="top" secondItem="uXt-Mh-gtL" secondAttribute="bottom" id="c7s-9c-Ray"/>
+                                    <constraint firstItem="uXt-Mh-gtL" firstAttribute="leading" secondItem="sbf-Ht-aDG" secondAttribute="leading" id="es9-3g-OKo"/>
+                                    <constraint firstItem="Xe9-S1-elR" firstAttribute="leading" secondItem="sbf-Ht-aDG" secondAttribute="leading" id="xXk-ho-Wab"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -123,6 +156,7 @@
                     </view>
                     <connections>
                         <outlet property="countdownDateLabel" destination="Rsq-ZI-tow" id="ea3-8s-tyi"/>
+                        <outlet property="countdownDateLabelTopConstraint" destination="aHa-bd-ySn" id="F8j-CQ-5sb"/>
                         <outlet property="datePicker" destination="uXt-Mh-gtL" id="O9e-vX-ydT"/>
                         <outlet property="daysLeftlabel" destination="kRx-UY-CNC" id="mHJ-zU-csF"/>
                         <outlet property="hoursLeftLabel" destination="GF0-jI-lTn" id="Cvr-G1-mC2"/>
@@ -130,6 +164,8 @@
                         <outlet property="monthsLeftLabel" destination="wcH-r5-Sx2" id="wLI-EY-nDh"/>
                         <outlet property="secondsLeftLabel" destination="lDN-0p-Sy1" id="L8e-7T-UmN"/>
                         <outlet property="todaysDateLabel" destination="AXy-m4-XD0" id="86z-bQ-Fpw"/>
+                        <outlet property="toggleDateChanger" destination="xbV-rd-7M1" id="siI-H0-gW1"/>
+                        <outlet property="updateDateBottomLayoutConstraint" destination="dGF-tl-gFj" id="7dZ-8m-ble"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
