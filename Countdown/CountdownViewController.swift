@@ -30,8 +30,8 @@ class CountdownViewController: UIViewController {
     var countdownDate: NSDate!
     var today = NSDate()
     var datePickerContainerOpen = false
-    
     var temp = 1
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
