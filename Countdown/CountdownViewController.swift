@@ -77,11 +77,22 @@ class CountdownViewController: UIViewController {
         defaults.setObject(countdownDate, forKey: "date")
         updateDifferenceLabels()
         closeDatePicker()
+        updateBadgeIcon()
+    }
+    
+    
+    func updateBadgeIcon() {
+        today = NSDate()
+        
+        let components = NSCalendar.currentCalendar().components([.Day], fromDate: today,
+            toDate: countdownDate, options: [])
+        let localNotification = UILocalNotification()
+        localNotification.applicationIconBadgeNumber = components.day
+        UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
     }
     
     
     func openDatePicker() {
-
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.toggleDateChanger.setTitle("X", forState: .Normal)
             self.toggleDateChangerSmallWidthConstraint.priority = 750
