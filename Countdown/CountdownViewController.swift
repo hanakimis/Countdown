@@ -13,7 +13,7 @@ class CountdownViewController: UIViewController {
     @IBOutlet weak var datePicker: UIDatePicker!
     
     @IBOutlet weak var todaysDateLabel: UILabel!
-    @IBOutlet weak var monthsLeftLabel: UILabel!
+//    @IBOutlet weak var monthsLeftLabel: UILabel!
     @IBOutlet weak var daysLeftlabel: UILabel!
     @IBOutlet weak var hoursLeftLabel: UILabel!
     @IBOutlet weak var minutesLeftLabel: UILabel!
@@ -98,7 +98,6 @@ class CountdownViewController: UIViewController {
             self.toggleDateChangerSmallWidthConstraint.priority = 750
             self.toggleDateChangerFullWidthConstraint.priority = 250
             self.updateDateBottomLayoutConstraint.constant = 0
-            
             self.view.layoutIfNeeded()
 
             // animate the countdown date label
@@ -132,10 +131,10 @@ class CountdownViewController: UIViewController {
     func updateDifferenceLabels() {
         today = NSDate()
         
-        let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day, .Month], fromDate: today,
+        let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day], fromDate: today,
             toDate: countdownDate, options: [])
 
-        monthsLeftLabel.text  = "\(components.month) months"
+//        monthsLeftLabel.text  = "\(components.month) months"
         daysLeftlabel.text    = "\(components.day) days"
         hoursLeftLabel.text   = "\(components.hour) hours"
         minutesLeftLabel.text = "\(components.minute) minutes"
