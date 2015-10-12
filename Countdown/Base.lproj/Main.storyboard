@@ -17,10 +17,10 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Fz-fe-WGF" userLabel="today's date container">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="115"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MHm-R9-FdC">
-                                        <rect key="frame" x="40" y="33" width="240" height="49"/>
+                                        <rect key="frame" x="40" y="15" width="240" height="49"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Todays date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXy-m4-XD0">
                                                 <rect key="frame" x="0.0" y="20" width="240" height="21"/>
@@ -52,18 +52,90 @@
                                 <animations/>
                                 <color key="backgroundColor" red="0.34601573210186476" green="1" blue="0.96118902692057229" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="115" id="Hgl-md-Lnw"/>
+                                    <constraint firstAttribute="height" constant="80" id="Hgl-md-Lnw"/>
                                     <constraint firstItem="MHm-R9-FdC" firstAttribute="centerY" secondItem="9Fz-fe-WGF" secondAttribute="centerY" id="IIh-uj-Pvh"/>
                                     <constraint firstItem="MHm-R9-FdC" firstAttribute="centerX" secondItem="9Fz-fe-WGF" secondAttribute="centerX" id="UO5-x1-giZ"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6iG-V7-3h9" userLabel="Countdown continainer">
-                                <rect key="frame" x="0.0" y="113" width="320" height="257"/>
+                                <rect key="frame" x="0.0" y="81" width="320" height="289"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fHh-hy-TJ1" userLabel="days container">
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hhr-Mi-C16">
+                                        <rect key="frame" x="0.0" y="97" width="320" height="192"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BmT-TC-pub" userLabel="Minutes container">
+                                                <rect key="frame" x="131" y="0.0" width="124" height="60"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Minutes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diC-Wg-0ex">
+                                                        <rect key="frame" x="0.0" y="19" width="320" height="21"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <animations/>
+                                                <color key="backgroundColor" red="0.89839659685863871" green="0.89839659685863871" blue="0.89839659685863871" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="leading" secondItem="BmT-TC-pub" secondAttribute="leading" id="ToM-El-mnX"/>
+                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="width" secondItem="BmT-TC-pub" secondAttribute="width" id="eM9-hX-RwB"/>
+                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="centerY" secondItem="BmT-TC-pub" secondAttribute="centerY" id="t4y-Ev-tU2"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kPN-mc-tbE" userLabel="seconds container">
+                                                <rect key="frame" x="159" y="75" width="161" height="54"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Seconds" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lDN-0p-Sy1">
+                                                        <rect key="frame" x="0.0" y="17" width="320" height="21"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <animations/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstItem="lDN-0p-Sy1" firstAttribute="leading" secondItem="kPN-mc-tbE" secondAttribute="leading" id="7Qf-72-XJf"/>
+                                                    <constraint firstItem="lDN-0p-Sy1" firstAttribute="width" secondItem="kPN-mc-tbE" secondAttribute="width" id="Gpk-tO-C8p"/>
+                                                    <constraint firstItem="lDN-0p-Sy1" firstAttribute="centerY" secondItem="kPN-mc-tbE" secondAttribute="centerY" id="zZ7-aZ-2bx"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jiM-7n-Cy5" userLabel="Hours container">
+                                                <rect key="frame" x="0.0" y="-1" width="138" height="130"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dmt-nD-c0S">
+                                                        <rect key="frame" x="0.0" y="0.0" width="138" height="128"/>
+                                                        <animations/>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Hours" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GF0-jI-lTn">
+                                                        <rect key="frame" x="0.0" y="20" width="320" height="21"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <animations/>
+                                                <color key="backgroundColor" red="0.71981348167539272" green="0.71981348167539272" blue="0.71981348167539272" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstItem="GF0-jI-lTn" firstAttribute="centerY" secondItem="jiM-7n-Cy5" secondAttribute="centerY" id="6nK-DQ-lBK"/>
+                                                    <constraint firstItem="Dmt-nD-c0S" firstAttribute="centerX" secondItem="jiM-7n-Cy5" secondAttribute="centerX" id="70r-RL-Q83"/>
+                                                    <constraint firstItem="Dmt-nD-c0S" firstAttribute="centerY" secondItem="jiM-7n-Cy5" secondAttribute="centerY" id="EO4-rb-zR5"/>
+                                                    <constraint firstItem="GF0-jI-lTn" firstAttribute="width" secondItem="jiM-7n-Cy5" secondAttribute="width" id="RVA-Oe-WXG"/>
+                                                    <constraint firstItem="Dmt-nD-c0S" firstAttribute="width" secondItem="jiM-7n-Cy5" secondAttribute="width" id="T86-hc-wzR"/>
+                                                    <constraint firstItem="GF0-jI-lTn" firstAttribute="leading" secondItem="jiM-7n-Cy5" secondAttribute="leading" id="V33-Ty-q4U"/>
+                                                    <constraint firstItem="Dmt-nD-c0S" firstAttribute="height" secondItem="jiM-7n-Cy5" secondAttribute="height" id="g5Q-5F-1FE"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <animations/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fHh-hy-TJ1" userLabel="days container">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Days" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kRx-UY-CNC">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Days" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kRx-UY-CNC">
                                                 <rect key="frame" x="0.0" y="22" width="320" height="21"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -79,84 +151,9 @@
                                             <constraint firstItem="kRx-UY-CNC" firstAttribute="leading" secondItem="fHh-hy-TJ1" secondAttribute="leading" id="byC-vo-vTg"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jiM-7n-Cy5" userLabel="Hours container">
-                                        <rect key="frame" x="0.0" y="64" width="320" height="61"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Hours" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GF0-jI-lTn">
-                                                <rect key="frame" x="0.0" y="20" width="320" height="21"/>
-                                                <animations/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <animations/>
-                                        <color key="backgroundColor" red="0.71981348167539272" green="0.71981348167539272" blue="0.71981348167539272" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstItem="GF0-jI-lTn" firstAttribute="centerY" secondItem="jiM-7n-Cy5" secondAttribute="centerY" id="6nK-DQ-lBK"/>
-                                            <constraint firstItem="GF0-jI-lTn" firstAttribute="width" secondItem="jiM-7n-Cy5" secondAttribute="width" id="RVA-Oe-WXG"/>
-                                            <constraint firstItem="GF0-jI-lTn" firstAttribute="leading" secondItem="jiM-7n-Cy5" secondAttribute="leading" id="V33-Ty-q4U"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kPN-mc-tbE" userLabel="seconds container">
-                                        <rect key="frame" x="0.0" y="203" width="320" height="54"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Seconds" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lDN-0p-Sy1">
-                                                <rect key="frame" x="0.0" y="17" width="320" height="21"/>
-                                                <animations/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <animations/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstItem="lDN-0p-Sy1" firstAttribute="leading" secondItem="kPN-mc-tbE" secondAttribute="leading" id="7Qf-72-XJf"/>
-                                            <constraint firstItem="lDN-0p-Sy1" firstAttribute="width" secondItem="kPN-mc-tbE" secondAttribute="width" id="Gpk-tO-C8p"/>
-                                            <constraint firstItem="lDN-0p-Sy1" firstAttribute="centerY" secondItem="kPN-mc-tbE" secondAttribute="centerY" id="zZ7-aZ-2bx"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BmT-TC-pub" userLabel="Minutes container">
-                                        <rect key="frame" x="0.0" y="124" width="320" height="60"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Minutes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diC-Wg-0ex">
-                                                <rect key="frame" x="0.0" y="19" width="320" height="21"/>
-                                                <animations/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <animations/>
-                                        <color key="backgroundColor" red="0.89839659685863871" green="0.89839659685863871" blue="0.89839659685863871" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstItem="diC-Wg-0ex" firstAttribute="leading" secondItem="BmT-TC-pub" secondAttribute="leading" id="ToM-El-mnX"/>
-                                            <constraint firstItem="diC-Wg-0ex" firstAttribute="width" secondItem="BmT-TC-pub" secondAttribute="width" id="eM9-hX-RwB"/>
-                                            <constraint firstItem="diC-Wg-0ex" firstAttribute="centerY" secondItem="BmT-TC-pub" secondAttribute="centerY" id="t4y-Ev-tU2"/>
-                                        </constraints>
-                                    </view>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" red="0.24524334348307908" green="1" blue="0.16937954347974093" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="kPN-mc-tbE" secondAttribute="bottom" id="1S2-Qo-k6Y"/>
-                                    <constraint firstItem="BmT-TC-pub" firstAttribute="top" secondItem="jiM-7n-Cy5" secondAttribute="bottom" id="1jO-R6-1Sx"/>
-                                    <constraint firstItem="fHh-hy-TJ1" firstAttribute="width" secondItem="6iG-V7-3h9" secondAttribute="width" id="CiN-wJ-ALE"/>
-                                    <constraint firstItem="kPN-mc-tbE" firstAttribute="width" secondItem="6iG-V7-3h9" secondAttribute="width" id="EML-gQ-tfy"/>
-                                    <constraint firstItem="BmT-TC-pub" firstAttribute="leading" secondItem="6iG-V7-3h9" secondAttribute="leading" id="LMX-zr-qyi"/>
-                                    <constraint firstItem="jiM-7n-Cy5" firstAttribute="leading" secondItem="6iG-V7-3h9" secondAttribute="leading" id="QLX-74-Zg4"/>
-                                    <constraint firstItem="BmT-TC-pub" firstAttribute="height" secondItem="kPN-mc-tbE" secondAttribute="height" id="RGk-up-zz7"/>
-                                    <constraint firstItem="fHh-hy-TJ1" firstAttribute="top" secondItem="6iG-V7-3h9" secondAttribute="top" id="RhX-WT-RFu"/>
-                                    <constraint firstItem="kPN-mc-tbE" firstAttribute="top" secondItem="BmT-TC-pub" secondAttribute="bottom" id="SaU-IA-ldc"/>
-                                    <constraint firstItem="jiM-7n-Cy5" firstAttribute="height" secondItem="kPN-mc-tbE" secondAttribute="height" id="Xl3-aV-nNE"/>
-                                    <constraint firstItem="kPN-mc-tbE" firstAttribute="leading" secondItem="6iG-V7-3h9" secondAttribute="leading" id="YsZ-Fy-Lti"/>
-                                    <constraint firstItem="jiM-7n-Cy5" firstAttribute="width" secondItem="6iG-V7-3h9" secondAttribute="width" id="cfE-Kb-h62"/>
-                                    <constraint firstItem="BmT-TC-pub" firstAttribute="width" secondItem="6iG-V7-3h9" secondAttribute="width" id="gz5-y1-2GN"/>
-                                    <constraint firstItem="fHh-hy-TJ1" firstAttribute="height" secondItem="kPN-mc-tbE" secondAttribute="height" id="kqC-he-vjJ"/>
-                                    <constraint firstItem="jiM-7n-Cy5" firstAttribute="top" secondItem="fHh-hy-TJ1" secondAttribute="bottom" id="mef-o1-Tny"/>
-                                    <constraint firstItem="fHh-hy-TJ1" firstAttribute="leading" secondItem="6iG-V7-3h9" secondAttribute="leading" id="sMa-qw-zIm"/>
-                                </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sbf-Ht-aDG" userLabel="update date container">
                                 <rect key="frame" x="0.0" y="368" width="320" height="200"/>
@@ -230,6 +227,7 @@
                     <connections>
                         <outlet property="datePicker" destination="uXt-Mh-gtL" id="O9e-vX-ydT"/>
                         <outlet property="daysLeftlabel" destination="kRx-UY-CNC" id="mHJ-zU-csF"/>
+                        <outlet property="hoursImageView" destination="Dmt-nD-c0S" id="pPI-GN-B1t"/>
                         <outlet property="hoursLeftLabel" destination="GF0-jI-lTn" id="Cvr-G1-mC2"/>
                         <outlet property="minutesLeftLabel" destination="diC-Wg-0ex" id="pqj-t9-bRX"/>
                         <outlet property="secondsLeftLabel" destination="lDN-0p-Sy1" id="L8e-7T-UmN"/>

@@ -20,6 +20,12 @@ class CountdownViewController: UIViewController {
     @IBOutlet weak var secondsLeftLabel: UILabel!
     @IBOutlet weak var toggleDateChanger: UIButton!
     
+    
+    @IBOutlet weak var hoursImageView: UIImageView!
+    
+    
+    
+    
     @IBOutlet weak var toggleDateChangerSmallWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var toggleDateChangerFullWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var updateDateBottomLayoutConstraint: NSLayoutConstraint!
@@ -59,6 +65,8 @@ class CountdownViewController: UIViewController {
         // use a timer to update the times
         NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateDifferenceLabels"), userInfo: nil, repeats: true)
 
+        
+        
         closeDatePicker()
     }
   
