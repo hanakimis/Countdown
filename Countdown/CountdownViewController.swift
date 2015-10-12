@@ -13,18 +13,15 @@ class CountdownViewController: UIViewController {
     @IBOutlet weak var datePicker: UIDatePicker!
     
     @IBOutlet weak var todaysDateLabel: UILabel!
-//    @IBOutlet weak var monthsLeftLabel: UILabel!
     @IBOutlet weak var daysLeftlabel: UILabel!
     @IBOutlet weak var hoursLeftLabel: UILabel!
     @IBOutlet weak var minutesLeftLabel: UILabel!
     @IBOutlet weak var secondsLeftLabel: UILabel!
     @IBOutlet weak var toggleDateChanger: UIButton!
     
-    
     @IBOutlet weak var hoursImageView: UIImageView!
-    
-    
-    
+    @IBOutlet weak var minutesImageView: UIImageView!
+    @IBOutlet weak var secondsImageView: UIImageView!
     
     @IBOutlet weak var toggleDateChangerSmallWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var toggleDateChangerFullWidthConstraint: NSLayoutConstraint!
@@ -65,7 +62,9 @@ class CountdownViewController: UIViewController {
         // use a timer to update the times
         NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateDifferenceLabels"), userInfo: nil, repeats: true)
 
-        
+        let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day], fromDate: today,
+            toDate: countdownDate, options: [])
+        hoursImageView.image = UIImage(named: "hour\(components.hour)")
         
         closeDatePicker()
     }
@@ -142,13 +141,18 @@ class CountdownViewController: UIViewController {
         let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day], fromDate: today,
             toDate: countdownDate, options: [])
 
-//        monthsLeftLabel.text  = "\(components.month) months"
         daysLeftlabel.text    = "\(components.day) days"
         hoursLeftLabel.text   = "\(components.hour) hours"
         minutesLeftLabel.text = "\(components.minute) minutes"
         secondsLeftLabel.text = "\(components.second) seconds"
         
         todaysDateLabel.text = formatter.stringFromDate(today)
+        
+        hoursImageView.image = UIImage(named: "hour\(components.hour)")
+        
+        
+        
+        
     }
     
 
