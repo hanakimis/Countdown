@@ -65,6 +65,8 @@ class CountdownViewController: UIViewController {
         let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day], fromDate: today,
             toDate: countdownDate, options: [])
         hoursImageView.image = UIImage(named: "hour\(components.hour)")
+        minutesImageView.image = UIImage(named: "minorsec\(components.minute)")
+        secondsImageView.image = UIImage(named: "minorsec\(components.second)")
         
         closeDatePicker()
     }
@@ -142,16 +144,15 @@ class CountdownViewController: UIViewController {
             toDate: countdownDate, options: [])
 
         daysLeftlabel.text    = "\(components.day) days"
-        hoursLeftLabel.text   = "\(components.hour) hours"
-        minutesLeftLabel.text = "\(components.minute) minutes"
-        secondsLeftLabel.text = "\(components.second) seconds"
+        hoursLeftLabel.text   = "\(components.hour)"
+        minutesLeftLabel.text = "\(components.minute)"
+        secondsLeftLabel.text = "\(components.second)"
         
         todaysDateLabel.text = formatter.stringFromDate(today)
         
         hoursImageView.image = UIImage(named: "hour\(components.hour)")
-        
-        
-        
+        minutesImageView.image = UIImage(named: "minorsec\(components.minute)")
+        secondsImageView.image = UIImage(named: "minorsec\(components.second)")
         
     }
     
