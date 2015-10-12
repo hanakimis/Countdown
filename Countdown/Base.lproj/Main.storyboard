@@ -51,7 +51,7 @@
                                     </view>
                                 </subviews>
                                 <animations/>
-                                <color key="backgroundColor" red="0.34601573210186476" green="1" blue="0.96118902692057229" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.91764705882352937" green="0.92156862745098034" blue="0.92549019607843142" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="Hgl-md-Lnw"/>
                                     <constraint firstItem="MHm-R9-FdC" firstAttribute="centerY" secondItem="9Fz-fe-WGF" secondAttribute="centerY" id="IIh-uj-Pvh"/>
@@ -180,6 +180,7 @@
                                     <constraint firstItem="hhr-Mi-C16" firstAttribute="top" secondItem="fHh-hy-TJ1" secondAttribute="bottom" id="XLx-FL-3km"/>
                                     <constraint firstItem="hhr-Mi-C16" firstAttribute="width" secondItem="6iG-V7-3h9" secondAttribute="width" id="fUh-fV-E3u"/>
                                     <constraint firstItem="hhr-Mi-C16" firstAttribute="leading" secondItem="6iG-V7-3h9" secondAttribute="leading" id="hbV-J9-qU1"/>
+                                    <constraint firstItem="fHh-hy-TJ1" firstAttribute="width" secondItem="6iG-V7-3h9" secondAttribute="width" id="kQd-cx-sgP"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sbf-Ht-aDG" userLabel="update date container">
@@ -198,11 +199,13 @@
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xe9-S1-elR">
                                         <rect key="frame" x="0.0" y="162" width="320" height="40"/>
                                         <animations/>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" red="0.47843137254901957" green="0.5490196078431373" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="7aO-Nd-uJT"/>
                                         </constraints>
-                                        <state key="normal" title="Update Date"/>
+                                        <state key="normal" title="Update Date">
+                                            <color key="titleColor" red="0.14901960784313725" green="0.16862745098039217" blue="0.19215686274509802" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
                                         <connections>
                                             <action selector="chooseNewDate:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="egu-6N-Npb"/>
                                         </connections>
@@ -210,12 +213,14 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xbV-rd-7M1">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
                                         <animations/>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" red="0.47843137254901957" green="0.5490196078431373" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" priority="250" constant="40" id="LN2-Rf-jv8"/>
                                             <constraint firstAttribute="height" constant="40" id="jWE-2F-ZNC"/>
                                         </constraints>
-                                        <state key="normal" title="Countdown date"/>
+                                        <state key="normal" title="Countdown date">
+                                            <color key="titleColor" red="0.14901960784313725" green="0.16862745098039217" blue="0.19215686274509802" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
                                         <connections>
                                             <action selector="toggleDateChangerClicked:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="eOd-hb-ULY"/>
                                         </connections>
