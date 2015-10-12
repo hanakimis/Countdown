@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Countdown View Controller-->
@@ -60,91 +61,6 @@
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6iG-V7-3h9" userLabel="Countdown continainer">
                                 <rect key="frame" x="0.0" y="81" width="320" height="289"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hhr-Mi-C16" userLabel="For a single day">
-                                        <rect key="frame" x="0.0" y="65" width="320" height="224"/>
-                                        <subviews>
-                                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jiM-7n-Cy5" userLabel="Hours container">
-                                                <rect key="frame" x="0.0" y="8" width="102" height="102"/>
-                                                <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dmt-nD-c0S">
-                                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
-                                                        <animations/>
-                                                    </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Hours" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GF0-jI-lTn">
-                                                        <rect key="frame" x="0.0" y="39" width="100" height="21"/>
-                                                        <animations/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <animations/>
-                                                <constraints>
-                                                    <constraint firstItem="GF0-jI-lTn" firstAttribute="centerY" secondItem="jiM-7n-Cy5" secondAttribute="centerY" id="6nK-DQ-lBK"/>
-                                                    <constraint firstItem="Dmt-nD-c0S" firstAttribute="centerX" secondItem="jiM-7n-Cy5" secondAttribute="centerX" id="70r-RL-Q83"/>
-                                                    <constraint firstItem="GF0-jI-lTn" firstAttribute="centerX" secondItem="jiM-7n-Cy5" secondAttribute="centerX" id="DOd-PG-eOh"/>
-                                                    <constraint firstItem="Dmt-nD-c0S" firstAttribute="centerY" secondItem="jiM-7n-Cy5" secondAttribute="centerY" id="EO4-rb-zR5"/>
-                                                    <constraint firstItem="GF0-jI-lTn" firstAttribute="width" secondItem="jiM-7n-Cy5" secondAttribute="width" id="RVA-Oe-WXG"/>
-                                                    <constraint firstItem="Dmt-nD-c0S" firstAttribute="width" secondItem="jiM-7n-Cy5" secondAttribute="width" id="T86-hc-wzR"/>
-                                                    <constraint firstItem="Dmt-nD-c0S" firstAttribute="height" secondItem="jiM-7n-Cy5" secondAttribute="height" id="g5Q-5F-1FE"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BmT-TC-pub" userLabel="Minutes container">
-                                                <rect key="frame" x="108" y="8" width="102" height="102"/>
-                                                <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1yb-l9-0hu">
-                                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
-                                                        <animations/>
-                                                    </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Minutes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diC-Wg-0ex">
-                                                        <rect key="frame" x="0.0" y="39" width="100" height="21"/>
-                                                        <animations/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <animations/>
-                                                <constraints>
-                                                    <constraint firstItem="1yb-l9-0hu" firstAttribute="centerX" secondItem="BmT-TC-pub" secondAttribute="centerX" id="2lK-sl-J1h"/>
-                                                    <constraint firstItem="1yb-l9-0hu" firstAttribute="centerY" secondItem="BmT-TC-pub" secondAttribute="centerY" id="Qrd-i7-t16"/>
-                                                    <constraint firstItem="1yb-l9-0hu" firstAttribute="height" secondItem="BmT-TC-pub" secondAttribute="height" id="VR7-Kl-dfO"/>
-                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="width" secondItem="BmT-TC-pub" secondAttribute="width" id="eM9-hX-RwB"/>
-                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="centerX" secondItem="BmT-TC-pub" secondAttribute="centerX" id="gxF-aR-bmP"/>
-                                                    <constraint firstItem="1yb-l9-0hu" firstAttribute="width" secondItem="BmT-TC-pub" secondAttribute="width" id="oZB-JG-Zxv"/>
-                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="centerY" secondItem="BmT-TC-pub" secondAttribute="centerY" id="t4y-Ev-tU2"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kPN-mc-tbE" userLabel="seconds container">
-                                                <rect key="frame" x="212" y="8" width="102" height="102"/>
-                                                <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pVV-ts-bgm">
-                                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
-                                                        <animations/>
-                                                    </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Seconds" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lDN-0p-Sy1">
-                                                        <rect key="frame" x="0.0" y="39" width="100" height="21"/>
-                                                        <animations/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <animations/>
-                                                <constraints>
-                                                    <constraint firstItem="pVV-ts-bgm" firstAttribute="height" secondItem="kPN-mc-tbE" secondAttribute="height" id="53r-sy-Lvy"/>
-                                                    <constraint firstItem="lDN-0p-Sy1" firstAttribute="width" secondItem="kPN-mc-tbE" secondAttribute="width" id="Gpk-tO-C8p"/>
-                                                    <constraint firstItem="pVV-ts-bgm" firstAttribute="centerX" secondItem="kPN-mc-tbE" secondAttribute="centerX" id="J74-Lm-afT"/>
-                                                    <constraint firstItem="pVV-ts-bgm" firstAttribute="width" secondItem="kPN-mc-tbE" secondAttribute="width" id="N93-ar-VQA"/>
-                                                    <constraint firstItem="pVV-ts-bgm" firstAttribute="centerY" secondItem="kPN-mc-tbE" secondAttribute="centerY" id="NhR-SU-xud"/>
-                                                    <constraint firstItem="lDN-0p-Sy1" firstAttribute="centerX" secondItem="kPN-mc-tbE" secondAttribute="centerX" id="oPl-gn-yUx"/>
-                                                    <constraint firstItem="lDN-0p-Sy1" firstAttribute="centerY" secondItem="kPN-mc-tbE" secondAttribute="centerY" id="zZ7-aZ-2bx"/>
-                                                </constraints>
-                                            </view>
-                                        </subviews>
-                                        <animations/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
                                     <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fHh-hy-TJ1" userLabel="days container">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
                                         <subviews>
@@ -160,13 +76,111 @@
                                         <color key="backgroundColor" red="0.50977585078534027" green="0.50977585078534027" blue="0.50977585078534027" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstItem="kRx-UY-CNC" firstAttribute="centerY" secondItem="fHh-hy-TJ1" secondAttribute="centerY" id="IB2-vk-CZo"/>
+                                            <constraint firstAttribute="height" constant="50" id="QRs-E9-wnV"/>
                                             <constraint firstItem="kRx-UY-CNC" firstAttribute="width" secondItem="fHh-hy-TJ1" secondAttribute="width" id="aZJ-gW-0Ji"/>
                                             <constraint firstItem="kRx-UY-CNC" firstAttribute="leading" secondItem="fHh-hy-TJ1" secondAttribute="leading" id="byC-vo-vTg"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hhr-Mi-C16" userLabel="For a single day">
+                                        <rect key="frame" x="0.0" y="65" width="320" height="224"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jiM-7n-Cy5" userLabel="Hours container">
+                                                <rect key="frame" x="0.0" y="8" width="102" height="102"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dmt-nD-c0S">
+                                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                                        <animations/>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Hours" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GF0-jI-lTn">
+                                                        <rect key="frame" x="0.0" y="39" width="100" height="21"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstItem="GF0-jI-lTn" firstAttribute="centerY" secondItem="jiM-7n-Cy5" secondAttribute="centerY" id="6nK-DQ-lBK"/>
+                                                    <constraint firstItem="Dmt-nD-c0S" firstAttribute="centerX" secondItem="jiM-7n-Cy5" secondAttribute="centerX" id="70r-RL-Q83"/>
+                                                    <constraint firstItem="GF0-jI-lTn" firstAttribute="centerX" secondItem="jiM-7n-Cy5" secondAttribute="centerX" id="DOd-PG-eOh"/>
+                                                    <constraint firstItem="Dmt-nD-c0S" firstAttribute="centerY" secondItem="jiM-7n-Cy5" secondAttribute="centerY" id="EO4-rb-zR5"/>
+                                                    <constraint firstItem="GF0-jI-lTn" firstAttribute="width" secondItem="jiM-7n-Cy5" secondAttribute="width" id="RVA-Oe-WXG"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BmT-TC-pub" userLabel="Minutes container">
+                                                <rect key="frame" x="108" y="8" width="102" height="102"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1yb-l9-0hu">
+                                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                                        <animations/>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Minutes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diC-Wg-0ex">
+                                                        <rect key="frame" x="0.0" y="39" width="100" height="21"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstItem="1yb-l9-0hu" firstAttribute="centerX" secondItem="BmT-TC-pub" secondAttribute="centerX" id="2lK-sl-J1h"/>
+                                                    <constraint firstItem="1yb-l9-0hu" firstAttribute="centerY" secondItem="BmT-TC-pub" secondAttribute="centerY" id="Qrd-i7-t16"/>
+                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="width" secondItem="BmT-TC-pub" secondAttribute="width" id="eM9-hX-RwB"/>
+                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="centerX" secondItem="BmT-TC-pub" secondAttribute="centerX" id="gxF-aR-bmP"/>
+                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="centerY" secondItem="BmT-TC-pub" secondAttribute="centerY" id="t4y-Ev-tU2"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kPN-mc-tbE" userLabel="seconds container">
+                                                <rect key="frame" x="212" y="8" width="102" height="102"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pVV-ts-bgm">
+                                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                                        <animations/>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Seconds" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lDN-0p-Sy1">
+                                                        <rect key="frame" x="0.0" y="39" width="100" height="21"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstItem="lDN-0p-Sy1" firstAttribute="width" secondItem="kPN-mc-tbE" secondAttribute="width" id="Gpk-tO-C8p"/>
+                                                    <constraint firstItem="pVV-ts-bgm" firstAttribute="centerX" secondItem="kPN-mc-tbE" secondAttribute="centerX" id="J74-Lm-afT"/>
+                                                    <constraint firstItem="pVV-ts-bgm" firstAttribute="centerY" secondItem="kPN-mc-tbE" secondAttribute="centerY" id="NhR-SU-xud"/>
+                                                    <constraint firstItem="lDN-0p-Sy1" firstAttribute="centerX" secondItem="kPN-mc-tbE" secondAttribute="centerX" id="oPl-gn-yUx"/>
+                                                    <constraint firstItem="lDN-0p-Sy1" firstAttribute="centerY" secondItem="kPN-mc-tbE" secondAttribute="centerY" id="zZ7-aZ-2bx"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <animations/>
+                                        <color key="backgroundColor" red="0.14901960784313725" green="0.16862745098039217" blue="0.19215686274509802" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="BmT-TC-pub" firstAttribute="centerY" secondItem="hhr-Mi-C16" secondAttribute="centerY" id="7Kt-pn-v8h"/>
+                                            <constraint firstItem="jiM-7n-Cy5" firstAttribute="width" secondItem="hhr-Mi-C16" secondAttribute="width" multiplier="0.3333" id="G9h-gc-FTO"/>
+                                            <constraint firstItem="BmT-TC-pub" firstAttribute="leading" secondItem="jiM-7n-Cy5" secondAttribute="trailing" id="GJP-vH-n4d"/>
+                                            <constraint firstItem="jiM-7n-Cy5" firstAttribute="leading" secondItem="hhr-Mi-C16" secondAttribute="leading" id="Hgw-8O-Xjw"/>
+                                            <constraint firstItem="jiM-7n-Cy5" firstAttribute="centerY" secondItem="hhr-Mi-C16" secondAttribute="centerY" id="XzT-Yh-ACg"/>
+                                            <constraint firstItem="kPN-mc-tbE" firstAttribute="width" secondItem="hhr-Mi-C16" secondAttribute="width" multiplier="0.3333" id="dnN-cL-uvP"/>
+                                            <constraint firstItem="BmT-TC-pub" firstAttribute="width" secondItem="hhr-Mi-C16" secondAttribute="width" multiplier="0.3333" id="mWC-RB-nKe"/>
+                                            <constraint firstItem="kPN-mc-tbE" firstAttribute="centerY" secondItem="hhr-Mi-C16" secondAttribute="centerY" id="nmC-Ty-7Uz"/>
+                                            <constraint firstItem="kPN-mc-tbE" firstAttribute="leading" secondItem="BmT-TC-pub" secondAttribute="trailing" id="sLa-6h-DE7"/>
                                         </constraints>
                                     </view>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" red="0.24524334348307908" green="1" blue="0.16937954347974093" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="hhr-Mi-C16" secondAttribute="bottom" id="ALE-st-B9t"/>
+                                    <constraint firstItem="fHh-hy-TJ1" firstAttribute="top" secondItem="6iG-V7-3h9" secondAttribute="top" id="JqN-bA-OVG"/>
+                                    <constraint firstItem="hhr-Mi-C16" firstAttribute="top" secondItem="fHh-hy-TJ1" secondAttribute="bottom" id="XLx-FL-3km"/>
+                                    <constraint firstItem="hhr-Mi-C16" firstAttribute="width" secondItem="6iG-V7-3h9" secondAttribute="width" id="fUh-fV-E3u"/>
+                                    <constraint firstItem="hhr-Mi-C16" firstAttribute="leading" secondItem="6iG-V7-3h9" secondAttribute="leading" id="hbV-J9-qU1"/>
+                                </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sbf-Ht-aDG" userLabel="update date container">
                                 <rect key="frame" x="0.0" y="368" width="320" height="200"/>
