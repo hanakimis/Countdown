@@ -12,7 +12,6 @@ class CountdownViewController: UIViewController {
 
     @IBOutlet weak var datePicker: UIDatePicker!
     
-    @IBOutlet weak var todaysDateLabel: UILabel!
     @IBOutlet weak var daysLeftlabel: UILabel!
     @IBOutlet weak var hoursLeftLabel: UILabel!
     @IBOutlet weak var minutesLeftLabel: UILabel!
@@ -148,7 +147,6 @@ class CountdownViewController: UIViewController {
         minutesLeftLabel.text = "\(components.minute)"
         secondsLeftLabel.text = "\(components.second)"
         
-        todaysDateLabel.text = formatter.stringFromDate(today)
         
         hoursImageView.image = UIImage(named: "hour\(components.hour)")
         minutesImageView.image = UIImage(named: "minorsec\(components.minute)")
