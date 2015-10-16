@@ -131,55 +131,192 @@
                                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fHh-hy-TJ1" userLabel="days left">
                                                 <rect key="frame" x="7" y="48" width="134" height="305"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zk6-4c-307">
-                                                        <rect key="frame" x="0.0" y="8" width="134" height="1"/>
+                                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UUw-hJ-apd">
+                                                        <rect key="frame" x="0.0" y="8" width="141" height="19"/>
+                                                        <subviews>
+                                                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zk6-4c-307" userLabel="10">
+                                                                <rect key="frame" x="3" y="9" width="134" height="1"/>
+                                                                <animations/>
+                                                                <color key="backgroundColor" red="0.59215686274509804" green="0.59215686274509804" blue="0.59215686274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="1" id="en8-Ds-Jnm"/>
+                                                                </constraints>
+                                                            </view>
+                                                        </subviews>
                                                         <animations/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="bottom" secondItem="zk6-4c-307" secondAttribute="bottom" id="NHA-NK-GyV"/>
+                                                            <constraint firstItem="zk6-4c-307" firstAttribute="leading" secondItem="UUw-hJ-apd" secondAttribute="leading" id="dNI-Kh-UkZ"/>
+                                                            <constraint firstItem="zk6-4c-307" firstAttribute="width" secondItem="UUw-hJ-apd" secondAttribute="width" id="qfY-k9-Dz1"/>
+                                                        </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UpC-aP-mcO">
-                                                        <rect key="frame" x="0.0" y="41" width="134" height="1"/>
+                                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pdv-cJ-Kjo">
+                                                        <rect key="frame" x="0.0" y="23" width="141" height="19"/>
+                                                        <subviews>
+                                                            <view alpha="0.66000000000000003" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UpC-aP-mcO" userLabel="9">
+                                                                <rect key="frame" x="3" y="9" width="134" height="1"/>
+                                                                <animations/>
+                                                                <color key="backgroundColor" red="0.59215686274509804" green="0.59215686274509804" blue="0.59215686274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="1" id="6Ep-Gi-pEM"/>
+                                                                </constraints>
+                                                            </view>
+                                                        </subviews>
                                                         <animations/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstItem="UpC-aP-mcO" firstAttribute="width" secondItem="Pdv-cJ-Kjo" secondAttribute="width" id="EVS-qI-uwM"/>
+                                                            <constraint firstItem="UpC-aP-mcO" firstAttribute="leading" secondItem="Pdv-cJ-Kjo" secondAttribute="leading" id="OLD-cF-uKP"/>
+                                                            <constraint firstAttribute="bottom" secondItem="UpC-aP-mcO" secondAttribute="bottom" id="cFS-NI-E0r"/>
+                                                        </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eBF-gN-9Yj">
-                                                        <rect key="frame" x="0.0" y="74" width="134" height="1"/>
+                                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6zX-sH-Qq3">
+                                                        <rect key="frame" x="-3" y="100" width="141" height="19"/>
+                                                        <subviews>
+                                                            <view alpha="0.5" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eBF-gN-9Yj" userLabel="8">
+                                                                <rect key="frame" x="3" y="9" width="134" height="1"/>
+                                                                <animations/>
+                                                                <color key="backgroundColor" red="0.59215686274509804" green="0.59215686274509804" blue="0.59215686274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="1" id="XgQ-4a-HaS"/>
+                                                                </constraints>
+                                                            </view>
+                                                        </subviews>
                                                         <animations/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstItem="eBF-gN-9Yj" firstAttribute="width" secondItem="6zX-sH-Qq3" secondAttribute="width" id="5w0-yP-f4h"/>
+                                                            <constraint firstAttribute="bottom" secondItem="eBF-gN-9Yj" secondAttribute="bottom" id="dwk-Or-m5E"/>
+                                                            <constraint firstItem="eBF-gN-9Yj" firstAttribute="leading" secondItem="6zX-sH-Qq3" secondAttribute="leading" id="lh9-f2-LWv"/>
+                                                        </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="apk-0w-Soj">
-                                                        <rect key="frame" x="0.0" y="107" width="134" height="1"/>
+                                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f9t-tI-sL9">
+                                                        <rect key="frame" x="0.0" y="135" width="141" height="19"/>
+                                                        <subviews>
+                                                            <view alpha="0.40000000000000002" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="apk-0w-Soj" userLabel="7">
+                                                                <rect key="frame" x="3" y="9" width="134" height="1"/>
+                                                                <animations/>
+                                                                <color key="backgroundColor" red="0.59215686274509804" green="0.59215686274509804" blue="0.59215686274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="1" id="toG-zn-D7r"/>
+                                                                </constraints>
+                                                            </view>
+                                                        </subviews>
                                                         <animations/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="bottom" secondItem="apk-0w-Soj" secondAttribute="bottom" id="Iun-O4-iU8"/>
+                                                            <constraint firstItem="apk-0w-Soj" firstAttribute="width" secondItem="f9t-tI-sL9" secondAttribute="width" id="e9g-ls-JxM"/>
+                                                            <constraint firstItem="apk-0w-Soj" firstAttribute="leading" secondItem="f9t-tI-sL9" secondAttribute="leading" id="tLK-sH-RkO"/>
+                                                        </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="61m-SR-1sF">
-                                                        <rect key="frame" x="0.0" y="140" width="134" height="1"/>
+                                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GdN-4U-Coh">
+                                                        <rect key="frame" x="0.0" y="184" width="141" height="19"/>
+                                                        <subviews>
+                                                            <view alpha="0.25" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rBG-d2-Omo" userLabel="5">
+                                                                <rect key="frame" x="3" y="9" width="134" height="1"/>
+                                                                <animations/>
+                                                                <color key="backgroundColor" red="0.59215686274509804" green="0.59215686274509804" blue="0.59215686274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="1" id="r13-bK-dz8"/>
+                                                                </constraints>
+                                                            </view>
+                                                        </subviews>
                                                         <animations/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstItem="rBG-d2-Omo" firstAttribute="width" secondItem="GdN-4U-Coh" secondAttribute="width" id="ktx-az-jKt"/>
+                                                            <constraint firstAttribute="bottom" secondItem="rBG-d2-Omo" secondAttribute="bottom" id="pcF-O1-OfU"/>
+                                                            <constraint firstItem="rBG-d2-Omo" firstAttribute="leading" secondItem="GdN-4U-Coh" secondAttribute="leading" id="rRM-CL-9GN"/>
+                                                        </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="haR-YC-jAl">
-                                                        <rect key="frame" x="0.0" y="296" width="134" height="1"/>
+                                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EeC-Ew-x9H">
+                                                        <rect key="frame" x="-3" y="211" width="141" height="19"/>
+                                                        <subviews>
+                                                            <view alpha="0.20000000000000001" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5qV-fV-c2G" userLabel="4">
+                                                                <rect key="frame" x="3" y="9" width="134" height="1"/>
+                                                                <animations/>
+                                                                <color key="backgroundColor" red="0.59215686274509804" green="0.59215686274509804" blue="0.59215686274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="1" id="mdq-Gd-JhA"/>
+                                                                </constraints>
+                                                            </view>
+                                                        </subviews>
                                                         <animations/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="bottom" secondItem="5qV-fV-c2G" secondAttribute="bottom" id="KVA-GB-gpl"/>
+                                                            <constraint firstItem="5qV-fV-c2G" firstAttribute="leading" secondItem="EeC-Ew-x9H" secondAttribute="leading" id="fNM-Ba-Hk5"/>
+                                                            <constraint firstItem="5qV-fV-c2G" firstAttribute="width" secondItem="EeC-Ew-x9H" secondAttribute="width" id="nQf-5u-nPh"/>
+                                                        </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rBG-d2-Omo">
-                                                        <rect key="frame" x="0.0" y="166" width="134" height="1"/>
+                                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iJc-aa-jFl">
+                                                        <rect key="frame" x="0.0" y="238" width="141" height="19"/>
+                                                        <subviews>
+                                                            <view alpha="0.14999999999999999" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CXt-t2-uql" userLabel="3">
+                                                                <rect key="frame" x="3" y="9" width="134" height="1"/>
+                                                                <animations/>
+                                                                <color key="backgroundColor" red="0.59215686274509804" green="0.59215686274509804" blue="0.59215686274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="1" id="Wld-LG-mKy"/>
+                                                                </constraints>
+                                                            </view>
+                                                        </subviews>
                                                         <animations/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="bottom" secondItem="CXt-t2-uql" secondAttribute="bottom" constant="9" id="5P5-sy-zd5"/>
+                                                            <constraint firstItem="CXt-t2-uql" firstAttribute="width" secondItem="iJc-aa-jFl" secondAttribute="width" id="f9F-E1-LPt"/>
+                                                            <constraint firstItem="CXt-t2-uql" firstAttribute="leading" secondItem="iJc-aa-jFl" secondAttribute="leading" constant="3" id="rqm-SZ-qsN"/>
+                                                        </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5qV-fV-c2G">
-                                                        <rect key="frame" x="0.0" y="199" width="134" height="1"/>
+                                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0iE-UP-fQY">
+                                                        <rect key="frame" x="-3" y="265" width="141" height="19"/>
+                                                        <subviews>
+                                                            <view alpha="0.10000000000000001" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yG5-OD-qIP" userLabel="2">
+                                                                <rect key="frame" x="3" y="9" width="134" height="1"/>
+                                                                <animations/>
+                                                                <color key="backgroundColor" red="0.59215686274509804" green="0.59215686274509804" blue="0.59215686274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                                            </view>
+                                                        </subviews>
                                                         <animations/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="bottom" secondItem="yG5-OD-qIP" secondAttribute="bottom" id="YGo-eY-GTb"/>
+                                                            <constraint firstItem="yG5-OD-qIP" firstAttribute="width" secondItem="0iE-UP-fQY" secondAttribute="width" id="gGs-SJ-QD2"/>
+                                                            <constraint firstItem="yG5-OD-qIP" firstAttribute="leading" secondItem="0iE-UP-fQY" secondAttribute="leading" id="jXS-h6-bLd"/>
+                                                        </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CXt-t2-uql">
-                                                        <rect key="frame" x="0.0" y="232" width="134" height="1"/>
+                                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Owt-Rm-4SC">
+                                                        <rect key="frame" x="-3" y="278" width="141" height="19"/>
+                                                        <subviews>
+                                                            <view alpha="0.050000000000000003" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="haR-YC-jAl" userLabel="1">
+                                                                <rect key="frame" x="3" y="9" width="134" height="1"/>
+                                                                <animations/>
+                                                                <color key="backgroundColor" red="0.59215686274509804" green="0.59215686274509804" blue="0.59215686274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="1" id="p0v-Qf-KQx"/>
+                                                                </constraints>
+                                                            </view>
+                                                        </subviews>
                                                         <animations/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstItem="haR-YC-jAl" firstAttribute="leading" secondItem="Owt-Rm-4SC" secondAttribute="leading" id="0fB-qy-CXi"/>
+                                                            <constraint firstAttribute="bottom" secondItem="haR-YC-jAl" secondAttribute="bottom" id="PtD-gf-4uf"/>
+                                                            <constraint firstItem="haR-YC-jAl" firstAttribute="width" secondItem="Owt-Rm-4SC" secondAttribute="width" id="xPV-Mb-E40"/>
+                                                        </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yG5-OD-qIP">
-                                                        <rect key="frame" x="0.0" y="265" width="134" height="1"/>
+                                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hSD-gI-g6d">
+                                                        <rect key="frame" x="-3" y="157" width="141" height="19"/>
+                                                        <subviews>
+                                                            <view alpha="0.29999999999999999" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hL5-Ed-G6I" userLabel="6">
+                                                                <rect key="frame" x="3" y="9" width="134" height="1"/>
+                                                                <animations/>
+                                                                <color key="backgroundColor" red="0.59215686270000001" green="0.59215686270000001" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="1" id="bck-xj-5cm"/>
+                                                                </constraints>
+                                                            </view>
+                                                        </subviews>
                                                         <animations/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="bottom" secondItem="hL5-Ed-G6I" secondAttribute="bottom" id="XoO-ma-V5g"/>
+                                                            <constraint firstItem="hL5-Ed-G6I" firstAttribute="width" secondItem="hSD-gI-g6d" secondAttribute="width" id="gjE-Kk-gSd"/>
+                                                            <constraint firstItem="hL5-Ed-G6I" firstAttribute="leading" secondItem="hSD-gI-g6d" secondAttribute="leading" id="zeR-Cg-gBd"/>
+                                                        </constraints>
                                                     </view>
                                                 </subviews>
                                                 <animations/>
@@ -226,13 +363,13 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xbV-rd-7M1">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
                                         <animations/>
-                                        <color key="backgroundColor" red="0.47843137254901957" green="0.5490196078431373" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.14901960784313725" green="0.16862745098039217" blue="0.19215686274509802" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" priority="250" constant="40" id="LN2-Rf-jv8"/>
                                             <constraint firstAttribute="height" constant="40" id="jWE-2F-ZNC"/>
                                         </constraints>
                                         <state key="normal" title="Countdown date">
-                                            <color key="titleColor" red="0.14901960784313725" green="0.16862745098039217" blue="0.19215686274509802" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" red="0.47843137254901957" green="0.5490196078431373" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="toggleDateChangerClicked:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="eOd-hb-ULY"/>
