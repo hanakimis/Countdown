@@ -102,6 +102,8 @@ class CountdownViewController: UIViewController {
     
     func openDatePicker() {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.toggleDateChanger.contentHorizontalAlignment = .Center
+            self.toggleDateChanger.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
             self.toggleDateChanger.setTitle("X", forState: .Normal)
             self.toggleDateChangerSmallWidthConstraint.priority = 750
             self.toggleDateChangerFullWidthConstraint.priority = 250
@@ -123,11 +125,15 @@ class CountdownViewController: UIViewController {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.datePicker.alpha = 0
             
+            self.toggleDateChanger.contentHorizontalAlignment = .Left
+            self.toggleDateChanger.contentEdgeInsets = UIEdgeInsetsMake(0.0, 10.0, 0.0, 0.0)
             self.toggleDateChanger.setTitle(self.formatter.stringFromDate(self.datePicker.date), forState: .Normal)
             self.toggleDateChangerSmallWidthConstraint.priority = 250
             self.toggleDateChangerFullWidthConstraint.priority = 750
             self.updateDateBottomLayoutConstraint.constant = -160
         
+            
+            
             self.view.layoutIfNeeded()
             
             }) { (Bool) -> Void in
