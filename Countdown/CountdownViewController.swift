@@ -131,8 +131,6 @@ class CountdownViewController: UIViewController {
             self.toggleDateChangerSmallWidthConstraint.priority = 250
             self.toggleDateChangerFullWidthConstraint.priority = 750
             self.updateDateBottomLayoutConstraint.constant = -160
-        
-            
             
             self.view.layoutIfNeeded()
             
@@ -152,7 +150,6 @@ class CountdownViewController: UIViewController {
         hoursLeftLabel.text   = "\(components.hour)"
         minutesLeftLabel.text = "\(components.minute)"
         secondsLeftLabel.text = "\(components.second)"
-        
         
         hoursImageView.image = UIImage(named: "hour\(components.hour)")
         minutesImageView.image = UIImage(named: "minorsec\(components.minute)")
