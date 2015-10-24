@@ -25,7 +25,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="194" height="353"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Days" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kRx-UY-CNC">
-                                                <rect key="frame" x="7" y="34" width="134" height="21"/>
+                                                <rect key="frame" x="0.0" y="34" width="134" height="21"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -274,8 +274,8 @@
                                         <constraints>
                                             <constraint firstItem="fHh-hy-TJ1" firstAttribute="width" secondItem="Kjw-Yo-rNo" secondAttribute="width" id="8k7-aC-zyt"/>
                                             <constraint firstItem="fHh-hy-TJ1" firstAttribute="top" secondItem="Kjw-Yo-rNo" secondAttribute="top" constant="48" id="VQp-Sv-fT2"/>
-                                            <constraint firstItem="fHh-hy-TJ1" firstAttribute="height" secondItem="Kjw-Yo-rNo" secondAttribute="height" id="XU4-Mz-a3x"/>
-                                            <constraint firstItem="fHh-hy-TJ1" firstAttribute="leading" secondItem="Kjw-Yo-rNo" secondAttribute="leading" constant="7" id="jQt-dr-0tZ"/>
+                                            <constraint firstItem="fHh-hy-TJ1" firstAttribute="height" secondItem="Kjw-Yo-rNo" secondAttribute="height" multiplier="0.9" id="XU4-Mz-a3x"/>
+                                            <constraint firstItem="fHh-hy-TJ1" firstAttribute="leading" secondItem="Kjw-Yo-rNo" secondAttribute="leading" id="jQt-dr-0tZ"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YQR-LM-puI" userLabel="Time container">
@@ -391,7 +391,7 @@
                                 <animations/>
                                 <constraints>
                                     <constraint firstItem="YQR-LM-puI" firstAttribute="height" secondItem="6iG-V7-3h9" secondAttribute="height" id="MaH-Xf-U5n"/>
-                                    <constraint firstItem="YQR-LM-puI" firstAttribute="top" secondItem="6iG-V7-3h9" secondAttribute="top" constant="24" id="OSS-HV-rGd"/>
+                                    <constraint firstItem="YQR-LM-puI" firstAttribute="top" secondItem="6iG-V7-3h9" secondAttribute="top" id="OSS-HV-rGd"/>
                                     <constraint firstItem="Kjw-Yo-rNo" firstAttribute="height" secondItem="6iG-V7-3h9" secondAttribute="height" id="Xl1-v6-NGw"/>
                                     <constraint firstAttribute="trailing" secondItem="YQR-LM-puI" secondAttribute="trailing" constant="39" id="hu1-HM-ZdO"/>
                                     <constraint firstItem="Kjw-Yo-rNo" firstAttribute="top" secondItem="6iG-V7-3h9" secondAttribute="top" id="i39-jm-tYG"/>
