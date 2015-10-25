@@ -30,14 +30,14 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fHh-hy-TJ1" userLabel="days left lines">
-                                                <rect key="frame" x="7" y="48" width="134" height="305"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fHh-hy-TJ1" userLabel="days left lines">
+                                                <rect key="frame" x="0.0" y="48" width="192" height="379"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Owt-Rm-4SC" userLabel="bottom border">
-                                                        <rect key="frame" x="0.0" y="278" width="141" height="19"/>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Owt-Rm-4SC" userLabel="bottom border">
+                                                        <rect key="frame" x="0.0" y="341" width="192" height="38"/>
                                                         <subviews>
                                                             <view alpha="0.050000000000000003" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="haR-YC-jAl" userLabel="border 1">
-                                                                <rect key="frame" x="3" y="9" width="134" height="1"/>
+                                                                <rect key="frame" x="0.0" y="37" width="192" height="1"/>
                                                                 <animations/>
                                                                 <color key="backgroundColor" red="0.59215686274509804" green="0.59215686274509804" blue="0.59215686274509804" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
