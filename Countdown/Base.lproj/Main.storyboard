@@ -17,11 +17,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6iG-V7-3h9" userLabel="Countdown continainer">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6iG-V7-3h9" userLabel="Countdown container">
                                 <rect key="frame" x="0.0" y="71" width="320" height="427"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kjw-Yo-rNo" userLabel="days left container">
-                                        <rect key="frame" x="32" y="0.0" width="160" height="427"/>
+                                        <rect key="frame" x="32" y="0.0" width="144" height="427"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Days" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kRx-UY-CNC">
                                                 <rect key="frame" x="0.0" y="34" width="134" height="21"/>
@@ -31,13 +31,13 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fHh-hy-TJ1" userLabel="days left lines">
-                                                <rect key="frame" x="0.0" y="16" width="160" height="411"/>
+                                                <rect key="frame" x="0.0" y="16" width="144" height="411"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K8g-GX-H1A" userLabel="border 10 container">
-                                                        <rect key="frame" x="0.0" y="1" width="160" height="41"/>
+                                                        <rect key="frame" x="0.0" y="1" width="144" height="41"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DCK-p9-ril" userLabel="border 10 line">
-                                                                <rect key="frame" x="0.0" y="40" width="160" height="1"/>
+                                                                <rect key="frame" x="0.0" y="40" width="144" height="1"/>
                                                                 <animations/>
                                                                 <color key="backgroundColor" red="0.59215686270000001" green="0.59215686270000001" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
@@ -53,10 +53,10 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6s3-7k-KwM" userLabel="border 9 container">
-                                                        <rect key="frame" x="0.0" y="42" width="160" height="41"/>
+                                                        <rect key="frame" x="0.0" y="42" width="144" height="41"/>
                                                         <subviews>
-                                                            <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pPk-Y9-Jb6" userLabel="border 9 line">
-                                                                <rect key="frame" x="0.0" y="40" width="160" height="1"/>
+                                                            <view alpha="0.66000000000000003" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pPk-Y9-Jb6" userLabel="border 9 line">
+                                                                <rect key="frame" x="0.0" y="40" width="144" height="1"/>
                                                                 <animations/>
                                                                 <color key="backgroundColor" red="0.59215686270000001" green="0.59215686270000001" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
@@ -72,10 +72,10 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7dy-n2-lfV" userLabel="border 8 container">
-                                                        <rect key="frame" x="0.0" y="83" width="160" height="41"/>
+                                                        <rect key="frame" x="0.0" y="83" width="144" height="41"/>
                                                         <subviews>
-                                                            <view alpha="0.59999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nh8-Yy-CgH" userLabel="border 8 line">
-                                                                <rect key="frame" x="0.0" y="40" width="160" height="1"/>
+                                                            <view alpha="0.45000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nh8-Yy-CgH" userLabel="border 8 line">
+                                                                <rect key="frame" x="0.0" y="40" width="144" height="1"/>
                                                                 <animations/>
                                                                 <color key="backgroundColor" red="0.59215686270000001" green="0.59215686270000001" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
@@ -91,10 +91,10 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="raX-Vv-kC2" userLabel="border 7 container">
-                                                        <rect key="frame" x="0.0" y="124" width="160" height="41"/>
+                                                        <rect key="frame" x="0.0" y="124" width="144" height="41"/>
                                                         <subviews>
-                                                            <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S1e-Aw-zfL" userLabel="border 7 line">
-                                                                <rect key="frame" x="0.0" y="40" width="160" height="1"/>
+                                                            <view alpha="0.35999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S1e-Aw-zfL" userLabel="border 7 line">
+                                                                <rect key="frame" x="0.0" y="40" width="144" height="1"/>
                                                                 <animations/>
                                                                 <color key="backgroundColor" red="0.59215686270000001" green="0.59215686270000001" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
@@ -110,10 +110,10 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cts-FC-7W6" userLabel="border 6 container">
-                                                        <rect key="frame" x="0.0" y="165" width="160" height="41"/>
+                                                        <rect key="frame" x="0.0" y="165" width="144" height="41"/>
                                                         <subviews>
-                                                            <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O3x-Cv-gUx" userLabel="border 6 line">
-                                                                <rect key="frame" x="0.0" y="40" width="160" height="1"/>
+                                                            <view alpha="0.29999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O3x-Cv-gUx" userLabel="border 6 line">
+                                                                <rect key="frame" x="0.0" y="40" width="144" height="1"/>
                                                                 <animations/>
                                                                 <color key="backgroundColor" red="0.59215686270000001" green="0.59215686270000001" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
@@ -129,10 +129,10 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IG8-0W-ASq" userLabel="border 5 container">
-                                                        <rect key="frame" x="0.0" y="206" width="160" height="41"/>
+                                                        <rect key="frame" x="0.0" y="206" width="144" height="41"/>
                                                         <subviews>
-                                                            <view alpha="0.29999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rkt-2R-Jv7" userLabel="border 5 line">
-                                                                <rect key="frame" x="0.0" y="40" width="160" height="1"/>
+                                                            <view alpha="0.25" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rkt-2R-Jv7" userLabel="border 5 line">
+                                                                <rect key="frame" x="0.0" y="40" width="144" height="1"/>
                                                                 <animations/>
                                                                 <color key="backgroundColor" red="0.59215686270000001" green="0.59215686270000001" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
@@ -148,10 +148,10 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zod-oJ-tdn" userLabel="border 4 container">
-                                                        <rect key="frame" x="0.0" y="247" width="160" height="41"/>
+                                                        <rect key="frame" x="0.0" y="247" width="144" height="41"/>
                                                         <subviews>
-                                                            <view alpha="0.20000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2bu-Qd-Xss" userLabel="border 4 line">
-                                                                <rect key="frame" x="0.0" y="40" width="160" height="1"/>
+                                                            <view alpha="0.17999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2bu-Qd-Xss" userLabel="border 4 line">
+                                                                <rect key="frame" x="0.0" y="40" width="144" height="1"/>
                                                                 <animations/>
                                                                 <color key="backgroundColor" red="0.59215686270000001" green="0.59215686270000001" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
@@ -167,10 +167,10 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V7e-XX-heS" userLabel="border 3 container">
-                                                        <rect key="frame" x="0.0" y="288" width="160" height="41"/>
+                                                        <rect key="frame" x="0.0" y="288" width="144" height="41"/>
                                                         <subviews>
                                                             <view alpha="0.14999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t4d-Tf-bb2" userLabel="border 3 line">
-                                                                <rect key="frame" x="0.0" y="40" width="160" height="1"/>
+                                                                <rect key="frame" x="0.0" y="40" width="144" height="1"/>
                                                                 <animations/>
                                                                 <color key="backgroundColor" red="0.59215686270000001" green="0.59215686270000001" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
@@ -186,10 +186,10 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PS4-JP-kJG" userLabel="border 2 container">
-                                                        <rect key="frame" x="0.0" y="329" width="160" height="41"/>
+                                                        <rect key="frame" x="0.0" y="329" width="144" height="41"/>
                                                         <subviews>
                                                             <view alpha="0.10000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aTu-c1-Qga" userLabel="border 2 line">
-                                                                <rect key="frame" x="0.0" y="40" width="160" height="1"/>
+                                                                <rect key="frame" x="0.0" y="40" width="144" height="1"/>
                                                                 <animations/>
                                                                 <color key="backgroundColor" red="0.59215686270000001" green="0.59215686270000001" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
@@ -205,10 +205,10 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Owt-Rm-4SC" userLabel="bottom border">
-                                                        <rect key="frame" x="0.0" y="370" width="160" height="41"/>
+                                                        <rect key="frame" x="0.0" y="370" width="144" height="41"/>
                                                         <subviews>
                                                             <view alpha="0.050000000000000003" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="haR-YC-jAl" userLabel="border 1 line">
-                                                                <rect key="frame" x="0.0" y="40" width="160" height="1"/>
+                                                                <rect key="frame" x="0.0" y="40" width="144" height="1"/>
                                                                 <animations/>
                                                                 <color key="backgroundColor" red="0.59215686274509804" green="0.59215686274509804" blue="0.59215686274509804" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
@@ -278,10 +278,10 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DIQ-0V-coq" userLabel="Time container">
-                                        <rect key="frame" x="192" y="0.0" width="128" height="427"/>
+                                        <rect key="frame" x="176" y="0.0" width="144" height="427"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jiM-7n-Cy5" userLabel="Hours container">
-                                                <rect key="frame" x="14" y="-2" width="100" height="143"/>
+                                                <rect key="frame" x="22" y="-2" width="100" height="143"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Dmt-nD-c0S">
                                                         <rect key="frame" x="0.0" y="22" width="100" height="100"/>
@@ -319,7 +319,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BmT-TC-pub" userLabel="Minutes container">
-                                                <rect key="frame" x="14" y="141" width="100" height="143"/>
+                                                <rect key="frame" x="22" y="141" width="100" height="143"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1yb-l9-0hu">
                                                         <rect key="frame" x="0.0" y="22" width="100" height="100"/>
@@ -357,7 +357,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kPN-mc-tbE" userLabel="seconds container">
-                                                <rect key="frame" x="14" y="284" width="100" height="143"/>
+                                                <rect key="frame" x="22" y="284" width="100" height="143"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pVV-ts-bgm">
                                                         <rect key="frame" x="0.0" y="22" width="100" height="100"/>
@@ -414,14 +414,14 @@
                                     <constraint firstItem="DIQ-0V-coq" firstAttribute="top" secondItem="6iG-V7-3h9" secondAttribute="top" id="9bd-wP-5FL"/>
                                     <constraint firstAttribute="trailing" secondItem="DIQ-0V-coq" secondAttribute="trailing" id="9dR-Qz-RD6"/>
                                     <constraint firstItem="Kjw-Yo-rNo" firstAttribute="leading" secondItem="6iG-V7-3h9" secondAttribute="leading" constant="32" id="N2n-FK-EDI"/>
-                                    <constraint firstItem="DIQ-0V-coq" firstAttribute="width" secondItem="6iG-V7-3h9" secondAttribute="width" multiplier="0.4" id="TLs-y9-ccb"/>
+                                    <constraint firstItem="DIQ-0V-coq" firstAttribute="width" secondItem="6iG-V7-3h9" secondAttribute="width" multiplier="0.45" id="TLs-y9-ccb"/>
                                     <constraint firstItem="Kjw-Yo-rNo" firstAttribute="height" secondItem="6iG-V7-3h9" secondAttribute="height" id="Xl1-v6-NGw"/>
-                                    <constraint firstItem="Kjw-Yo-rNo" firstAttribute="width" secondItem="6iG-V7-3h9" secondAttribute="width" multiplier="0.6" constant="-32" id="bv3-ma-PJV"/>
+                                    <constraint firstItem="Kjw-Yo-rNo" firstAttribute="width" secondItem="6iG-V7-3h9" secondAttribute="width" multiplier="0.55" constant="-32" id="bv3-ma-PJV"/>
                                     <constraint firstItem="Kjw-Yo-rNo" firstAttribute="top" secondItem="6iG-V7-3h9" secondAttribute="top" id="i39-jm-tYG"/>
                                     <constraint firstItem="DIQ-0V-coq" firstAttribute="height" secondItem="6iG-V7-3h9" secondAttribute="height" id="kaN-II-aev"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sbf-Ht-aDG" userLabel="update date container">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sbf-Ht-aDG" userLabel="Update date container">
                                 <rect key="frame" x="0.0" y="368" width="320" height="200"/>
                                 <subviews>
                                     <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="uXt-Mh-gtL">
