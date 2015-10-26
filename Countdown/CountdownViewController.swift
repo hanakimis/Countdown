@@ -38,7 +38,7 @@ class CountdownViewController: UIViewController {
         super.viewDidLoad()
         
         // setup the date style
-        formatter.dateStyle = .ShortStyle
+        formatter.dateStyle = .MediumStyle
 
         
         // setup the datepicker
@@ -126,7 +126,7 @@ class CountdownViewController: UIViewController {
             self.datePicker.alpha = 0
             
             self.toggleDateChanger.contentHorizontalAlignment = .Left
-            self.toggleDateChanger.contentEdgeInsets = UIEdgeInsetsMake(0.0, 10.0, 0.0, 0.0)
+            self.toggleDateChanger.contentEdgeInsets = UIEdgeInsetsMake(0.0, 32.0, 16.0, 0.0)
             self.toggleDateChanger.setTitle(self.formatter.stringFromDate(self.datePicker.date), forState: .Normal)
             self.toggleDateChangerSmallWidthConstraint.priority = 250
             self.toggleDateChangerFullWidthConstraint.priority = 750
