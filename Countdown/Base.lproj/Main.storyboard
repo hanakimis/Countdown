@@ -456,8 +456,9 @@
                                             <constraint firstAttribute="width" priority="250" constant="40" id="LN2-Rf-jv8"/>
                                             <constraint firstAttribute="height" constant="40" id="jWE-2F-ZNC"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <state key="normal" title="Countdown date">
-                                            <color key="titleColor" red="0.47843137254901957" green="0.5490196078431373" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="toggleDateChangerClicked:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="eOd-hb-ULY"/>
@@ -486,12 +487,15 @@
                             <constraint firstItem="6iG-V7-3h9" firstAttribute="height" secondItem="kh9-bI-dsS" secondAttribute="height" multiplier="0.75" constant="1" id="70j-fw-ROZ"/>
                             <constraint firstItem="6iG-V7-3h9" firstAttribute="width" secondItem="kh9-bI-dsS" secondAttribute="width" id="CHb-eO-7u1"/>
                             <constraint firstItem="sbf-Ht-aDG" firstAttribute="width" secondItem="kh9-bI-dsS" secondAttribute="width" id="OWa-Uc-sG9"/>
-                            <constraint firstItem="6iG-V7-3h9" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="T4a-jS-gYT"/>
+                            <constraint firstItem="6iG-V7-3h9" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" priority="750" id="T4a-jS-gYT"/>
                             <constraint firstItem="6iG-V7-3h9" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="Z80-i5-HxI"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="sbf-Ht-aDG" secondAttribute="bottom" id="dGF-tl-gFj"/>
+                            <constraint firstItem="6iG-V7-3h9" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" priority="250" id="sAk-e5-2yv"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="countdownContainerVerticalCenterConstraint" destination="T4a-jS-gYT" id="bMZ-M1-AV0"/>
+                        <outlet property="countdownContainerVerticalTopConstraint" destination="sAk-e5-2yv" id="nTE-SM-IGe"/>
                         <outlet property="datePicker" destination="uXt-Mh-gtL" id="O9e-vX-ydT"/>
                         <outlet property="daysLeftlabel" destination="kRx-UY-CNC" id="mHJ-zU-csF"/>
                         <outlet property="hoursImageView" destination="Dmt-nD-c0S" id="pPI-GN-B1t"/>

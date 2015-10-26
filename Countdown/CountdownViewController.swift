@@ -25,7 +25,8 @@ class CountdownViewController: UIViewController {
     @IBOutlet weak var toggleDateChangerSmallWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var toggleDateChangerFullWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var updateDateBottomLayoutConstraint: NSLayoutConstraint!
-    
+    @IBOutlet weak var countdownContainerVerticalCenterConstraint: NSLayoutConstraint!
+    @IBOutlet weak var countdownContainerVerticalTopConstraint: NSLayoutConstraint!
     
     let formatter = NSDateFormatter()
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -108,6 +109,9 @@ class CountdownViewController: UIViewController {
             self.toggleDateChangerSmallWidthConstraint.priority = 750
             self.toggleDateChangerFullWidthConstraint.priority = 250
             self.updateDateBottomLayoutConstraint.constant = 0
+            self.countdownContainerVerticalCenterConstraint.priority = 250
+            self.countdownContainerVerticalTopConstraint.priority = 750
+            
             self.view.layoutIfNeeded()
 
             // animate the countdown date label
@@ -131,6 +135,8 @@ class CountdownViewController: UIViewController {
             self.toggleDateChangerSmallWidthConstraint.priority = 250
             self.toggleDateChangerFullWidthConstraint.priority = 750
             self.updateDateBottomLayoutConstraint.constant = -160
+            self.countdownContainerVerticalCenterConstraint.priority = 750
+            self.countdownContainerVerticalTopConstraint.priority = 250
             
             self.view.layoutIfNeeded()
             
