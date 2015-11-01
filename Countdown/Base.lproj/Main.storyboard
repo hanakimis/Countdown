@@ -23,9 +23,12 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kjw-Yo-rNo" userLabel="days left container">
                                         <rect key="frame" x="32" y="0.0" width="144" height="427"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Days" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kRx-UY-CNC">
-                                                <rect key="frame" x="0.0" y="34" width="134" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="X Days Left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kRx-UY-CNC">
+                                                <rect key="frame" x="0.0" y="34" width="144" height="21"/>
                                                 <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="21" id="xm6-CS-OUk"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -272,9 +275,12 @@
                                         <animations/>
                                         <constraints>
                                             <constraint firstItem="fHh-hy-TJ1" firstAttribute="width" secondItem="Kjw-Yo-rNo" secondAttribute="width" id="8k7-aC-zyt"/>
+                                            <constraint firstItem="kRx-UY-CNC" firstAttribute="leading" secondItem="Kjw-Yo-rNo" secondAttribute="leading" id="P6P-ke-OYK"/>
                                             <constraint firstItem="fHh-hy-TJ1" firstAttribute="top" secondItem="Kjw-Yo-rNo" secondAttribute="top" constant="16" id="VQp-Sv-fT2"/>
+                                            <constraint firstItem="kRx-UY-CNC" firstAttribute="top" secondItem="Kjw-Yo-rNo" secondAttribute="top" constant="34" id="gXZ-JZ-Gbs"/>
                                             <constraint firstItem="fHh-hy-TJ1" firstAttribute="leading" secondItem="Kjw-Yo-rNo" secondAttribute="leading" id="jQt-dr-0tZ"/>
                                             <constraint firstAttribute="bottom" secondItem="fHh-hy-TJ1" secondAttribute="bottom" id="jwN-nI-TyG"/>
+                                            <constraint firstItem="kRx-UY-CNC" firstAttribute="width" secondItem="Kjw-Yo-rNo" secondAttribute="width" id="ukf-6V-Qb5"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DIQ-0V-coq" userLabel="Time container">
