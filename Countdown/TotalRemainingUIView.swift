@@ -11,10 +11,17 @@ import UIKit
 @IBDesignable
 class TotalRemainingUIView: UIView {
 
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = UIColor.clearColor()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func drawRect(rect: CGRect) {
-        let dayFillRect = CGRectMake(165, 236, 45, 45)
+        let dayFillRect = CGRectMake(0, 0, frame.size.height/2, frame.size.width/2)
         
         let dayFillPath = UIBezierPath()
         let sliceBlue = UIColor(red: 0.129, green: 0.549, blue: 0.765, alpha: 1.000)

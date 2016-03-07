@@ -9,6 +9,5 @@ DONE
 - started Design v2 on another viewController so that I would still have the original design on the first view controller
 TODO
 - Make the drawing animate (I think I can follow this: http://stackoverflow.com/questions/26578023/animate-drawing-of-a-circle)
-- Make the drawing a percentage / based on size of canvas / autolayout
 
 ------------
