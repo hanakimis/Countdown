@@ -15,6 +15,7 @@
 		809C66FC1AAD862700B79D17 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 809C66FA1AAD862700B79D17 /* LaunchScreen.xib */; };
 		809C67081AAD862700B79D17 /* CountdownTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C67071AAD862700B79D17 /* CountdownTests.swift */; };
 		809C67121AAD87CA00B79D17 /* CountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C67111AAD87CA00B79D17 /* CountdownViewController.swift */; };
+		80A9FE5E1C8D6D13002830B5 /* TotalRemainingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A9FE5D1C8D6D13002830B5 /* TotalRemainingUIView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		809C67061AAD862700B79D17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		809C67071AAD862700B79D17 /* CountdownTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownTests.swift; sourceTree = "<group>"; };
 		809C67111AAD87CA00B79D17 /* CountdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountdownViewController.swift; sourceTree = "<group>"; };
+		80A9FE5D1C8D6D13002830B5 /* TotalRemainingUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TotalRemainingUIView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 				809C66F11AAD862700B79D17 /* AppDelegate.swift */,
 				809C66F31AAD862700B79D17 /* ViewController.swift */,
 				809C66F51AAD862700B79D17 /* Main.storyboard */,
+				80A9FE5D1C8D6D13002830B5 /* TotalRemainingUIView.swift */,
 				809C67111AAD87CA00B79D17 /* CountdownViewController.swift */,
 				80330A1A1C14F39C00B8A3F4 /* Timer.swift */,
 				809C66FA1AAD862700B79D17 /* LaunchScreen.xib */,
@@ -223,6 +226,7 @@
 			files = (
 				809C67121AAD87CA00B79D17 /* CountdownViewController.swift in Sources */,
 				809C66F41AAD862700B79D17 /* ViewController.swift in Sources */,
+				80A9FE5E1C8D6D13002830B5 /* TotalRemainingUIView.swift in Sources */,
 				809C66F21AAD862700B79D17 /* AppDelegate.swift in Sources */,
 				80330A1B1C14F39C00B8A3F4 /* Timer.swift in Sources */,
 			);
