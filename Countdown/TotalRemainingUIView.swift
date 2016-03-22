@@ -13,20 +13,22 @@ class TotalRemainingUIView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.redColor()
     }
 
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     override func drawRect(rect: CGRect) {
-        let dayFillRect = CGRectMake(0, 0, frame.size.height/2, frame.size.width/2)
+        let sliceBlue = UIColor(red: 0.129, green: 0.549, blue: 0.765, alpha: 1.000)
+
+        let dayFillRect = CGRectMake(0, 0, frame.size.height, frame.size.width)
+        
+        let angle:CGFloat = 390.0
         
         let dayFillPath = UIBezierPath()
-        let sliceBlue = UIColor(red: 0.129, green: 0.549, blue: 0.765, alpha: 1.000)
-        
-        dayFillPath.addArcWithCenter(CGPointMake(dayFillRect.midX, dayFillRect.midY), radius: dayFillRect.width / 2, startAngle: -90 * CGFloat(M_PI)/180, endAngle: -27 * CGFloat(M_PI)/180, clockwise: true)
+        dayFillPath.addArcWithCenter(CGPointMake(dayFillRect.midX, dayFillRect.midY), radius: dayFillRect.width / 2, startAngle: -90 * CGFloat(M_PI)/180, endAngle: -angle * CGFloat(M_PI)/180, clockwise: true)
         dayFillPath.addLineToPoint(CGPointMake(dayFillRect.midX, dayFillRect.midY))
         dayFillPath.closePath()
         
