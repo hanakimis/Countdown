@@ -18,10 +18,6 @@ class CountdownViewController: UIViewController {
     @IBOutlet weak var secondsLeftLabel: UILabel!
     @IBOutlet weak var toggleDateChanger: UIButton!
     
-    @IBOutlet weak var hoursImageView: UIImageView!
-    @IBOutlet weak var minutesImageView: UIImageView!
-    @IBOutlet weak var secondsImageView: UIImageView!
-    
     @IBOutlet weak var toggleDateChangerSmallWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var toggleDateChangerFullWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var updateDateBottomLayoutConstraint: NSLayoutConstraint!
@@ -42,6 +38,12 @@ class CountdownViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
+        print("countdown height = \(view.frame.size.height)")
+        print("countdown frame width = \(view.frame.size.width)")
+        
         
         // setup the date style
         formatter.dateStyle = .MediumStyle
@@ -67,11 +69,8 @@ class CountdownViewController: UIViewController {
         // use a timer to update the times
         NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateDifferenceLabels"), userInfo: nil, repeats: true)
 
-        let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day], fromDate: today,
-            toDate: countdownDate, options: [])
-        hoursImageView.image = UIImage(named: "hour\(components.hour)")
-        minutesImageView.image = UIImage(named: "minorsec\(components.minute)")
-        secondsImageView.image = UIImage(named: "minorsec\(components.second)")
+//        let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day], fromDate: today,
+//            toDate: countdownDate, options: [])
         
         closeDatePicker()
     }
@@ -161,10 +160,6 @@ class CountdownViewController: UIViewController {
         hoursLeftLabel.text   = "\(components.hour)"
         minutesLeftLabel.text = "\(components.minute)"
         secondsLeftLabel.text = "\(components.second)"
-        
-        hoursImageView.image = UIImage(named: "hour\(components.hour)")
-        minutesImageView.image = UIImage(named: "minorsec\(components.minute)")
-        secondsImageView.image = UIImage(named: "minorsec\(components.second)")
         
     }
     
