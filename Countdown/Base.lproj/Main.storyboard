@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="R2D-iM-QeM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="R2D-iM-QeM">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -35,6 +34,14 @@
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fHh-hy-TJ1" userLabel="days left lines">
                                                 <rect key="frame" x="0.0" y="16" width="144" height="411"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Re-a9-0ET">
+                                                        <rect key="frame" x="26" y="224" width="42" height="21"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
                                             </view>
                                         </subviews>
                                         <constraints>
@@ -75,31 +82,6 @@
                                                     <constraint firstItem="GF0-jI-lTn" firstAttribute="width" secondItem="jiM-7n-Cy5" secondAttribute="width" id="RVA-Oe-WXG"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BmT-TC-pub" userLabel="Minutes container">
-                                                <rect key="frame" x="22" y="141" width="100" height="143"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Minutes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diC-Wg-0ex">
-                                                        <rect key="frame" x="0.0" y="56" width="100" height="21"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="min" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VR1-mY-0ko">
-                                                        <rect key="frame" x="41" y="74" width="18" height="12"/>
-                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="10"/>
-                                                        <color key="textColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="100" id="40D-wC-B4x"/>
-                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="top" secondItem="VR1-mY-0ko" secondAttribute="bottom" constant="-30" id="L2k-n6-RYf"/>
-                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="width" secondItem="BmT-TC-pub" secondAttribute="width" id="eM9-hX-RwB"/>
-                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="centerX" secondItem="BmT-TC-pub" secondAttribute="centerX" id="gxF-aR-bmP"/>
-                                                    <constraint firstItem="VR1-mY-0ko" firstAttribute="centerX" secondItem="BmT-TC-pub" secondAttribute="centerX" id="lty-Dy-qRo"/>
-                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="centerY" secondItem="BmT-TC-pub" secondAttribute="centerY" constant="-5" id="t4y-Ev-tU2"/>
-                                                </constraints>
-                                            </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kPN-mc-tbE" userLabel="seconds container">
                                                 <rect key="frame" x="22" y="284" width="100" height="143"/>
                                                 <subviews>
@@ -123,6 +105,31 @@
                                                     <constraint firstItem="uJE-zm-07f" firstAttribute="centerX" secondItem="kPN-mc-tbE" secondAttribute="centerX" id="mCa-5N-DYT"/>
                                                     <constraint firstItem="lDN-0p-Sy1" firstAttribute="centerX" secondItem="kPN-mc-tbE" secondAttribute="centerX" id="oPl-gn-yUx"/>
                                                     <constraint firstItem="lDN-0p-Sy1" firstAttribute="centerY" secondItem="kPN-mc-tbE" secondAttribute="centerY" constant="-5" id="zZ7-aZ-2bx"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BmT-TC-pub" userLabel="Minutes container">
+                                                <rect key="frame" x="22" y="142" width="100" height="143"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Minutes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diC-Wg-0ex">
+                                                        <rect key="frame" x="0.0" y="56" width="100" height="21"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="min" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VR1-mY-0ko">
+                                                        <rect key="frame" x="41" y="74" width="18" height="12"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="10"/>
+                                                        <color key="textColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="100" id="40D-wC-B4x"/>
+                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="top" secondItem="VR1-mY-0ko" secondAttribute="bottom" constant="-30" id="L2k-n6-RYf"/>
+                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="width" secondItem="BmT-TC-pub" secondAttribute="width" id="eM9-hX-RwB"/>
+                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="centerX" secondItem="BmT-TC-pub" secondAttribute="centerX" id="gxF-aR-bmP"/>
+                                                    <constraint firstItem="VR1-mY-0ko" firstAttribute="centerX" secondItem="BmT-TC-pub" secondAttribute="centerX" id="lty-Dy-qRo"/>
+                                                    <constraint firstItem="diC-Wg-0ex" firstAttribute="centerY" secondItem="BmT-TC-pub" secondAttribute="centerY" constant="-5" id="t4y-Ev-tU2"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -233,12 +240,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="274" y="404"/>
+            <point key="canvasLocation" x="183" y="404"/>
         </scene>
-        <!--View Controller-->
+        <!--Home View Controller-->
         <scene sceneID="2Vk-em-sMg">
             <objects>
-                <viewController id="R2D-iM-QeM" sceneMemberID="viewController">
+                <viewController id="R2D-iM-QeM" customClass="HomeViewController" customModule="Countdown" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ahe-Uu-rVY"/>
                         <viewControllerLayoutGuide type="bottom" id="HOi-W0-aXg"/>
@@ -247,23 +254,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7NA-KK-zJi" customClass="TotalRemainingUIView" customModule="Countdown" customModuleProvider="target">
+                            <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7NA-KK-zJi" customClass="TotalRemainingUIView" customModule="Countdown" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" red="0.90913476770000001" green="0.27424009069999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="jh2-Da-UTZ" appends="YES" id="6D6-vK-EAI"/>
                                 </connections>
                             </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F9h-7P-ori" userLabel="Hours Remaining" customClass="HoursRemainingUIView" customModule="Countdown" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.24524334349999999" green="1" blue="0.16937954350000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.14901960780000001" green="0.16862745100000001" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="7NA-KK-zJi" firstAttribute="leading" secondItem="hlO-qJ-Ygp" secondAttribute="leadingMargin" id="THQ-67-7Is"/>
-                            <constraint firstItem="7NA-KK-zJi" firstAttribute="top" secondItem="Ahe-Uu-rVY" secondAttribute="bottom" id="iz5-S7-ki4"/>
-                            <constraint firstItem="7NA-KK-zJi" firstAttribute="width" secondItem="hlO-qJ-Ygp" secondAttribute="width" id="mHp-nY-4K5"/>
-                            <constraint firstItem="7NA-KK-zJi" firstAttribute="height" secondItem="hlO-qJ-Ygp" secondAttribute="height" id="tLw-ii-ncO"/>
+                            <constraint firstItem="7NA-KK-zJi" firstAttribute="top" secondItem="hlO-qJ-Ygp" secondAttribute="top" id="18d-7h-aql"/>
+                            <constraint firstItem="7NA-KK-zJi" firstAttribute="leading" secondItem="hlO-qJ-Ygp" secondAttribute="leading" id="9KG-aN-GwS"/>
+                            <constraint firstItem="7NA-KK-zJi" firstAttribute="width" secondItem="hlO-qJ-Ygp" secondAttribute="width" id="Nmy-1i-wB4"/>
+                            <constraint firstItem="7NA-KK-zJi" firstAttribute="height" secondItem="hlO-qJ-Ygp" secondAttribute="height" id="gRT-ZZ-KRU"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="totalProgressView" destination="7NA-KK-zJi" id="uew-GA-s1J"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hnj-JM-gwu" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="jh2-Da-UTZ">
