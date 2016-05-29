@@ -286,6 +286,31 @@
                                     <constraint firstAttribute="height" constant="284" id="z1I-lk-67z"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zpI-uA-VwU" userLabel="Label Container">
+                                <rect key="frame" x="110" y="244" width="100" height="60"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ewZ-OA-cbP" userLabel="00">
+                                        <rect key="frame" x="21" y="0.0" width="59" height="28"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="32"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3IJ-pg-cIr" userLabel="Days">
+                                        <rect key="frame" x="29" y="58" width="43" height="22"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="24"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="ewZ-OA-cbP" firstAttribute="centerX" secondItem="zpI-uA-VwU" secondAttribute="centerX" id="7Vm-we-16c"/>
+                                    <constraint firstAttribute="height" constant="60" id="8Gc-kJ-FBS"/>
+                                    <constraint firstItem="3IJ-pg-cIr" firstAttribute="centerX" secondItem="zpI-uA-VwU" secondAttribute="centerX" id="JIh-Nb-ATw"/>
+                                    <constraint firstAttribute="bottom" secondItem="3IJ-pg-cIr" secondAttribute="bottom" id="ZEw-Us-YcL"/>
+                                    <constraint firstItem="ewZ-OA-cbP" firstAttribute="top" secondItem="zpI-uA-VwU" secondAttribute="top" id="uWH-et-hhU"/>
+                                    <constraint firstAttribute="width" constant="100" id="zOw-G5-dap"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.14901960780000001" green="0.16862745100000001" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -294,13 +319,17 @@
                             <constraint firstItem="RfU-e3-z3r" firstAttribute="centerX" secondItem="hlO-qJ-Ygp" secondAttribute="centerX" id="9W5-Il-AmW"/>
                             <constraint firstItem="231-nJ-Z2T" firstAttribute="centerX" secondItem="hlO-qJ-Ygp" secondAttribute="centerX" id="STr-Jz-EIe"/>
                             <constraint firstItem="7NA-KK-zJi" firstAttribute="centerY" secondItem="hlO-qJ-Ygp" secondAttribute="centerY" id="Zod-nM-hkG"/>
+                            <constraint firstItem="zpI-uA-VwU" firstAttribute="centerX" secondItem="hlO-qJ-Ygp" secondAttribute="centerX" id="aaD-yR-NUP"/>
+                            <constraint firstItem="zpI-uA-VwU" firstAttribute="centerY" secondItem="hlO-qJ-Ygp" secondAttribute="centerY" id="oNQ-nw-z58"/>
                             <constraint firstItem="7NA-KK-zJi" firstAttribute="centerX" secondItem="hlO-qJ-Ygp" secondAttribute="centerX" id="wbh-2k-ooQ"/>
                             <constraint firstItem="231-nJ-Z2T" firstAttribute="centerY" secondItem="hlO-qJ-Ygp" secondAttribute="centerY" id="x4e-aL-qB0"/>
                             <constraint firstItem="F9h-7P-ori" firstAttribute="centerY" secondItem="hlO-qJ-Ygp" secondAttribute="centerY" id="xYW-9S-XgF"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="numberLeftLabel" destination="ewZ-OA-cbP" id="KXx-Yd-m4Q"/>
                         <outlet property="totalProgressView" destination="7NA-KK-zJi" id="uew-GA-s1J"/>
+                        <outlet property="unitsLeftLabel" destination="3IJ-pg-cIr" id="1dd-UH-Cau"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hnj-JM-gwu" userLabel="First Responder" sceneMemberID="firstResponder"/>

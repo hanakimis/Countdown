@@ -13,16 +13,24 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var totalProgressView: TotalRemainingUIView!
     
+    @IBOutlet weak var numberLeftLabel: UILabel!
+    @IBOutlet weak var unitsLeftLabel: UILabel!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        updateLabel()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func updateLabel() {
+        numberLeftLabel.text = "45"
+        unitsLeftLabel.text = "days left"
     }
     
 

@@ -24,7 +24,7 @@ class HoursRemainingUIView: UIView {
     
     
     override func drawRect(rect: CGRect) {
-        let intervalWidth:CGFloat = 1.5
+        let intervalWidth:CGFloat = 1.0
         let intervalHeight:CGFloat = 24.0
         let diameter:CGFloat = 156.0
         let numberOfIntervals:CGFloat = 24.0

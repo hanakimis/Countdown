@@ -22,8 +22,8 @@ class MinutesRemainingUIVIew: UIView {
     
     
     override func drawRect(rect: CGRect) {
-        let intervalWidth:CGFloat = 1.0
-        let intervalHeight:CGFloat = 24.0
+        let intervalWidth:CGFloat = 0.8
+        let intervalHeight:CGFloat = 18.0
         let diameter:CGFloat = 216.0
         let numberOfIntervals:CGFloat = 60.0
         let intervalGap = ((diameter * CGFloat(M_PI)) / numberOfIntervals) - intervalWidth
