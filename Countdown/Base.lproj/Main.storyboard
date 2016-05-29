@@ -254,23 +254,40 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7NA-KK-zJi" customClass="TotalRemainingUIView" customModule="Countdown" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7NA-KK-zJi" customClass="TotalRemainingUIView" customModule="Countdown" customModuleProvider="target">
+                                <rect key="frame" x="100" y="224" width="120" height="120"/>
                                 <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="1Rc-y4-0xn"/>
+                                    <constraint firstAttribute="width" constant="120" id="jH1-9M-SlK"/>
+                                </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="jh2-Da-UTZ" appends="YES" id="6D6-vK-EAI"/>
                                 </connections>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F9h-7P-ori" userLabel="Hours Remaining" customClass="HoursRemainingUIView" customModule="Countdown" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F9h-7P-ori" userLabel="Hours Remaining" customClass="HoursRemainingUIView" customModule="Countdown" customModuleProvider="target">
+                                <rect key="frame" x="70" y="194" width="180" height="180"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="180" id="8Do-EF-rcB"/>
+                                    <constraint firstAttribute="height" constant="180" id="8V4-mP-5hV"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RfU-e3-z3r" userLabel="Minutes Remaining" customClass="MinutesRemainingUIVIew" customModule="Countdown" customModuleProvider="target">
+                                <rect key="frame" x="40" y="164" width="240" height="240"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="ORP-mA-paJ"/>
+                                    <constraint firstAttribute="height" constant="240" id="dUF-bs-YcE"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.14901960780000001" green="0.16862745100000001" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="7NA-KK-zJi" firstAttribute="top" secondItem="hlO-qJ-Ygp" secondAttribute="top" id="18d-7h-aql"/>
-                            <constraint firstItem="7NA-KK-zJi" firstAttribute="leading" secondItem="hlO-qJ-Ygp" secondAttribute="leading" id="9KG-aN-GwS"/>
-                            <constraint firstItem="7NA-KK-zJi" firstAttribute="width" secondItem="hlO-qJ-Ygp" secondAttribute="width" id="Nmy-1i-wB4"/>
-                            <constraint firstItem="7NA-KK-zJi" firstAttribute="height" secondItem="hlO-qJ-Ygp" secondAttribute="height" id="gRT-ZZ-KRU"/>
+                            <constraint firstItem="RfU-e3-z3r" firstAttribute="centerY" secondItem="hlO-qJ-Ygp" secondAttribute="centerY" id="1bC-dt-xYR"/>
+                            <constraint firstItem="F9h-7P-ori" firstAttribute="centerX" secondItem="hlO-qJ-Ygp" secondAttribute="centerX" id="1nI-8a-PMT"/>
+                            <constraint firstItem="RfU-e3-z3r" firstAttribute="centerX" secondItem="hlO-qJ-Ygp" secondAttribute="centerX" id="9W5-Il-AmW"/>
+                            <constraint firstItem="7NA-KK-zJi" firstAttribute="centerY" secondItem="hlO-qJ-Ygp" secondAttribute="centerY" id="Zod-nM-hkG"/>
+                            <constraint firstItem="7NA-KK-zJi" firstAttribute="centerX" secondItem="hlO-qJ-Ygp" secondAttribute="centerX" id="wbh-2k-ooQ"/>
+                            <constraint firstItem="F9h-7P-ori" firstAttribute="centerY" secondItem="hlO-qJ-Ygp" secondAttribute="centerY" id="xYW-9S-XgF"/>
                         </constraints>
                     </view>
                     <connections>

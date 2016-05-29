@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		801DC56F1CFB36DE00B64FFA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801DC56E1CFB36DE00B64FFA /* HomeViewController.swift */; };
 		801DC5731CFB3C7600B64FFA /* HoursRemainingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801DC5721CFB3C7600B64FFA /* HoursRemainingUIView.swift */; };
+		80279A0C1CFB630300F044DF /* MinutesRemainingUIVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80279A0B1CFB630300F044DF /* MinutesRemainingUIVIew.swift */; };
 		80330A1B1C14F39C00B8A3F4 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80330A1A1C14F39C00B8A3F4 /* Timer.swift */; };
 		8055AC911BCBA56F00FDC2A5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8055AC901BCBA56F00FDC2A5 /* Images.xcassets */; };
 		809C66F21AAD862700B79D17 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C66F11AAD862700B79D17 /* AppDelegate.swift */; };
@@ -33,6 +34,7 @@
 /* Begin PBXFileReference section */
 		801DC56E1CFB36DE00B64FFA /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		801DC5721CFB3C7600B64FFA /* HoursRemainingUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HoursRemainingUIView.swift; sourceTree = "<group>"; };
+		80279A0B1CFB630300F044DF /* MinutesRemainingUIVIew.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinutesRemainingUIVIew.swift; sourceTree = "<group>"; };
 		80330A1A1C14F39C00B8A3F4 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		8055AC901BCBA56F00FDC2A5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		809C66EC1AAD862700B79D17 /* Countdown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Countdown.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,6 +93,7 @@
 				809C66F31AAD862700B79D17 /* ViewController.swift */,
 				809C66F51AAD862700B79D17 /* Main.storyboard */,
 				801DC56E1CFB36DE00B64FFA /* HomeViewController.swift */,
+				80279A0B1CFB630300F044DF /* MinutesRemainingUIVIew.swift */,
 				801DC5721CFB3C7600B64FFA /* HoursRemainingUIView.swift */,
 				80A9FE5D1C8D6D13002830B5 /* TotalRemainingUIView.swift */,
 				809C67111AAD87CA00B79D17 /* CountdownViewController.swift */,
@@ -237,6 +240,7 @@
 				809C66F21AAD862700B79D17 /* AppDelegate.swift in Sources */,
 				80330A1B1C14F39C00B8A3F4 /* Timer.swift in Sources */,
 				801DC56F1CFB36DE00B64FFA /* HomeViewController.swift in Sources */,
+				80279A0C1CFB630300F044DF /* MinutesRemainingUIVIew.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
