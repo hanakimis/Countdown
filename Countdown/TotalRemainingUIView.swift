@@ -20,10 +20,10 @@ class TotalRemainingUIView: UIView {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         
         let containingBoxSide:CGFloat = 120.0
         
@@ -34,22 +34,22 @@ class TotalRemainingUIView: UIView {
         let context = UIGraphicsGetCurrentContext()
         
         //// Oval Drawing
-        CGContextSaveGState(context)
-        CGContextTranslateCTM(context, 0, containingBoxSide)
-        CGContextRotateCTM(context, -90 * CGFloat(M_PI) / 180)
+        context?.saveGState()
+        context?.translateBy(x: 0, y: containingBoxSide)
+        context?.rotate(by: -90 * CGFloat(M_PI) / 180)
         
-        let ovalRect = CGRectMake(0, 0, containingBoxSide, containingBoxSide)
+        let ovalRect = CGRect(x: 0, y: 0, width: containingBoxSide, height: containingBoxSide)
         let ovalPath = UIBezierPath()
-        ovalPath.addArcWithCenter(CGPointMake(ovalRect.midX, ovalRect.midY), radius: ovalRect.width / 2, startAngle: -360 * CGFloat(M_PI)/180, endAngle: 0 * CGFloat(M_PI)/180, clockwise: true)
-        ovalPath.addLineToPoint(CGPointMake(ovalRect.midX, ovalRect.midY))
-        ovalPath.closePath()
+        ovalPath.addArc(withCenter: CGPoint(x: ovalRect.midX, y: ovalRect.midY), radius: ovalRect.width / 2, startAngle: -360 * CGFloat(M_PI)/180, endAngle: 0 * CGFloat(M_PI)/180, clockwise: true)
+        ovalPath.addLine(to: CGPoint(x: ovalRect.midX, y: ovalRect.midY))
+        ovalPath.close()
         
         sliceBlue.setFill()
         ovalPath.fill()
         
         
         
-        CGContextRestoreGState(context)
+        context?.restoreGState()
 
         
         

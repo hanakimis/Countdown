@@ -16,12 +16,12 @@ class MinutesRemainingUIVIew: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
         
     }
     
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         let intervalWidth:CGFloat = 0.8
         let intervalHeight:CGFloat = 18.0
         let diameter:CGFloat = 216.0
@@ -35,20 +35,19 @@ class MinutesRemainingUIVIew: UIView {
         let context = UIGraphicsGetCurrentContext()
         
         //// Oval 2 Drawing
-        CGContextSaveGState(context)
-        CGContextTranslateCTM(context, boxOffset, diameter+boxOffset)
-        CGContextRotateCTM(context, -90 * CGFloat(M_PI) / 180)
+        context?.saveGState()
+        context?.translateBy(x: boxOffset, y: diameter+boxOffset)
+        context?.rotate(by: -90 * CGFloat(M_PI) / 180)
         
-        let oval2Path = UIBezierPath(ovalInRect: CGRectMake(0, 0, diameter, diameter))
+        let oval2Path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: diameter, height: diameter))
         sliceBlue.setStroke()
         oval2Path.lineWidth = intervalHeight
-        CGContextSaveGState(context)
+        context?.saveGState()
         
-        
-        CGContextSetLineDash(context, 0, [intervalWidth, intervalGap], 2)
+        context?.setLineDash(phase: 0, lengths: [intervalWidth, intervalGap])
         oval2Path.stroke()
         
-        CGContextRestoreGState(context)
+        context?.restoreGState()
         
         
     }

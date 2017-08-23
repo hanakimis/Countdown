@@ -24,10 +24,10 @@ class CountdownViewController: UIViewController {
     @IBOutlet weak var countdownContainerVerticalCenterConstraint: NSLayoutConstraint!
     @IBOutlet weak var countdownContainerVerticalTopConstraint: NSLayoutConstraint!
     
-    let formatter = NSDateFormatter()
-    let defaults = NSUserDefaults.standardUserDefaults()
-    var countdownDate: NSDate!
-    var today = NSDate()
+    let formatter = DateFormatter()
+    let defaults = UserDefaults.standard
+    var countdownDate: Date!
+    var today = Date()
     var datePickerContainerOpen = false
     
         
@@ -46,18 +46,18 @@ class CountdownViewController: UIViewController {
         
         
         // setup the date style
-        formatter.dateStyle = .MediumStyle
+        formatter.dateStyle = .medium
 
         
         // setup the datepicker
-        datePicker.datePickerMode = UIDatePickerMode.Date
+        datePicker.datePickerMode = UIDatePickerMode.date
         datePicker.minimumDate = today
         
         
         // update if a date has been stored
         // need to do a check to see if the date is before today
-        if let myDate = defaults.objectForKey("date") {
-            countdownDate = myDate as! NSDate
+        if let myDate = defaults.object(forKey: "date") {
+            countdownDate = myDate as! Date
             datePicker.date = countdownDate
         } else {
             countdownDate = datePicker.date
@@ -67,7 +67,7 @@ class CountdownViewController: UIViewController {
         updateDifferenceLabels()
 
         // use a timer to update the times
-        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateDifferenceLabels"), userInfo: nil, repeats: true)
+        Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(CountdownViewController.updateDifferenceLabels), userInfo: nil, repeats: true)
 
 //        let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day], fromDate: today,
 //            toDate: countdownDate, options: [])
@@ -76,7 +76,7 @@ class CountdownViewController: UIViewController {
     }
   
     
-    @IBAction func toggleDateChangerClicked(sender: AnyObject) {
+    @IBAction func toggleDateChangerClicked(_ sender: AnyObject) {
         if datePickerContainerOpen {
             closeDatePicker()
         } else {
@@ -85,9 +85,9 @@ class CountdownViewController: UIViewController {
     }
     
     
-    @IBAction func chooseNewDate(sender: AnyObject) {
+    @IBAction func chooseNewDate(_ sender: AnyObject) {
         countdownDate = datePicker.date
-        defaults.setObject(countdownDate, forKey: "date")
+        defaults.set(countdownDate, forKey: "date")
         updateDifferenceLabels()
         closeDatePicker()
         updateBadgeIcon()
@@ -95,21 +95,21 @@ class CountdownViewController: UIViewController {
     
     
     func updateBadgeIcon() {
-        today = NSDate()
+        today = Date()
         
-        let components = NSCalendar.currentCalendar().components([.Day], fromDate: today,
-            toDate: countdownDate, options: [])
+        let components = (Calendar.current as NSCalendar).components([.day], from: today,
+            to: countdownDate, options: [])
         let localNotification = UILocalNotification()
-        localNotification.applicationIconBadgeNumber = components.day
-        UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
+        localNotification.applicationIconBadgeNumber = components.day!
+        UIApplication.shared.scheduleLocalNotification(localNotification)
     }
     
     
     func openDatePicker() {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.toggleDateChanger.contentHorizontalAlignment = .Center
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+            self.toggleDateChanger.contentHorizontalAlignment = .center
             self.toggleDateChanger.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
-            self.toggleDateChanger.setTitle("X", forState: .Normal)
+            self.toggleDateChanger.setTitle("X", for: UIControlState())
             self.toggleDateChangerSmallWidthConstraint.priority = 750
             self.toggleDateChangerFullWidthConstraint.priority = 250
             self.updateDateBottomLayoutConstraint.constant = 0
@@ -122,20 +122,20 @@ class CountdownViewController: UIViewController {
             
             self.datePicker.alpha = 1
 
-            }) { (Bool) -> Void in
+            }, completion: { (Bool) -> Void in
                 self.datePickerContainerOpen = true
-        }
+        }) 
     }
     
     
     func closeDatePicker() {
         
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
             self.datePicker.alpha = 0
             
-            self.toggleDateChanger.contentHorizontalAlignment = .Left
+            self.toggleDateChanger.contentHorizontalAlignment = .left
             self.toggleDateChanger.contentEdgeInsets = UIEdgeInsetsMake(0.0, 32.0, 16.0, 0.0)
-            self.toggleDateChanger.setTitle(self.formatter.stringFromDate(self.datePicker.date), forState: .Normal)
+            self.toggleDateChanger.setTitle(self.formatter.string(from: self.datePicker.date), for: UIControlState())
             self.toggleDateChangerSmallWidthConstraint.priority = 250
             self.toggleDateChangerFullWidthConstraint.priority = 750
             self.updateDateBottomLayoutConstraint.constant = -160
@@ -144,17 +144,17 @@ class CountdownViewController: UIViewController {
             
             self.view.layoutIfNeeded()
             
-            }) { (Bool) -> Void in
+            }, completion: { (Bool) -> Void in
                 self.datePickerContainerOpen = false
-        }
+        }) 
     }
     
     
     func updateDifferenceLabels() {
-        today = NSDate()
+        today = Date()
         
-        let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day], fromDate: today,
-            toDate: countdownDate, options: [])
+        let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: today,
+            to: countdownDate, options: [])
 
         daysLeftlabel.text    = "\(components.day) days left"
         hoursLeftLabel.text   = "\(components.hour)"
