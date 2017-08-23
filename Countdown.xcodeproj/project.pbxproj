@@ -20,6 +20,9 @@
 		809C67081AAD862700B79D17 /* CountdownTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C67071AAD862700B79D17 /* CountdownTests.swift */; };
 		809C67121AAD87CA00B79D17 /* CountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C67111AAD87CA00B79D17 /* CountdownViewController.swift */; };
 		80A9FE5E1C8D6D13002830B5 /* TotalRemainingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A9FE5D1C8D6D13002830B5 /* TotalRemainingUIView.swift */; };
+		80C7CC9A1F4D509500F22B37 /* Ticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C7CC991F4D509500F22B37 /* Ticker.swift */; };
+		80C7CCA11F4D544000F22B37 /* UIBezierPath+Interpolation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C7CCA01F4D544000F22B37 /* UIBezierPath+Interpolation.m */; };
+		80C7CCA41F4D545700F22B37 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C7CCA31F4D545700F22B37 /* CGPointExtension.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +53,12 @@
 		809C67071AAD862700B79D17 /* CountdownTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownTests.swift; sourceTree = "<group>"; };
 		809C67111AAD87CA00B79D17 /* CountdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountdownViewController.swift; sourceTree = "<group>"; };
 		80A9FE5D1C8D6D13002830B5 /* TotalRemainingUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TotalRemainingUIView.swift; sourceTree = "<group>"; };
+		80C7CC991F4D509500F22B37 /* Ticker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ticker.swift; sourceTree = "<group>"; };
+		80C7CC9E1F4D544000F22B37 /* Countdown-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Countdown-Bridging-Header.h"; sourceTree = "<group>"; };
+		80C7CC9F1F4D544000F22B37 /* UIBezierPath+Interpolation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+Interpolation.h"; sourceTree = "<group>"; };
+		80C7CCA01F4D544000F22B37 /* UIBezierPath+Interpolation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Interpolation.m"; sourceTree = "<group>"; };
+		80C7CCA21F4D545700F22B37 /* CGPointExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPointExtension.h; sourceTree = "<group>"; };
+		80C7CCA31F4D545700F22B37 /* CGPointExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPointExtension.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,19 +100,16 @@
 		809C66EE1AAD862700B79D17 /* Countdown */ = {
 			isa = PBXGroup;
 			children = (
+				80C7CCA51F4D546200F22B37 /* Drawing */,
+				80C7CC9D1F4D53FC00F22B37 /* archive */,
+				80C7CC9B1F4D53CF00F22B37 /* UIViews */,
+				80C7CC9C1F4D53E300F22B37 /* View Controllers */,
 				809C66F11AAD862700B79D17 /* AppDelegate.swift */,
-				809C66F31AAD862700B79D17 /* ViewController.swift */,
 				809C66F51AAD862700B79D17 /* Main.storyboard */,
-				801DC56E1CFB36DE00B64FFA /* HomeViewController.swift */,
-				80279A0D1CFB6C3F00F044DF /* SecondsRemainingUIView.swift */,
-				80279A0B1CFB630300F044DF /* MinutesRemainingUIVIew.swift */,
-				801DC5721CFB3C7600B64FFA /* HoursRemainingUIView.swift */,
-				80A9FE5D1C8D6D13002830B5 /* TotalRemainingUIView.swift */,
-				809C67111AAD87CA00B79D17 /* CountdownViewController.swift */,
-				80330A1A1C14F39C00B8A3F4 /* Timer.swift */,
 				809C66FA1AAD862700B79D17 /* LaunchScreen.xib */,
 				8055AC901BCBA56F00FDC2A5 /* Images.xcassets */,
 				809C66EF1AAD862700B79D17 /* Supporting Files */,
+				80C7CC9E1F4D544000F22B37 /* Countdown-Bridging-Header.h */,
 			);
 			path = Countdown;
 			sourceTree = "<group>";
@@ -131,6 +137,47 @@
 				809C67061AAD862700B79D17 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		80C7CC9B1F4D53CF00F22B37 /* UIViews */ = {
+			isa = PBXGroup;
+			children = (
+				80C7CC991F4D509500F22B37 /* Ticker.swift */,
+			);
+			name = UIViews;
+			sourceTree = "<group>";
+		};
+		80C7CC9C1F4D53E300F22B37 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				809C66F31AAD862700B79D17 /* ViewController.swift */,
+				801DC56E1CFB36DE00B64FFA /* HomeViewController.swift */,
+				809C67111AAD87CA00B79D17 /* CountdownViewController.swift */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		80C7CC9D1F4D53FC00F22B37 /* archive */ = {
+			isa = PBXGroup;
+			children = (
+				80279A0D1CFB6C3F00F044DF /* SecondsRemainingUIView.swift */,
+				80279A0B1CFB630300F044DF /* MinutesRemainingUIVIew.swift */,
+				801DC5721CFB3C7600B64FFA /* HoursRemainingUIView.swift */,
+				80A9FE5D1C8D6D13002830B5 /* TotalRemainingUIView.swift */,
+				80330A1A1C14F39C00B8A3F4 /* Timer.swift */,
+			);
+			name = archive;
+			sourceTree = "<group>";
+		};
+		80C7CCA51F4D546200F22B37 /* Drawing */ = {
+			isa = PBXGroup;
+			children = (
+				80C7CC9F1F4D544000F22B37 /* UIBezierPath+Interpolation.h */,
+				80C7CCA21F4D545700F22B37 /* CGPointExtension.h */,
+				80C7CCA31F4D545700F22B37 /* CGPointExtension.m */,
+				80C7CCA01F4D544000F22B37 /* UIBezierPath+Interpolation.m */,
+			);
+			name = Drawing;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -243,8 +290,11 @@
 				80A9FE5E1C8D6D13002830B5 /* TotalRemainingUIView.swift in Sources */,
 				801DC5731CFB3C7600B64FFA /* HoursRemainingUIView.swift in Sources */,
 				809C66F21AAD862700B79D17 /* AppDelegate.swift in Sources */,
+				80C7CCA11F4D544000F22B37 /* UIBezierPath+Interpolation.m in Sources */,
+				80C7CCA41F4D545700F22B37 /* CGPointExtension.m in Sources */,
 				80330A1B1C14F39C00B8A3F4 /* Timer.swift in Sources */,
 				801DC56F1CFB36DE00B64FFA /* HomeViewController.swift in Sources */,
+				80C7CC9A1F4D509500F22B37 /* Ticker.swift in Sources */,
 				80279A0E1CFB6C3F00F044DF /* SecondsRemainingUIView.swift in Sources */,
 				80279A0C1CFB630300F044DF /* MinutesRemainingUIVIew.swift in Sources */,
 			);
@@ -377,11 +427,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Countdown/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "hana.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Countdown/Countdown-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -390,11 +443,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Countdown/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "hana.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Countdown/Countdown-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
