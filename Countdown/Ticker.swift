@@ -8,6 +8,21 @@
 
 import UIKit
 
+extension CGRect {
+    init(center: CGPoint, radius: CGFloat) {
+        let origin = CGPoint(x: center.x - radius, y: center.y - radius)
+        let size = CGSize(width: radius * 2, height: radius * 2)
+        self.init(origin: origin, size: size)
+    }
+    
+    init(center: CGPoint, width: CGFloat, height: CGFloat) {
+        let origin = CGPoint(x: center.x - width/2, y: center.y - height/2)
+        let size = CGSize(width: width, height: height)
+        self.init(origin: origin, size: size)
+    }
+}
+
+
 class Ticker: UIView {
 
     /*
@@ -19,7 +34,7 @@ class Ticker: UIView {
     */
 
     var numOfTics = 1 // how many tick marks to have
-    var ticKMarks = UIView()
+    var tickMarks = UIView() // should be an array
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,11 +46,50 @@ class Ticker: UIView {
         print(numOfTics)
         
         
-        ticKMarks.backgroundColor = UIColor.blue
-        ticKMarks.frame.size = CGSize(width: 20, height: 20)
-//        ticMarks.frame = UIView.init(frame: <#T##CGRect#>)
+        tickMarks.backgroundColor = UIColor.blue
+        tickMarks.frame.size = self.frame.size
         
-        self.addSubview(ticKMarks)
+        
+        
+        
+        tickMarks.transform = CGAffineTransform(rotationAngle: 0.5)
+
+       // tickMarks.layer.anchorPoint = self.center
+        
+        
+        
+        self.addSubview(tickMarks)
     }
+    
+    func radialPoint(_ degree: CGFloat) -> CGPoint {
+        // get the center of the current view
+        // move the view so that the origin is
+        
+        
+        
+        // this needs to be updated
+        return self.center
+    }
+    
+    
+//    func onTap(tapGestureRecognzier: UITapGestureRecognizer) {
+//        var location = tapGestureRecognzier.location(in: self)
+//        
+//        // Translate location so that (0, 0) is in the center of the radar chart
+//        location = CGPoint(x: location.x - frame.size.width / 2, y: frame.size.height / 2 - location.y)
+//        
+//        var angle = Double(atan(location.x / location.y)) * 180 / M_PI
+//        if location.y < 0 {
+//            angle = angle + 180
+//        } else if location.x < 0 {
+//            angle = angle + 360
+//        }
+//        
+//        let degreesPerIndex = 360.0 / Double(numOfTics)
+//        let index = Int(round(angle / degreesPerIndex)) % numOfTics
+//        
+//        print(index)
+//        
+//    }
     
 }
