@@ -33,32 +33,35 @@ class Ticker: UIView {
     }
     */
 
-    var numOfTics = 1 // how many tick marks to have
-    var tickMarks = UIView() // should be an array
+    var tickMarks = [TickMark]() // should be an array
+    var numOfTicks = 2 // how many tick marks to have
+
+    
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.backgroundColor = UIColor.red
-        print(numOfTics)
         
         
-        tickMarks.backgroundColor = UIColor.blue
-        tickMarks.frame.size = self.frame.size
+        let rotationStep = (Double.pi*2) / Double(numOfTicks)
         
+        // initalize array of tickmarks
+        for i in 0..<numOfTicks {
+            tickMarks.append(TickMark(frame:self.frame))
         
+            tickMarks[i].frame.size = self.frame.size
+            tickMarks[i].transform = CGAffineTransform(rotationAngle: CGFloat(rotationStep*Double(i)))
+            self.addSubview(tickMarks[i])
+        }
         
-        
-        tickMarks.transform = CGAffineTransform(rotationAngle: 0.5)
-
-       // tickMarks.layer.anchorPoint = self.center
-        
-        
-        
-        self.addSubview(tickMarks)
     }
     
     func radialPoint(_ degree: CGFloat) -> CGPoint {

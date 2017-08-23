@@ -23,6 +23,7 @@
 		80C7CC9A1F4D509500F22B37 /* Ticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C7CC991F4D509500F22B37 /* Ticker.swift */; };
 		80C7CCA11F4D544000F22B37 /* UIBezierPath+Interpolation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C7CCA01F4D544000F22B37 /* UIBezierPath+Interpolation.m */; };
 		80C7CCA41F4D545700F22B37 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C7CCA31F4D545700F22B37 /* CGPointExtension.m */; };
+		80C7CCA71F4D5FDA00F22B37 /* TickMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C7CCA61F4D5FDA00F22B37 /* TickMark.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		80C7CCA01F4D544000F22B37 /* UIBezierPath+Interpolation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+Interpolation.m"; sourceTree = "<group>"; };
 		80C7CCA21F4D545700F22B37 /* CGPointExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPointExtension.h; sourceTree = "<group>"; };
 		80C7CCA31F4D545700F22B37 /* CGPointExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPointExtension.m; sourceTree = "<group>"; };
+		80C7CCA61F4D5FDA00F22B37 /* TickMark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TickMark.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				80C7CC991F4D509500F22B37 /* Ticker.swift */,
+				80C7CCA61F4D5FDA00F22B37 /* TickMark.swift */,
 			);
 			name = UIViews;
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 				801DC56F1CFB36DE00B64FFA /* HomeViewController.swift in Sources */,
 				80C7CC9A1F4D509500F22B37 /* Ticker.swift in Sources */,
 				80279A0E1CFB6C3F00F044DF /* SecondsRemainingUIView.swift in Sources */,
+				80C7CCA71F4D5FDA00F22B37 /* TickMark.swift in Sources */,
 				80279A0C1CFB630300F044DF /* MinutesRemainingUIVIew.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
