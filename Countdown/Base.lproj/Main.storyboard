@@ -227,10 +227,10 @@
             </objects>
             <point key="canvasLocation" x="183" y="404"/>
         </scene>
-        <!--View Controller-->
+        <!--Concentric Circles View Controller-->
         <scene sceneID="0df-A9-DaY">
             <objects>
-                <viewController id="rve-gK-muZ" sceneMemberID="viewController">
+                <viewController id="rve-gK-muZ" customClass="ConcentricCirclesViewController" customModule="Countdown" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="OvF-E5-zCY"/>
                         <viewControllerLayoutGuide type="bottom" id="EbQ-vb-iLb"/>
@@ -253,7 +253,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJ3-fj-JHO" customClass="Ticker" customModule="Countdown" customModuleProvider="target">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJ3-fj-JHO">
                                 <frame key="frameInset" minX="33" minY="133" width="307" height="302"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.24524334349999999" green="1" blue="0.16937954350000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -261,6 +261,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="circlesContainerView" destination="wJ3-fj-JHO" id="90f-9d-PJ6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="La9-FN-cKy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
