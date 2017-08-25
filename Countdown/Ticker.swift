@@ -34,7 +34,7 @@ class Ticker: UIView {
     */
 
     var tickMarks = [TickMark]() // should be an array
-    var numOfTicks = 2 // how many tick marks to have
+    var numOfTicks = 24 // how many tick marks to have
 
     
     
@@ -52,12 +52,15 @@ class Ticker: UIView {
         
         
         let rotationStep = (Double.pi*2) / Double(numOfTicks)
-        
+        print("ticker origin is \(self.frame.origin.x), \(self.frame.origin.y)")
+
         // initalize array of tickmarks
         for i in 0..<numOfTicks {
-            tickMarks.append(TickMark(frame:self.frame))
-        
-            tickMarks[i].frame.size = self.frame.size
+            let f = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
+            
+            tickMarks.append(TickMark(frame:f))
+            print("tickmark \(i): origin is \(tickMarks[i].frame.origin.x), \(tickMarks[i].frame.origin.y)")
+            
             tickMarks[i].transform = CGAffineTransform(rotationAngle: CGFloat(rotationStep*Double(i)))
             self.addSubview(tickMarks[i])
         }

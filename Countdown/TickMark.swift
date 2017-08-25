@@ -29,10 +29,10 @@ class TickMark: UIView {
         
         self.backgroundColor = UIColor.clear
         containMark.backgroundColor = UIColor.black
-        containMark.frame.size = CGSize(width: 40, height: 40)
+        containMark.frame.size = CGSize(width: 4, height: 40)
         
         
-        let midpoint = frame.size.width / 2
+        let midpoint = (frame.size.width - containMark.frame.width) / 2
         
         
         containMark.frame.origin = CGPoint(x: midpoint, y: 0.0)
