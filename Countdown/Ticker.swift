@@ -44,11 +44,11 @@ class Ticker: UIView {
     }
     
     
-    init(ticks: Int, frame:CGRect) {
-        super.init(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
-        numOfTicks = ticks
+    init(numOfTicks: Int, frame:CGRect) {
+        super.init(frame: CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: frame.height))
+        self.numOfTicks = numOfTicks
         
-        let rotationStep = (Double.pi*2) / Double(numOfTicks)
+        let rotationStep = (Double.pi*2) / Double(self.numOfTicks)
         // initalize array of tickmarks
         let f = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
         

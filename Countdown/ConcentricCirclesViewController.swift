@@ -12,14 +12,34 @@ class ConcentricCirclesViewController: UIViewController {
 
     @IBOutlet weak var circlesContainerView: UIView!
     
+    @IBOutlet weak var topLabel: UILabel!
+    @IBOutlet weak var bottomLabel: UILabel!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        topLabel.text = "center x:  \(circlesContainerView.center.x)"
+        bottomLabel.text = "center y: \(circlesContainerView.center.y)"
 
+        let minutesSize = circlesContainerView.frame.width * 0.8
+        let hoursSize = circlesContainerView.frame.width * 0.6
+
+        
+        let minutesRect = CGRect(center: circlesContainerView.center, width: minutesSize, height: minutesSize)
+        let hoursRect = CGRect(center: circlesContainerView.center, width: hoursSize, height: hoursSize)
+
+        
+        
         // add tickers for seconds, mins, and hours here
-        let hours = Ticker(ticks: 24, frame: CGRect(x: 0, y: 0, width: circlesContainerView.frame.width, height: circlesContainerView.frame.height))
+        let hours = Ticker(numOfTicks: 24, frame: hoursRect)
+        let minutes = Ticker(numOfTicks: 60, frame: minutesRect)
+        let seconds = Ticker(numOfTicks: 60, frame: circlesContainerView.frame)
         
+        circlesContainerView.backgroundColor = UIColor.red
         
+        circlesContainerView.addSubview(seconds)
+        circlesContainerView.addSubview(minutes)
         circlesContainerView.addSubview(hours)
     }
 
