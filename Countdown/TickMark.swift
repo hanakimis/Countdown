@@ -31,21 +31,31 @@ class TickMark: UIView {
         containMark.backgroundColor = UIColor.black
         containMark.frame.size = CGSize(width: 2, height: 16)
         
+        markStatus.backgroundColor = UIColor.blue
+        markStatus.frame.size = CGSize(width: 2, height: 16)
+        
         
         let midpoint = (frame.size.width - containMark.frame.width) / 2
         
         
         containMark.frame.origin = CGPoint(x: midpoint, y: 0.0)
-        
+        markStatus.frame.origin = CGPoint(x: midpoint, y: 0.0)
+        markStatus.alpha = 0.0
         
         self.addSubview(containMark)
+        self.addSubview(markStatus)
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
-
-        
+    }
+    
+    func turnOn() {
+        markStatus.alpha = 1.0
+    }
+    
+    func turnOff() {
+        markStatus.alpha = 0.0
     }
     
 }

@@ -35,7 +35,7 @@ class Ticker: UIView {
 
     var tickMarks = [TickMark]() // should be an array
     var numOfTicks = 1 // how many tick marks to have
-
+    var status = 0 // how many tick marks should be "on"; defaults to none
     
     
     
@@ -56,6 +56,14 @@ class Ticker: UIView {
             tickMarks.append(TickMark(frame:f))
             tickMarks[i].transform = CGAffineTransform(rotationAngle: CGFloat(rotationStep*Double(i)))
             self.addSubview(tickMarks[i])
+        }
+    }
+    
+    func initializeStatus(howMany: Int) {
+        // status defaults
+        
+        for i in 0..<howMany {
+            tickMarks[i].turnOn()
         }
     }
     

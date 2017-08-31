@@ -19,17 +19,14 @@ class ConcentricCirclesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        topLabel.text = "center x:  \(circlesContainerView.center.x)"
-        bottomLabel.text = "center y: \(circlesContainerView.center.y)"
+   
 
         let minutesSize = circlesContainerView.frame.width * 0.8
         let hoursSize = circlesContainerView.frame.width * 0.6
 
-        
         let minutesRect = CGRect(center: circlesContainerView.center, width: minutesSize, height: minutesSize)
         let hoursRect = CGRect(center: circlesContainerView.center, width: hoursSize, height: hoursSize)
 
-        
         
         // add tickers for seconds, mins, and hours here
         let hours = Ticker(numOfTicks: 24, frame: hoursRect)
@@ -41,6 +38,14 @@ class ConcentricCirclesViewController: UIViewController {
         circlesContainerView.addSubview(seconds)
         circlesContainerView.addSubview(minutes)
         circlesContainerView.addSubview(hours)
+                
+        
+        topLabel.text = "container x: \(circlesContainerView.center.x)"
+        bottomLabel.text = "seconds x: \(seconds.center.x)"
+        
+        
+        hours.initializeStatus(howMany: 20)
+        
     }
 
     override func didReceiveMemoryWarning() {
