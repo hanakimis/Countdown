@@ -12,15 +12,57 @@ class ConcentricCirclesViewController: UIViewController {
 
     @IBOutlet weak var circlesContainerView: UIView!
     
+    
+    // labels for help
     @IBOutlet weak var topLabel: UILabel!
+    @IBOutlet weak var topMiddleLabel: UILabel!
+    @IBOutlet weak var bottomMiddleLabel: UILabel!
     @IBOutlet weak var bottomLabel: UILabel!
+    
+    let formatter = DateFormatter()
+    let defaults = UserDefaults.standard
+    var countdownDate: Date!
+    var today = Date()
+    
+    var hours = Ticker()
+    var minutes = Ticker()
+    var seconds = Ticker()
+    
+    
+    var daysLeft: Int!
+    var hoursLeft: Int!
+    var minutesLeft: Int!
+    var secondsLeft: Int!
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-   
+        // setup the date style
+        formatter.dateStyle = .medium
+        
+        // update if a date has been stored
+        // need to do a check to see if the date is before today
+        if let myDate = defaults.object(forKey: "date") {
+            countdownDate = myDate as! Date
+            //            datePicker.date = countdownDate
+        } else {
+            //            countdownDate = datePicker.date
+        }
+        
+        
+        let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: today,
+                                                                     to: countdownDate, options: [])
+        
 
+        daysLeft = components.day
+        hoursLeft = components.hour
+        minutesLeft = components.minute
+        secondsLeft = components.second
+        
+        
+    
         let minutesSize = circlesContainerView.frame.width * 0.8
         let hoursSize = circlesContainerView.frame.width * 0.6
 
@@ -29,9 +71,14 @@ class ConcentricCirclesViewController: UIViewController {
 
         
         // add tickers for seconds, mins, and hours here
-        let hours = Ticker(numOfTicks: 24, frame: hoursRect)
-        let minutes = Ticker(numOfTicks: 60, frame: minutesRect)
-        let seconds = Ticker(numOfTicks: 60, frame: circlesContainerView.frame)
+        hours = Ticker(numOfTicks: 24, frame: hoursRect)
+        minutes = Ticker(numOfTicks: 60, frame: minutesRect)
+        seconds = Ticker(numOfTicks: 60, frame: circlesContainerView.frame)
+        
+        hours.initializeStatus(howMany: hoursLeft)
+        minutes.initializeStatus(howMany: minutesLeft)
+        seconds.initializeStatus(howMany: secondsLeft)
+
         
         circlesContainerView.backgroundColor = UIColor.red
         
@@ -44,8 +91,67 @@ class ConcentricCirclesViewController: UIViewController {
         bottomLabel.text = "seconds x: \(seconds.center.x)"
         
         
+        initializeTickers()
         hours.initializeStatus(howMany: 20)
         
+    
+        
+    
+
+        
+        // update the labels
+        
+        
+        
+        
+        updateDifferenceTime()
+        
+        
+        
+        // use a timer to update the times
+        Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ConcentricCirclesViewController.updateDifferenceTime), userInfo: nil, repeats: true)
+    }
+    
+    
+    
+    
+    func updateDifferenceTime() {
+        today = Date()
+        
+        
+        
+        
+        let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: today,
+                                                                     to: countdownDate, options: [])
+        
+        
+        daysLeft = components.day
+        hoursLeft = components.hour
+        minutesLeft = components.minute
+        secondsLeft = components.second
+        
+        
+        // Update labels
+        
+        topLabel.text    = "\(daysLeft!) days left"
+        topMiddleLabel.text   = "\(hoursLeft!)"
+        bottomMiddleLabel.text = "\(minutesLeft!)"
+        bottomLabel.text = "\(secondsLeft!)"
+        
+        
+        // update tickers
+        // just use initilize for now
+        hours.initializeStatus(howMany: hoursLeft)
+        minutes.initializeStatus(howMany: minutesLeft)
+        seconds.initializeStatus(howMany: secondsLeft)
+        
+        
+    }
+    
+    
+    
+    func initializeTickers() {
+        // eventually move the uploading of the tickers here
     }
 
     override func didReceiveMemoryWarning() {

@@ -65,6 +65,15 @@ class Ticker: UIView {
         for i in 0..<howMany {
             tickMarks[i].turnOn()
         }
+        
+        for i in howMany..<numOfTicks {
+            tickMarks[i].turnOff()
+        }
+    }
+    
+    
+    func setTickMark(whichMark: Int, state: Bool) {
+        state ? tickMarks[whichMark].turnOn() : tickMarks[whichMark].turnOff()
     }
     
     
