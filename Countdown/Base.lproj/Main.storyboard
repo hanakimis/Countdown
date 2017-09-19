@@ -287,7 +287,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.14901960784313725" green="0.16862745098039217" blue="0.19215686274509802" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
                         <outlet property="bottomLabel" destination="biy-Ps-NpT" id="Jqh-DY-iWo"/>

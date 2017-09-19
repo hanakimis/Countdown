@@ -40,7 +40,7 @@ class TickMark: UIView {
         
         containMark.frame.origin = CGPoint(x: midpoint, y: 0.0)
         markStatus.frame.origin = CGPoint(x: midpoint, y: 0.0)
-        markStatus.alpha = 0.0
+
         
         self.addSubview(containMark)
         self.addSubview(markStatus)
@@ -51,11 +51,18 @@ class TickMark: UIView {
     }
     
     func turnOn() {
-        markStatus.alpha = 1.0
+        markStatus.frame.size.height = 16
+//        markStatus.frame.origin.y = 0.0
     }
     
     func turnOff() {
-        markStatus.alpha = 0.0
+        
+        UIView.animate(withDuration: 0.5) { 
+            self.markStatus.frame.size.height = 0.0
+//            self.markStatus.frame.origin.y = 16.0
+        }
+        
+        
     }
     
 }

@@ -80,7 +80,7 @@ class ConcentricCirclesViewController: UIViewController {
         seconds.initializeStatus(howMany: secondsLeft)
 
         
-        circlesContainerView.backgroundColor = UIColor.red
+//        circlesContainerView.backgroundColor = UIColor.red
         
         circlesContainerView.addSubview(seconds)
         circlesContainerView.addSubview(minutes)
@@ -92,24 +92,38 @@ class ConcentricCirclesViewController: UIViewController {
         
         
         initializeTickers()
-        hours.initializeStatus(howMany: 20)
-        
     
-        
-    
-
-        
-        // update the labels
-        
-        
-        
-        
-        updateDifferenceTime()
-        
         
         
         // use a timer to update the times
         Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ConcentricCirclesViewController.updateDifferenceTime), userInfo: nil, repeats: true)
+        
+        
+        
+        
+        
+        
+        
+        let pieFillView = PieFill()
+        pieFillView.frame = CGRect(center: circlesContainerView.center, width: hoursSize*0.6, height: hoursSize*0.6)
+        circlesContainerView.addSubview(pieFillView)
+        
+        
+//        
+//        let pieChartView = PieChartView()
+//        pieChartView.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: 400)
+//        pieChartView.segments = [
+//            Segment(color: .red, value: 57),
+//            Segment(color: .blue, value: 30),
+//            Segment(color: .green, value: 25),
+//            Segment(color: .yellow, value: 40)
+//        ]
+//        circlesContainerView.addSubview(pieChartView)
+        
+        
+        
+        print("the frame of this UIview is width: ")
+        
     }
     
     
@@ -141,9 +155,9 @@ class ConcentricCirclesViewController: UIViewController {
         
         // update tickers
         // just use initilize for now
-        hours.initializeStatus(howMany: hoursLeft)
-        minutes.initializeStatus(howMany: minutesLeft)
-        seconds.initializeStatus(howMany: secondsLeft)
+        hours.updateStatus(howMany: hoursLeft)
+        minutes.updateStatus(howMany: minutesLeft)
+        seconds.updateStatus(howMany: secondsLeft)
         
         
     }
@@ -152,6 +166,11 @@ class ConcentricCirclesViewController: UIViewController {
     
     func initializeTickers() {
         // eventually move the uploading of the tickers here
+        
+        updateDifferenceTime()
+        
+        
+        
     }
 
     override func didReceiveMemoryWarning() {

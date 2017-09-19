@@ -24,6 +24,8 @@
 		80C7CCA41F4D545700F22B37 /* CGPointExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C7CCA31F4D545700F22B37 /* CGPointExtension.m */; };
 		80C7CCA71F4D5FDA00F22B37 /* TickMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C7CCA61F4D5FDA00F22B37 /* TickMark.swift */; };
 		80C7CCA91F4FFC4D00F22B37 /* ConcentricCirclesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C7CCA81F4FFC4D00F22B37 /* ConcentricCirclesViewController.swift */; };
+		80C7CCAD1F5CBDD400F22B37 /* PieFill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C7CCAC1F5CBDD400F22B37 /* PieFill.swift */; };
+		80C7CCAF1F5CBFCC00F22B37 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C7CCAE1F5CBFCC00F22B37 /* PieChart.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +63,8 @@
 		80C7CCA31F4D545700F22B37 /* CGPointExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPointExtension.m; sourceTree = "<group>"; };
 		80C7CCA61F4D5FDA00F22B37 /* TickMark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TickMark.swift; sourceTree = "<group>"; };
 		80C7CCA81F4FFC4D00F22B37 /* ConcentricCirclesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcentricCirclesViewController.swift; sourceTree = "<group>"; };
+		80C7CCAC1F5CBDD400F22B37 /* PieFill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieFill.swift; sourceTree = "<group>"; };
+		80C7CCAE1F5CBFCC00F22B37 /* PieChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,8 +148,10 @@
 		80C7CC9B1F4D53CF00F22B37 /* UIViews */ = {
 			isa = PBXGroup;
 			children = (
+				80C7CCAC1F5CBDD400F22B37 /* PieFill.swift */,
 				80C7CC991F4D509500F22B37 /* Ticker.swift */,
 				80C7CCA61F4D5FDA00F22B37 /* TickMark.swift */,
+				80C7CCAE1F5CBFCC00F22B37 /* PieChart.swift */,
 			);
 			name = UIViews;
 			sourceTree = "<group>";
@@ -294,8 +300,10 @@
 				801DC5731CFB3C7600B64FFA /* HoursRemainingUIView.swift in Sources */,
 				809C66F21AAD862700B79D17 /* AppDelegate.swift in Sources */,
 				80C7CCA11F4D544000F22B37 /* UIBezierPath+Interpolation.m in Sources */,
+				80C7CCAD1F5CBDD400F22B37 /* PieFill.swift in Sources */,
 				80C7CCA41F4D545700F22B37 /* CGPointExtension.m in Sources */,
 				80330A1B1C14F39C00B8A3F4 /* Timer.swift in Sources */,
+				80C7CCAF1F5CBFCC00F22B37 /* PieChart.swift in Sources */,
 				80C7CC9A1F4D509500F22B37 /* Ticker.swift in Sources */,
 				80279A0E1CFB6C3F00F044DF /* SecondsRemainingUIView.swift in Sources */,
 				80C7CCA91F4FFC4D00F22B37 /* ConcentricCirclesViewController.swift in Sources */,
