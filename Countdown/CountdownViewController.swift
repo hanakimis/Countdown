@@ -110,11 +110,11 @@ class CountdownViewController: UIViewController {
             self.toggleDateChanger.contentHorizontalAlignment = .center
             self.toggleDateChanger.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
             self.toggleDateChanger.setTitle("X", for: UIControlState())
-            self.toggleDateChangerSmallWidthConstraint.priority = 750
-            self.toggleDateChangerFullWidthConstraint.priority = 250
+            self.toggleDateChangerSmallWidthConstraint.priority = UILayoutPriority(rawValue: 750)
+            self.toggleDateChangerFullWidthConstraint.priority = UILayoutPriority(rawValue: 250)
             self.updateDateBottomLayoutConstraint.constant = 0
-            self.countdownContainerVerticalCenterConstraint.priority = 250
-            self.countdownContainerVerticalTopConstraint.priority = 750
+            self.countdownContainerVerticalCenterConstraint.priority = UILayoutPriority(rawValue: 250)
+            self.countdownContainerVerticalTopConstraint.priority = UILayoutPriority(rawValue: 750)
             
             self.view.layoutIfNeeded()
 
@@ -136,11 +136,11 @@ class CountdownViewController: UIViewController {
             self.toggleDateChanger.contentHorizontalAlignment = .left
             self.toggleDateChanger.contentEdgeInsets = UIEdgeInsetsMake(0.0, 32.0, 16.0, 0.0)
             self.toggleDateChanger.setTitle(self.formatter.string(from: self.datePicker.date), for: UIControlState())
-            self.toggleDateChangerSmallWidthConstraint.priority = 250
-            self.toggleDateChangerFullWidthConstraint.priority = 750
+            self.toggleDateChangerSmallWidthConstraint.priority = UILayoutPriority(rawValue: 250)
+            self.toggleDateChangerFullWidthConstraint.priority = UILayoutPriority(rawValue: 750)
             self.updateDateBottomLayoutConstraint.constant = -160
-            self.countdownContainerVerticalCenterConstraint.priority = 750
-            self.countdownContainerVerticalTopConstraint.priority = 250
+            self.countdownContainerVerticalCenterConstraint.priority = UILayoutPriority(rawValue: 750)
+            self.countdownContainerVerticalTopConstraint.priority = UILayoutPriority(rawValue: 250)
             
             self.view.layoutIfNeeded()
             
@@ -150,7 +150,7 @@ class CountdownViewController: UIViewController {
     }
     
     
-    func updateDifferenceLabels() {
+    @objc func updateDifferenceLabels() {
         today = Date()
         
         let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: today,

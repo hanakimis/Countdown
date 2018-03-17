@@ -129,7 +129,7 @@ class ConcentricCirclesViewController: UIViewController {
     
     
     
-    func updateDifferenceTime() {
+    @objc func updateDifferenceTime() {
         today = Date()
         
         
