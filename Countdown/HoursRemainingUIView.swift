@@ -28,7 +28,7 @@ class HoursRemainingUIView: UIView {
         let intervalHeight:CGFloat = 24.0
         let diameter:CGFloat = 156.0
         let numberOfIntervals:CGFloat = 24.0
-        let intervalGap = ((diameter * CGFloat(M_PI)) / numberOfIntervals) - intervalWidth
+        let intervalGap = ((diameter * .pi) / numberOfIntervals) - intervalWidth
         
         let boxOffset = intervalHeight / 2
         
@@ -39,7 +39,7 @@ class HoursRemainingUIView: UIView {
         //// Oval 2 Drawing
         context?.saveGState()
         context?.translateBy(x: boxOffset, y: diameter+boxOffset)
-        context?.rotate(by: -90 * CGFloat(M_PI) / 180)
+        context?.rotate(by: -90 * .pi / 180)
         
         let oval2Path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: diameter, height: diameter))
         sliceBlue.setStroke()

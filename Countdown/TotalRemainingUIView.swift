@@ -12,8 +12,6 @@ import UIKit
 class TotalRemainingUIView: UIView {
 
     
-    
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -36,11 +34,11 @@ class TotalRemainingUIView: UIView {
         //// Oval Drawing
         context?.saveGState()
         context?.translateBy(x: 0, y: containingBoxSide)
-        context?.rotate(by: -90 * CGFloat(M_PI) / 180)
+        context?.rotate(by: -90 * .pi / 180)
         
         let ovalRect = CGRect(x: 0, y: 0, width: containingBoxSide, height: containingBoxSide)
         let ovalPath = UIBezierPath()
-        ovalPath.addArc(withCenter: CGPoint(x: ovalRect.midX, y: ovalRect.midY), radius: ovalRect.width / 2, startAngle: -360 * CGFloat(M_PI)/180, endAngle: 0 * CGFloat(M_PI)/180, clockwise: true)
+        ovalPath.addArc(withCenter: CGPoint(x: ovalRect.midX, y: ovalRect.midY), radius: ovalRect.width / 2, startAngle: -360 * .pi / 180, endAngle: 0 * .pi / 180, clockwise: true)
         ovalPath.addLine(to: CGPoint(x: ovalRect.midX, y: ovalRect.midY))
         ovalPath.close()
         

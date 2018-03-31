@@ -156,10 +156,10 @@ class CountdownViewController: UIViewController {
         let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: today,
             to: countdownDate, options: [])
 
-        daysLeftlabel.text    = "\(components.day) days left"
-        hoursLeftLabel.text   = "\(components.hour)"
-        minutesLeftLabel.text = "\(components.minute)"
-        secondsLeftLabel.text = "\(components.second)"
+        daysLeftlabel.text    = "\(components.day ?? 0) days left"
+        hoursLeftLabel.text   = "\(components.hour ?? 0)"
+        minutesLeftLabel.text = "\(components.minute ?? 0)"
+        secondsLeftLabel.text = "\(components.second ?? 0)"
         
     }
     

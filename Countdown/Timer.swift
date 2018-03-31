@@ -33,7 +33,7 @@ open class TimerV01 : NSObject {
         //// seconds Drawing
         let secondsRect = CGRect(x: 125, y: 195, width: 126, height: 126)
         let secondsPath = UIBezierPath()
-        secondsPath.addArc(withCenter: CGPoint(x: secondsRect.midX, y: secondsRect.midY), radius: secondsRect.width / 2, startAngle: -90 * CGFloat(M_PI)/180, endAngle: 270 * CGFloat(M_PI)/180, clockwise: true)
+        secondsPath.addArc(withCenter: CGPoint(x: secondsRect.midX, y: secondsRect.midY), radius: secondsRect.width / 2, startAngle: -90 * .pi / 180, endAngle: 270 * .pi / 180, clockwise: true)
         
         sliceBlue.setStroke()
         secondsPath.lineWidth = 7.75
@@ -46,7 +46,7 @@ open class TimerV01 : NSObject {
         //// minutes Drawing
         let minutesRect = CGRect(x: 139, y: 209, width: 98, height: 98)
         let minutesPath = UIBezierPath()
-        minutesPath.addArc(withCenter: CGPoint(x: minutesRect.midX, y: minutesRect.midY), radius: minutesRect.width / 2, startAngle: -90 * CGFloat(M_PI)/180, endAngle: 270 * CGFloat(M_PI)/180, clockwise: true)
+        minutesPath.addArc(withCenter: CGPoint(x: minutesRect.midX, y: minutesRect.midY), radius: minutesRect.width / 2, startAngle: -90 * .pi/180, endAngle: 270 * .pi/180, clockwise: true)
         
         sliceBlue.setStroke()
         minutesPath.lineWidth = 12
@@ -59,7 +59,7 @@ open class TimerV01 : NSObject {
         //// hours Drawing
         let hoursRect = CGRect(x: 154, y: 225, width: 67, height: 67)
         let hoursPath = UIBezierPath()
-        hoursPath.addArc(withCenter: CGPoint(x: hoursRect.midX, y: hoursRect.midY), radius: hoursRect.width / 2, startAngle: -90 * CGFloat(M_PI)/180, endAngle: 270 * CGFloat(M_PI)/180, clockwise: true)
+        hoursPath.addArc(withCenter: CGPoint(x: hoursRect.midX, y: hoursRect.midY), radius: hoursRect.width / 2, startAngle: -90 * .pi/180, endAngle: 270 * .pi/180, clockwise: true)
         
         sliceBlue.setStroke()
         hoursPath.lineWidth = 12
@@ -72,7 +72,7 @@ open class TimerV01 : NSObject {
         //// day fill Drawing
         let dayFillRect = CGRect(x: 165, y: 236, width: 45, height: 45)
         let dayFillPath = UIBezierPath()
-        dayFillPath.addArc(withCenter: CGPoint(x: dayFillRect.midX, y: dayFillRect.midY), radius: dayFillRect.width / 2, startAngle: -180 * CGFloat(M_PI)/180, endAngle: -70 * CGFloat(M_PI)/180, clockwise: true)
+        dayFillPath.addArc(withCenter: CGPoint(x: dayFillRect.midX, y: dayFillRect.midY), radius: dayFillRect.width / 2, startAngle: -180 * .pi/180, endAngle: -70 * .pi/180, clockwise: true)
         dayFillPath.addLine(to: CGPoint(x: dayFillRect.midX, y: dayFillRect.midY))
         dayFillPath.close()
         
