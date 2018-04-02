@@ -19,6 +19,9 @@ class ConcentricCirclesViewController: UIViewController {
     @IBOutlet weak var bottomMiddleLabel: UILabel!
     @IBOutlet weak var bottomLabel: UILabel!
     
+    @IBOutlet weak var datePicker: UIDatePicker!
+    
+    
     let formatter = DateFormatter()
     let defaults = UserDefaults.standard
     var countdownDate: Date!
@@ -48,10 +51,17 @@ class ConcentricCirclesViewController: UIViewController {
             countdownDate = myDate as! Date
             //            datePicker.date = countdownDate
         } else {
-            //            countdownDate = datePicker.date
+            
+            // this means date hasn't been set
+            // we need to be able to take a date a couple days in advance
+            
+            countdownDate = Calendar.current.date(byAdding: .day, value: 1, to: today)!
+            
+            
         }
         
         
+
         let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: today,
                                                                      to: countdownDate, options: [])
         
@@ -80,12 +90,44 @@ class ConcentricCirclesViewController: UIViewController {
         seconds.initializeStatus(howMany: secondsLeft)
 
         
-//        circlesContainerView.backgroundColor = UIColor.red
+        self.view.addSubview(seconds)
+        self.view.addSubview(minutes)
+        self.view.addSubview(hours)
+
         
-        circlesContainerView.addSubview(seconds)
-        circlesContainerView.addSubview(minutes)
-        circlesContainerView.addSubview(hours)
-                
+        var cenX = circlesContainerView.frame.origin.x + (circlesContainerView.frame.width/2)
+        var cenY = circlesContainerView.frame.origin.y + (circlesContainerView.frame.height/2)
+        print("CircleContainersView is width: \(circlesContainerView.frame.width)")
+        print("CircleContainersView is height: \(circlesContainerView.frame.height)")
+        print("CircleContainersView is center x: \(cenX)")
+        print("CircleContainersView is center y: \(cenY)")
+
+        print("-----------------------------------------")
+  
+        cenX = hours.frame.origin.x + (hours.frame.width/2)
+        cenY = hours.frame.origin.y + (hours.frame.height/2)
+        print("hours is width: \(hours.frame.width)")
+        print("hours is height: \(hours.frame.height)")
+        print("hours is center x: \(cenX)")
+        print("hours is center y: \(cenY)")
+        
+        print("-----------------------------------------")
+        
+        cenX = minutes.frame.origin.x + (minutes.frame.width/2)
+        cenY = minutes.frame.origin.y + (minutes.frame.height/2)
+        print("minutes is width: \(minutes.frame.width)")
+        print("minutes is height: \(minutes.frame.height)")
+        print("minutes is center x: \(cenX)")
+        print("minutes is center y: \(cenY)")
+        
+        print("-----------------------------------------")
+        
+        cenX = seconds.frame.origin.x + (seconds.frame.width/2)
+        cenY = seconds.frame.origin.y + (seconds.frame.height/2)
+        print("seconds is width: \(seconds.frame.width)")
+        print("seconds is height: \(seconds.frame.height)")
+        print("seconds is center x: \(cenX)")
+        print("seconds is center y: \(cenY)")
         
         topLabel.text = "container x: \(circlesContainerView.center.x)"
         bottomLabel.text = "seconds x: \(seconds.center.x)"
@@ -100,13 +142,10 @@ class ConcentricCirclesViewController: UIViewController {
         
         
         
-        
-        
-        
-        
         let pieFillView = PieFill()
         pieFillView.frame = CGRect(center: circlesContainerView.center, width: hoursSize*0.6, height: hoursSize*0.6)
-        circlesContainerView.addSubview(pieFillView)
+        
+        self.view.addSubview(pieFillView)
         
         
 //        
@@ -121,7 +160,7 @@ class ConcentricCirclesViewController: UIViewController {
 //        circlesContainerView.addSubview(pieChartView)
         
         
-        print("the frame of this UIview is width: ")
+        
         
     }
     

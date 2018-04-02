@@ -36,8 +36,8 @@ class PieFill: UIView {
         // the starting angle is -90 degrees (top of the circle, as the context is flipped). By default, 0 is the right hand side of the circle, with the positive angle being in an anti-clockwise direction (same as a unit circle in maths).
         var startAngle = -CGFloat.pi * 0.5
 
-        
-        ctx?.setFillColor(UIColor.blue.cgColor)
+
+        ctx?.setFillColor(UIColor(rgb: 0x2183B6).cgColor)
         
         // update the end angle of the segment
         let endAngle = startAngle + 2 * .pi * 0.2

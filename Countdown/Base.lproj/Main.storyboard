@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="rve-gK-muZ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="rve-gK-muZ">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -58,6 +58,7 @@
                                             <constraint firstItem="fHh-hy-TJ1" firstAttribute="leading" secondItem="Kjw-Yo-rNo" secondAttribute="leading" id="jQt-dr-0tZ"/>
                                             <constraint firstAttribute="bottom" secondItem="fHh-hy-TJ1" secondAttribute="bottom" id="jwN-nI-TyG"/>
                                             <constraint firstItem="kRx-UY-CNC" firstAttribute="width" secondItem="Kjw-Yo-rNo" secondAttribute="width" id="ukf-6V-Qb5"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kRx-UY-CNC" secondAttribute="trailing" id="yLo-vf-7Cv"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DIQ-0V-coq" userLabel="Time container">
@@ -113,8 +114,8 @@
                                                     <constraint firstItem="lDN-0p-Sy1" firstAttribute="centerY" secondItem="kPN-mc-tbE" secondAttribute="centerY" constant="-5" id="zZ7-aZ-2bx"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BmT-TC-pub" userLabel="Minutes container">
-                                                <rect key="frame" x="22" y="142" width="100" height="143"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BmT-TC-pub" userLabel="Minutes container">
+                                                <rect key="frame" x="34.5" y="167" width="100" height="167"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Minutes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diC-Wg-0ex">
                                                         <rect key="frame" x="0.0" y="68.5" width="100" height="20.5"/>
@@ -206,12 +207,14 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstItem="xbV-rd-7M1" firstAttribute="leading" secondItem="sbf-Ht-aDG" secondAttribute="leading" id="E2B-dU-24z"/>
                                     <constraint firstItem="xbV-rd-7M1" firstAttribute="width" secondItem="sbf-Ht-aDG" secondAttribute="width" priority="750" id="Hkm-Qo-kDC"/>
-                                    <constraint firstAttribute="trailing" secondItem="xbV-rd-7M1" secondAttribute="trailing" id="JDs-FN-ks8"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="xbV-rd-7M1" secondAttribute="trailing" id="JDs-FN-ks8"/>
                                     <constraint firstItem="xbV-rd-7M1" firstAttribute="top" secondItem="sbf-Ht-aDG" secondAttribute="top" id="LXH-fQ-4hB"/>
                                     <constraint firstAttribute="height" constant="200" id="M7p-ld-xZw"/>
                                     <constraint firstAttribute="bottom" secondItem="Xe9-S1-elR" secondAttribute="bottom" id="Pni-F1-7Ms"/>
                                     <constraint firstItem="Xe9-S1-elR" firstAttribute="width" secondItem="sbf-Ht-aDG" secondAttribute="width" id="Q09-Xf-SqN"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Xe9-S1-elR" secondAttribute="trailing" id="Reo-UI-x9P"/>
                                     <constraint firstItem="Xe9-S1-elR" firstAttribute="top" secondItem="uXt-Mh-gtL" secondAttribute="bottom" id="c7s-9c-Ray"/>
                                     <constraint firstItem="uXt-Mh-gtL" firstAttribute="leading" secondItem="sbf-Ht-aDG" secondAttribute="leading" id="es9-3g-OKo"/>
                                     <constraint firstItem="Xe9-S1-elR" firstAttribute="leading" secondItem="sbf-Ht-aDG" secondAttribute="leading" id="xXk-ho-Wab"/>
@@ -264,8 +267,15 @@
                                 <rect key="frame" x="0.0" y="596" width="375" height="71"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date Picker" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iuz-RK-dhP">
-                                        <rect key="frame" x="76" y="16" width="88" height="21"/>
+                                    <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="UOZ-8A-1Af">
+                                        <rect key="frame" x="1" y="0.0" width="375" height="71"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <date key="date" timeIntervalSinceReferenceDate="544245999.99235296">
+                                            <!--2018-04-01 03:26:39 +0000-->
+                                        </date>
+                                    </datePicker>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HeG-OA-iSO">
+                                        <rect key="frame" x="167" y="25" width="36" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -277,7 +287,6 @@
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJ3-fj-JHO">
                                 <rect key="frame" x="33" y="133" width="307" height="302"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.24524334349999999" green="1" blue="0.16937954350000001" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hIF-ur-SUQ">
                                 <rect key="frame" x="66" y="449" width="240" height="21"/>
@@ -314,13 +323,14 @@
                         <outlet property="bottomLabel" destination="biy-Ps-NpT" id="Jqh-DY-iWo"/>
                         <outlet property="bottomMiddleLabel" destination="Lr9-T6-cg8" id="tlR-fR-pur"/>
                         <outlet property="circlesContainerView" destination="wJ3-fj-JHO" id="90f-9d-PJ6"/>
+                        <outlet property="datePicker" destination="UOZ-8A-1Af" id="6OP-gV-oa0"/>
                         <outlet property="topLabel" destination="hIF-ur-SUQ" id="IBi-tH-3LC"/>
                         <outlet property="topMiddleLabel" destination="s5p-oQ-ard" id="AOB-5S-pB1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="La9-FN-cKy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="813.5" y="398.5"/>
+            <point key="canvasLocation" x="995.5" y="395.5"/>
         </scene>
     </scenes>
 </document>
