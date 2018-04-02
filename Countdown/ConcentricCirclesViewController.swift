@@ -12,12 +12,6 @@ class ConcentricCirclesViewController: UIViewController {
 
     @IBOutlet weak var circlesContainerView: UIView!
     
-    // labels for help
-    @IBOutlet weak var topLabel: UILabel!
-    @IBOutlet weak var topMiddleLabel: UILabel!
-    @IBOutlet weak var bottomMiddleLabel: UILabel!
-    @IBOutlet weak var bottomLabel: UILabel!
-    
     @IBOutlet weak var datePicker: UIDatePicker!
     
     
@@ -84,13 +78,13 @@ class ConcentricCirclesViewController: UIViewController {
 
         
         // add tickers for seconds, mins, and hours here
-        var tickL = hoursSize / 8
+        var tickL:CGFloat = 24.0
         hours = Ticker(numOfTicks: 24, tickLength: tickL, frame: hoursRect)
         
-        tickL = minutesSize / 10
+        tickL = 20.0
         minutes = Ticker(numOfTicks: 60, tickLength: tickL, frame: minutesRect)
         
-        tickL = circlesContainerView.frame.width / 18
+        tickL = 16.0
         seconds = Ticker(numOfTicks: 60, tickLength: tickL, frame: circlesContainerView.frame)
         
         hours.initializeStatus(howMany: hoursLeft)
@@ -103,10 +97,7 @@ class ConcentricCirclesViewController: UIViewController {
         self.view.addSubview(minutes)
         self.view.addSubview(hours)
         
-        
-        topLabel.text = "container x: \(circlesContainerView.center.x)"
-        bottomLabel.text = "seconds x: \(seconds.center.x)"
-        
+ 
         initializeTickers()
     
         
@@ -136,12 +127,6 @@ class ConcentricCirclesViewController: UIViewController {
         minutesLeft = components.minute
         secondsLeft = components.second
         
-        
-        // Update labels
-        topLabel.text    = "\(daysLeft!) days left"
-        topMiddleLabel.text   = "\(hoursLeft!)"
-        bottomMiddleLabel.text = "\(minutesLeft!)"
-        bottomLabel.text = "\(secondsLeft!)"
         
         
         // update tickers
