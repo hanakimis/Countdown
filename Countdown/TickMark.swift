@@ -49,8 +49,10 @@ class TickMark: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        
+        // figure out how to call the other initalizer function
         self.backgroundColor = UIColor.clear
-        containMark.backgroundColor = UIColor.black
+        containMark.backgroundColor = UIColor(rgb: 0x2183B6)
         containMark.frame.size = CGSize(width: 1, height: tickLength)
         
         markStatus.backgroundColor = UIColor(rgb: 0x2183B6)
@@ -63,6 +65,13 @@ class TickMark: UIView {
         
         self.addSubview(containMark)
         self.addSubview(markStatus)
+        
+        
+//        init(tickLength: tickLength, tickColor: tickColor, tickBGColor: tickBGColor, frame: frame)
+        
+        
+        
+        
     }
     
     init(tickLength: CGFloat, tickColor: UIColor, tickBGColor: UIColor, frame: CGRect) {
@@ -71,7 +80,8 @@ class TickMark: UIView {
         self.tickLength = tickLength
         
         self.backgroundColor = UIColor.clear
-        containMark.backgroundColor = UIColor.black
+        containMark.backgroundColor = UIColor(rgb: 0x2183B6)
+        containMark.alpha = 0.2
         containMark.frame.size = CGSize(width: 1.0, height: tickLength)
         
         

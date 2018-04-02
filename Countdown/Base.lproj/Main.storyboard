@@ -263,18 +263,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZOm-ab-yWg" userLabel="Date description">
-                                <rect key="frame" x="0.0" y="595" width="375" height="72"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZOm-ab-yWg" userLabel="Update Date container">
+                                <rect key="frame" x="0.0" y="507" width="375" height="160"/>
                                 <subviews>
-                                    <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="UOZ-8A-1Af">
-                                        <rect key="frame" x="1" y="0.0" width="375" height="71"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="UOZ-8A-1Af">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="160"/>
+                                        <color key="tintColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <date key="date" timeIntervalSinceReferenceDate="544245999.99235296">
                                             <!--2018-04-01 03:26:39 +0000-->
                                         </date>
                                     </datePicker>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HeG-OA-iSO">
-                                        <rect key="frame" x="167" y="25" width="36" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HeG-OA-iSO">
+                                        <rect key="frame" x="316" y="8" width="36" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -283,14 +283,18 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="72" id="hPI-fs-ddu"/>
+                                    <constraint firstAttribute="bottom" secondItem="UOZ-8A-1Af" secondAttribute="bottom" id="8Y5-QU-gHq"/>
+                                    <constraint firstItem="UOZ-8A-1Af" firstAttribute="width" secondItem="ZOm-ab-yWg" secondAttribute="width" id="YM3-LX-i74"/>
+                                    <constraint firstItem="UOZ-8A-1Af" firstAttribute="centerX" secondItem="ZOm-ab-yWg" secondAttribute="centerX" id="j6r-V3-SlE"/>
+                                    <constraint firstAttribute="height" constant="160" id="p8F-w3-EPy"/>
+                                    <constraint firstItem="UOZ-8A-1Af" firstAttribute="height" secondItem="ZOm-ab-yWg" secondAttribute="height" id="yHV-r2-Vwb"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJ3-fj-JHO">
                                 <rect key="frame" x="37" y="129" width="300" height="299"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.14901960784313725" green="0.16862745098039217" blue="0.19215686274509802" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.091519094502987106" green="0.10120718409311484" blue="0.1149746601654188" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="ZOm-ab-yWg" firstAttribute="width" secondItem="BAG-xU-lCF" secondAttribute="width" id="Ezv-4o-akl"/>
                             <constraint firstItem="ZOm-ab-yWg" firstAttribute="centerX" secondItem="BAG-xU-lCF" secondAttribute="centerX" id="cjL-Xu-Mn9"/>
@@ -299,7 +303,9 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomOfDateContainerConstraint" destination="eZJ-PB-5bi" id="nc6-BX-v2E"/>
                         <outlet property="circlesContainerView" destination="wJ3-fj-JHO" id="90f-9d-PJ6"/>
+                        <outlet property="dateChangeContainerView" destination="ZOm-ab-yWg" id="8VT-mr-i8w"/>
                         <outlet property="datePicker" destination="UOZ-8A-1Af" id="6OP-gV-oa0"/>
                     </connections>
                 </viewController>
