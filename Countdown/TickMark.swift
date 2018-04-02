@@ -44,26 +44,44 @@ class TickMark: UIView {
     var markStatus = UIView()
     
     var status = false
-    
+    var tickLength: CGFloat = 16.0
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         self.backgroundColor = UIColor.clear
         containMark.backgroundColor = UIColor.black
-        containMark.frame.size = CGSize(width: 1, height: 16)
-        
+        containMark.frame.size = CGSize(width: 1, height: tickLength)
         
         markStatus.backgroundColor = UIColor(rgb: 0x2183B6)
-        markStatus.frame.size = CGSize(width: 1, height: 16)
-        
+        markStatus.frame.size = CGSize(width: 1, height: tickLength)
         
         let midpoint = (frame.size.width - containMark.frame.width) / 2
         
+        containMark.frame.origin = CGPoint(x: midpoint, y: 0.0)
+        markStatus.frame.origin = CGPoint(x: midpoint, y: 0.0)
+        
+        self.addSubview(containMark)
+        self.addSubview(markStatus)
+    }
+    
+    init(tickLength: CGFloat, tickColor: UIColor, tickBGColor: UIColor, frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.tickLength = tickLength
+        
+        self.backgroundColor = UIColor.clear
+        containMark.backgroundColor = UIColor.black
+        containMark.frame.size = CGSize(width: 1.0, height: tickLength)
+        
+        
+        markStatus.backgroundColor = UIColor(rgb: 0x2183B6)
+        markStatus.frame.size = CGSize(width: 1.0, height: tickLength)
+        
+        let midpoint = (frame.size.width - containMark.frame.width) / 2
         
         containMark.frame.origin = CGPoint(x: midpoint, y: 0.0)
         markStatus.frame.origin = CGPoint(x: midpoint, y: 0.0)
-
         
         self.addSubview(containMark)
         self.addSubview(markStatus)
@@ -74,7 +92,7 @@ class TickMark: UIView {
     }
     
     func turnOn() {
-        markStatus.frame.size.height = 16
+        markStatus.frame.size.height = self.tickLength
 //        markStatus.frame.origin.y = 0.0
     }
     
@@ -82,7 +100,7 @@ class TickMark: UIView {
         
         UIView.animate(withDuration: 0.5) { 
             self.markStatus.frame.size.height = 0.0
-//            self.markStatus.frame.origin.y = 16.0
+//            self.markStatus.frame.origin.y = tickLength
         }
         
         

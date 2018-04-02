@@ -263,9 +263,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZOm-ab-yWg">
-                                <rect key="frame" x="0.0" y="596" width="375" height="71"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZOm-ab-yWg" userLabel="Date description">
+                                <rect key="frame" x="0.0" y="595" width="375" height="72"/>
                                 <subviews>
                                     <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="UOZ-8A-1Af">
                                         <rect key="frame" x="1" y="0.0" width="375" height="71"/>
@@ -283,10 +282,9 @@
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJ3-fj-JHO">
-                                <rect key="frame" x="33" y="133" width="307" height="302"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="72" id="hPI-fs-ddu"/>
+                                </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hIF-ur-SUQ">
                                 <rect key="frame" x="66" y="449" width="240" height="21"/>
@@ -316,8 +314,17 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJ3-fj-JHO">
+                                <rect key="frame" x="37" y="129" width="300" height="299"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.14901960784313725" green="0.16862745098039217" blue="0.19215686274509802" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="ZOm-ab-yWg" firstAttribute="width" secondItem="BAG-xU-lCF" secondAttribute="width" id="Ezv-4o-akl"/>
+                            <constraint firstItem="ZOm-ab-yWg" firstAttribute="centerX" secondItem="BAG-xU-lCF" secondAttribute="centerX" id="cjL-Xu-Mn9"/>
+                            <constraint firstItem="EbQ-vb-iLb" firstAttribute="top" secondItem="ZOm-ab-yWg" secondAttribute="bottom" id="eZJ-PB-5bi"/>
+                            <constraint firstItem="wJ3-fj-JHO" firstAttribute="centerX" secondItem="BAG-xU-lCF" secondAttribute="centerX" id="yiV-tV-opX"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="bottomLabel" destination="biy-Ps-NpT" id="Jqh-DY-iWo"/>

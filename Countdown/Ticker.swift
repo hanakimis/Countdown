@@ -44,16 +44,19 @@ class Ticker: UIView {
     }
     
     
-    init(numOfTicks: Int, frame:CGRect) {
+    init(numOfTicks: Int, tickLength: CGFloat, frame:CGRect) {
         super.init(frame: CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: frame.height))
         self.numOfTicks = numOfTicks
         
         let rotationStep = (Double.pi*2) / Double(self.numOfTicks)
-        // initalize array of tickmarks
+
         let f = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
         
+        let tColor = UIColor(rgb: 0x2183B6)
+        let tBGColor = UIColor.black
+        
         for i in 0..<numOfTicks {
-            tickMarks.append(TickMark(frame:f))
+            tickMarks.append(TickMark(tickLength: tickLength, tickColor: tColor, tickBGColor: tBGColor, frame: f))
             tickMarks[i].transform = CGAffineTransform(rotationAngle: CGFloat(rotationStep*Double(i)))
             self.addSubview(tickMarks[i])
         }
