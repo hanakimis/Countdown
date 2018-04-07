@@ -14,9 +14,7 @@ class ConcentricCirclesViewController: UIViewController {
     @IBOutlet weak var dateChangeContainerView: UIView!
     @IBOutlet weak var datePicker: UIDatePicker!
     
-    
     @IBOutlet weak var bottomOfDateContainerConstraint: NSLayoutConstraint!
-    
     
     let formatter = DateFormatter()
     let defaults = UserDefaults.standard
@@ -34,34 +32,129 @@ class ConcentricCirclesViewController: UIViewController {
     
     var datePickerContainerOpen = false
 
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // setup the date style
+        setupUI()
+        
+        updateDifferenceTime()
+        Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ConcentricCirclesViewController.updateTickers), userInfo: nil, repeats: true)
+    }
+    
+    // setup the date style and other UI elements for the ViewController
+    func setupUI() {
+        // setup datepicker
         formatter.dateStyle = .medium
-        
-        
-        // 0. Set size and location of the reference frame
-        circlesContainerView.frame.size.width = self.view.frame.width * 0.8
-        circlesContainerView.frame.size.height = circlesContainerView.frame.width
+        self.datePicker.setValue(UIColor.white, forKeyPath: "textColor")
+        self.datePicker.minimumDate = today
+        datePickerContainerOpen = false
 
-        
+        checkTargetDateSet()
+    }
+    
+    
+    func checkTargetDateSet() {
         // 1. Get the date
         // update if a date has been stored
         // need to do a check to see if the date is before today
         if let myDate = defaults.object(forKey: "date") {
-            countdownDate = myDate as! Date
-            //            datePicker.date = countdownDate
+            
+            //if a date has been set already, use this as the target date, unless date has past already
+            if countdownDate < Date() {
+                countdownDate = myDate as! Date
+                // set the datepicker to this target date
+                datePicker.date = countdownDate
+
+                // set the circles
+                setupCircles(countdownDate: countdownDate)
+                
+            } else {
+                // show the date has already passed, and ask user to input a new date
+                displayDatePassed()
+                setDateStartup()
+            }
+            
         } else {
             // this means date hasn't been set
-            // we need to be able to take a date a couple days in advance
-            countdownDate = Calendar.current.date(byAdding: .day, value: 1, to: today)!
+            // open the datepicker, and setup to input a date
+            // countdownDate = Calendar.current.date(byAdding: .day, value: 1, to: today)!
+            setDateStartup()
         }
+    }
+    
+    func displayDatePassed() {
+        print("date has passed")
+        // show the stuffs
+    }
+    
+    func setDateStartup() {
         
         
-        // 2. Figure out the difference between the target date and right now
+        // need to intialize the timeleft
+    }
+    
+    
+    
+    func setupCircles(countdownDate: Date) {
+        
+        // 0. Set size and location of frames
+        circlesContainerView.frame.size.width = self.view.frame.width * 0.8
+        circlesContainerView.frame.size.height = circlesContainerView.frame.width
+        
+        let minutesSize = circlesContainerView.frame.width * 0.8
+        let hoursSize = circlesContainerView.frame.width * 0.6
+        let pieSize = circlesContainerView.frame.width * 0.6 * 0.6
+        
+        let secondsRect = circlesContainerView.frame
+        let minutesRect = CGRect(center: circlesContainerView.center, width: minutesSize, height: minutesSize)
+        let hoursRect = CGRect(center: circlesContainerView.center, width: hoursSize, height: hoursSize)
+        let pieRect = CGRect(center: circlesContainerView.center, width: pieSize, height: pieSize)
+        
+        let tickLHours:CGFloat = 24.0
+        let tickLMinutes:CGFloat = 20.0
+        let tickLSeconds:CGFloat = 16.0
+        
+
+        
+
+        
+         // 3. Update the tickers
+        // add tickers for seconds, mins, and hours here
+        hours = Ticker(numOfTicks: 24, tickLength: tickLHours, frame: hoursRect)
+        minutes = Ticker(numOfTicks: 60, tickLength: tickLMinutes, frame: minutesRect)
+        seconds = Ticker(numOfTicks: 60, tickLength: tickLSeconds, frame: secondsRect)
+        
+        var pieFillView = PieFill()
+        pieFillView.frame = pieRect
+        
+        
+        // 4. Add the tickers
+        self.view.addSubview(seconds)
+        self.view.addSubview(minutes)
+        self.view.addSubview(hours)
+        self.view.addSubview(pieFillView)
+        
+        
+        // 5. set the dates
+        // Figure out the difference between the target date and right now
+        updateDifferenceTime()
+        
+        hours.initializeStatus(howMany: hoursLeft)
+        minutes.initializeStatus(howMany: minutesLeft)
+        seconds.initializeStatus(howMany: secondsLeft)
+        //
+        pieFillView.setDaysLeft(daysLeft: Int(daysLeft))
+
+    }
+
+    
+    
+   
+    
+    
+    func updateDifferenceTime() {
+        today = Date()
         let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: today,
                                                                      to: countdownDate, options: [])
         
@@ -69,67 +162,31 @@ class ConcentricCirclesViewController: UIViewController {
         hoursLeft = components.hour
         minutesLeft = components.minute
         secondsLeft = components.second
-        
-        
-        
-        // 3. Update the tickers
-        let minutesSize = circlesContainerView.frame.width * 0.8
-        let hoursSize = circlesContainerView.frame.width * 0.6
-
-        let minutesRect = CGRect(center: circlesContainerView.center, width: minutesSize, height: minutesSize)
-        let hoursRect = CGRect(center: circlesContainerView.center, width: hoursSize, height: hoursSize)
-
-        
-        // add tickers for seconds, mins, and hours here
-        var tickL:CGFloat = 24.0
-        hours = Ticker(numOfTicks: 24, tickLength: tickL, frame: hoursRect)
-        
-        tickL = 20.0
-        minutes = Ticker(numOfTicks: 60, tickLength: tickL, frame: minutesRect)
-        
-        tickL = 16.0
-        seconds = Ticker(numOfTicks: 60, tickLength: tickL, frame: circlesContainerView.frame)
-        
-        hours.initializeStatus(howMany: hoursLeft)
-        minutes.initializeStatus(howMany: minutesLeft)
-        seconds.initializeStatus(howMany: secondsLeft)
-
-        
-        // 4. Add the tickers
-        self.view.addSubview(seconds)
-        self.view.addSubview(minutes)
-        self.view.addSubview(hours)
-        
- 
-        initializeTickers()
-    
-        
-        // 5. use a timer to update the times
-        Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ConcentricCirclesViewController.updateDifferenceTime), userInfo: nil, repeats: true)
-        
-        
-        // 6. add the pie in the middle
-        let pieFillView = PieFill()
-        pieFillView.frame = CGRect(center: circlesContainerView.center, width: hoursSize*0.6, height: hoursSize*0.6)
-        
-        self.view.addSubview(pieFillView)
-        
     }
     
+
+    @objc func updateTickers() {
+        // eventually move the uploading of the tickers here
+        updateDifferenceTime()
+        
+        hours.updateStatus(howMany: hoursLeft)
+        minutes.updateStatus(howMany: minutesLeft)
+        seconds.updateStatus(howMany: secondsLeft)
+    }
     
     func openDatePicker() {
         UIView.animate(withDuration: 0.3, animations: { () -> Void in
             
-//            self.toggleDateChanger.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
-//            self.toggleDateChangerSmallWidthConstraint.priority = UILayoutPriority(rawValue: 750)
-//            self.toggleDateChangerFullWidthConstraint.priority = UILayoutPriority(rawValue: 250)
+            //            self.toggleDateChanger.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
+            //            self.toggleDateChangerSmallWidthConstraint.priority = UILayoutPriority(rawValue: 750)
+            //            self.toggleDateChangerFullWidthConstraint.priority = UILayoutPriority(rawValue: 250)
             
-//            self.countdownContainerVerticalCenterConstraint.priority = UILayoutPriority(rawValue: 250)
-//            self.countdownContainerVerticalTopConstraint.priority = UILayoutPriority(rawValue: 750)
+            //            self.countdownContainerVerticalCenterConstraint.priority = UILayoutPriority(rawValue: 250)
+            //            self.countdownContainerVerticalTopConstraint.priority = UILayoutPriority(rawValue: 750)
             
             self.dateChangeContainerView.alpha = 1
             self.bottomOfDateContainerConstraint.constant = 0
-
+            
             self.view.layoutIfNeeded()
             
             
@@ -138,22 +195,24 @@ class ConcentricCirclesViewController: UIViewController {
         })
     }
     
-    
     func closeDatePicker() {
+        
+        // update the target date
+        // update the time left
         
         UIView.animate(withDuration: 0.3, animations: { () -> Void in
             
-//            self.toggleDateChangerSmallWidthConstraint.priority = UILayoutPriority(rawValue: 250)
-//            self.toggleDateChangerFullWidthConstraint.priority = UILayoutPriority(rawValue: 750)
-
-//            self.countdownContainerVerticalCenterConstraint.priority = UILayoutPriority(rawValue: 750)
-//            self.countdownContainerVerticalTopConstraint.priority = UILayoutPriority(rawValue: 250)
-
+            //            self.toggleDateChangerSmallWidthConstraint.priority = UILayoutPriority(rawValue: 250)
+            //            self.toggleDateChangerFullWidthConstraint.priority = UILayoutPriority(rawValue: 750)
+            
+            //            self.countdownContainerVerticalCenterConstraint.priority = UILayoutPriority(rawValue: 750)
+            //            self.countdownContainerVerticalTopConstraint.priority = UILayoutPriority(rawValue: 250)
+            
             
             self.dateChangeContainerView.alpha = 0
             self.bottomOfDateContainerConstraint.constant = -(self.dateChangeContainerView.frame.height)
-
-
+            
+            
             self.view.layoutIfNeeded()
             
         }, completion: { (Bool) -> Void in
@@ -163,41 +222,6 @@ class ConcentricCirclesViewController: UIViewController {
     
     
     
-    @objc func updateDifferenceTime() {
-        today = Date()
-
-        let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: today,
-                                                                     to: countdownDate, options: [])
-        
-        daysLeft = components.day
-        hoursLeft = components.hour
-        minutesLeft = components.minute
-        secondsLeft = components.second
-        
-        
-        
-        // update tickers
-        // just use initilize for now
-        hours.updateStatus(howMany: hoursLeft)
-        minutes.updateStatus(howMany: minutesLeft)
-        seconds.updateStatus(howMany: secondsLeft)
-        
-        
-        
-        
-        // deal with datepicker stuffs
-        
-        datePicker.setValue(UIColor.white, forKeyPath: "textColor")
-
-        
-    }
-    
-    
-    
-    func initializeTickers() {
-        // eventually move the uploading of the tickers here
-        updateDifferenceTime()
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

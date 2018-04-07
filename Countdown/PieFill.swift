@@ -10,6 +10,9 @@ import UIKit
 
 class PieFill: UIView {
     
+    var totalDays: Int = 0
+    var daysLeft: Int = 0
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         isOpaque = false // when overriding drawRect, you must specify this to maintain transparency.
@@ -18,6 +21,17 @@ class PieFill: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
+    
+    func initialDaysLeft(initialDaysLeft: Int) {
+        // set the property for the number of segments originally
+        self.totalDays = initialDaysLeft
+    }
+    
+    func setDaysLeft(daysLeft: Int) {
+        self.daysLeft = daysLeft
+    }
+    
     
     override func draw(_ rect: CGRect) {
         
@@ -34,13 +48,19 @@ class PieFill: UIView {
 //        let valueCount = segments.reduce(0, {$0 + $1.value})
         
         // the starting angle is -90 degrees (top of the circle, as the context is flipped). By default, 0 is the right hand side of the circle, with the positive angle being in an anti-clockwise direction (same as a unit circle in maths).
-        var startAngle = -CGFloat.pi * 0.5
-
+        let startAngle = -CGFloat.pi * 0.5
 
         ctx?.setFillColor(UIColor(rgb: 0x2183B6).cgColor)
         
+        
         // update the end angle of the segment
-        let endAngle = startAngle + 2 * .pi * 0.2
+        // set a dummy size just so that we can see in the example
+        var endAngle:CGFloat = startAngle + 2 * .pi * 0.5
+        
+        if totalDays > 0 {
+            let percentageLeft:CGFloat = CGFloat(daysLeft / totalDays)
+            endAngle = startAngle + 2 * .pi * percentageLeft
+        }
         
         // move to the center of the pie chart
         ctx?.move(to: viewCenter)

@@ -37,6 +37,7 @@ class PieChartView: UIView {
         super.init(coder: aDecoder)
     }
     
+    
     override func draw(_ rect: CGRect) {
         
         // get current context
@@ -54,6 +55,8 @@ class PieChartView: UIView {
         // the starting angle is -90 degrees (top of the circle, as the context is flipped). By default, 0 is the right hand side of the circle, with the positive angle being in an anti-clockwise direction (same as a unit circle in maths).
         var startAngle = -CGFloat.pi * 0.5
         
+        
+        // Break this up by the "number of days"
         for segment in segments { // loop through the values array
             
             // set fill color to the segment color
