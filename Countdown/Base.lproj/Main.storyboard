@@ -273,13 +273,13 @@
                                             <!--2018-04-01 03:26:39 +0000-->
                                         </date>
                                     </datePicker>
-                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HeG-OA-iSO">
-                                        <rect key="frame" x="316" y="8" width="36" height="21"/>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aYe-zn-FzS">
+                                        <rect key="frame" x="0.0" y="65" width="375" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                        <state key="normal" title="Date">
+                                            <color key="titleColor" red="0.9912528395652771" green="0.99629396200180054" blue="0.9960363507270813" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -304,6 +304,7 @@
                     </view>
                     <connections>
                         <outlet property="bottomOfDateContainerConstraint" destination="eZJ-PB-5bi" id="nc6-BX-v2E"/>
+                        <outlet property="changeDateButton" destination="aYe-zn-FzS" id="Ls0-Kh-QHw"/>
                         <outlet property="circlesContainerView" destination="wJ3-fj-JHO" id="90f-9d-PJ6"/>
                         <outlet property="dateChangeContainerView" destination="ZOm-ab-yWg" id="8VT-mr-i8w"/>
                         <outlet property="datePicker" destination="UOZ-8A-1Af" id="6OP-gV-oa0"/>

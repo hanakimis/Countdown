@@ -13,6 +13,7 @@ class ConcentricCirclesViewController: UIViewController {
     @IBOutlet weak var circlesContainerView: UIView!
     @IBOutlet weak var dateChangeContainerView: UIView!
     @IBOutlet weak var datePicker: UIDatePicker!
+    @IBOutlet weak var changeDateButton: UIButton!
     
     @IBOutlet weak var bottomOfDateContainerConstraint: NSLayoutConstraint!
     
@@ -89,9 +90,16 @@ class ConcentricCirclesViewController: UIViewController {
     }
     
     func setDateStartup() {
-        
+        //
         
         // need to intialize the timeleft
+        // pieFillView.initialDaysLeft(initialDaysLeft: Int())
+        // use nsdefaults to store initialDaysLeft
+        
+//        let formatter = DateFormatter()
+//        formatter.locale = Locale(identifier: "en_US")
+//        let myStringafd = formatter.string(from: Date())
+//        changeDateButton.text = formatter.string(from: Date())
     }
     
     
@@ -116,10 +124,7 @@ class ConcentricCirclesViewController: UIViewController {
         let tickLSeconds:CGFloat = 16.0
         
 
-        
-
-        
-         // 3. Update the tickers
+        // 3. Update the tickers
         // add tickers for seconds, mins, and hours here
         hours = Ticker(numOfTicks: 24, tickLength: tickLHours, frame: hoursRect)
         minutes = Ticker(numOfTicks: 60, tickLength: tickLMinutes, frame: minutesRect)
@@ -143,9 +148,7 @@ class ConcentricCirclesViewController: UIViewController {
         hours.initializeStatus(howMany: hoursLeft)
         minutes.initializeStatus(howMany: minutesLeft)
         seconds.initializeStatus(howMany: secondsLeft)
-        //
         pieFillView.setDaysLeft(daysLeft: Int(daysLeft))
-
     }
 
     
