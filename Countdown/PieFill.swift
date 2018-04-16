@@ -10,8 +10,8 @@ import UIKit
 
 class PieFill: UIView {
     
-    var totalDays: Int = 0
-    var daysLeft: Int = 0
+    var totalDays: CGFloat = 6.0
+    var daysLeft: CGFloat = 3.0
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,13 +23,24 @@ class PieFill: UIView {
     }
     
     
-    func initialDaysLeft(initialDaysLeft: Int) {
+    func initialDaysLeft(initialDaysLeft: CGFloat) {
         // set the property for the number of segments originally
         self.totalDays = initialDaysLeft
     }
     
-    func setDaysLeft(daysLeft: Int) {
+    func setTotalDays(totalDays: CGFloat) {
+        self.totalDays = totalDays
+    }
+    
+    func setDaysLeft(daysLeft: CGFloat) {
         self.daysLeft = daysLeft
+    }
+    
+    func updateFill(daysLeft: CGFloat, totalsDays: CGFloat) {
+        setDaysLeft(daysLeft: daysLeft)
+        setTotalDays(totalDays: totalDays)
+        
+        self.setNeedsDisplay()
     }
     
     
@@ -55,10 +66,10 @@ class PieFill: UIView {
         
         // update the end angle of the segment
         // set a dummy size just so that we can see in the example
-        var endAngle:CGFloat = startAngle + 2 * .pi * 0.5
+        var endAngle:CGFloat = startAngle + .pi
         
         if totalDays > 0 {
-            let percentageLeft:CGFloat = CGFloat(daysLeft / totalDays)
+            let percentageLeft = daysLeft/totalDays
             endAngle = startAngle + 2 * .pi * percentageLeft
         }
         
@@ -70,8 +81,6 @@ class PieFill: UIView {
         
         // fill segment
         ctx?.fillPath()
-
-
     }
     
 

@@ -25,6 +25,8 @@ class ConcentricCirclesViewController: UIViewController {
     var hours = Ticker()
     var minutes = Ticker()
     var seconds = Ticker()
+    var pieFillView = PieFill()
+    
     
     var daysLeft: Int! = 0
     var hoursLeft: Int! = 0
@@ -56,7 +58,7 @@ class ConcentricCirclesViewController: UIViewController {
                 
                 // set the style of the button text
                 formatter.locale = Locale(identifier: "en_US")
-                let myStringafd = formatter.string(from: Date())
+                let myStringafd = formatter.string(from: countdownDate)
                 changeDateButton.setTitle(myStringafd, for: UIControlState.normal)
                 
         
@@ -65,6 +67,9 @@ class ConcentricCirclesViewController: UIViewController {
                 
                 // start the countdown
                 Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ConcentricCirclesViewController.updateTickers), userInfo: nil, repeats: true)
+
+                
+                
             } else {
                 print("the stored date has passed")
 
@@ -173,26 +178,16 @@ class ConcentricCirclesViewController: UIViewController {
         hours = Ticker(numOfTicks: 24, tickLength: tickLHours, frame: hoursRect)
         minutes = Ticker(numOfTicks: 60, tickLength: tickLMinutes, frame: minutesRect)
         seconds = Ticker(numOfTicks: 60, tickLength: tickLSeconds, frame: secondsRect)
-        
-        var pieFillView = PieFill()
         pieFillView.frame = pieRect
         
         
-        // 4. Add the tickers
+        // 4. Add the subviews
         self.view.addSubview(seconds)
         self.view.addSubview(minutes)
         self.view.addSubview(hours)
         self.view.addSubview(pieFillView)
         
         
-        // 5. set the dates
-        // Figure out the difference between the target date and right now
-        updateTickers()
-        
-        hours.initializeStatus(howMany: hoursLeft)
-        minutes.initializeStatus(howMany: minutesLeft)
-        seconds.initializeStatus(howMany: secondsLeft)
-        pieFillView.setDaysLeft(daysLeft: Int(daysLeft))
     }
 
     
@@ -226,6 +221,7 @@ class ConcentricCirclesViewController: UIViewController {
         hours.updateStatus(howMany: hoursLeft)
         minutes.updateStatus(howMany: minutesLeft)
         seconds.updateStatus(howMany: secondsLeft)
+        pieFillView.updateFill(daysLeft: CGFloat(daysLeft), totalsDays: CGFloat(daysLeft))
     }
     
     
@@ -265,9 +261,16 @@ class ConcentricCirclesViewController: UIViewController {
         countdownDate = self.datePicker.date
         defaults.set(countdownDate, forKey: "date")
         
+        let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: Date(),
+                                                                     to: countdownDate, options: [])
+        
+        defaults.set(components.day, forKey: "totalTime")
+        
         // do we need to do stuff if there was already a date set?
-        setupCircles()
         updateTickers()
+        formatter.locale = Locale(identifier: "en_US")
+        let myStringafd = formatter.string(from: countdownDate)
+        changeDateButton.setTitle(myStringafd, for: UIControlState.normal)
         
         
         UIView.animate(withDuration: 0.3, animations: { () -> Void in
