@@ -26,6 +26,7 @@ class ConcentricCirclesViewController: UIViewController {
     var minutes = Ticker()
     var seconds = Ticker()
     var pieFillView = PieFill()
+    var daysLeftLabel: UILabel!
     
     
     var daysLeft: Int! = 0
@@ -181,11 +182,30 @@ class ConcentricCirclesViewController: UIViewController {
         pieFillView.frame = pieRect
         
         
+        var labelCenter = CGPoint(x: hours.center.x, y: hours.center.y + 10.0)
+        let label = UILabel(frame: CGRect(center: labelCenter, radius: 30.0))
+        
+        label.font = UIFont.systemFont(ofSize: 12.0)
+        label.text = "days left"
+        label.textAlignment = .center
+        label.textColor = UIColor.white
+        
+        labelCenter = CGPoint(x: hours.center.x, y: hours.center.y - 10.0)
+        
+        daysLeftLabel = UILabel(frame: CGRect(center: labelCenter, radius: 30.0))
+        daysLeftLabel.font = UIFont.systemFont(ofSize: 24.0)
+        daysLeftLabel.text = String(daysLeft)
+        daysLeftLabel.textAlignment = .center
+        daysLeftLabel.textColor = UIColor.white
+        
+        
         // 4. Add the subviews
         self.view.addSubview(seconds)
         self.view.addSubview(minutes)
         self.view.addSubview(hours)
         self.view.addSubview(pieFillView)
+        self.view.addSubview(label)
+        self.view.addSubview(daysLeftLabel)
         
         
     }
@@ -202,7 +222,7 @@ class ConcentricCirclesViewController: UIViewController {
         minutesLeft = components.minute
         secondsLeft = components.second
         
-        
+
 //        print("today's Date: \(today)")
 //        print("countdown Date: \(countdownDate)")
 //
@@ -222,6 +242,8 @@ class ConcentricCirclesViewController: UIViewController {
         minutes.updateStatus(howMany: minutesLeft)
         seconds.updateStatus(howMany: secondsLeft)
         pieFillView.updateFill(daysLeft: CGFloat(daysLeft), totalsDays: CGFloat(daysLeft))
+        
+        daysLeftLabel.text = String(daysLeft)
     }
     
     
