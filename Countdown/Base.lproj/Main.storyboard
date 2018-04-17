@@ -268,7 +268,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aYe-zn-FzS">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
-                                        <color key="backgroundColor" red="0.13145530082897686" green="0.14459952861592043" blue="0.16635975381595836" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" red="0.13333333333333333" green="0.14509803921568626" blue="0.16470588235294117" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <state key="normal" title="Date">
                                             <color key="titleColor" red="0.9912528395652771" green="0.99629396200180054" blue="0.9960363507270813" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
@@ -284,7 +284,6 @@
                                         </date>
                                     </datePicker>
                                 </subviews>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="aYe-zn-FzS" firstAttribute="top" secondItem="ZOm-ab-yWg" secondAttribute="top" id="BWd-oj-biJ"/>
                                     <constraint firstItem="UOZ-8A-1Af" firstAttribute="width" secondItem="ZOm-ab-yWg" secondAttribute="width" id="TBY-V1-XnE"/>

@@ -44,6 +44,7 @@ class ConcentricCirclesViewController: UIViewController {
         // set the style for the datepicker, and the date control
         datePickerChooserStyle()
         
+        
         // if a date is already stored in user defaults, use it
         if let myDate = defaults.object(forKey: "date") {
             thereWasAlreadyDate = true
@@ -267,9 +268,10 @@ class ConcentricCirclesViewController: UIViewController {
     
             
             
-            self.datePicker.alpha = 1
             self.bottomOfDateContainerConstraint.constant = 0
-            
+            self.changeDateButton.backgroundColor = UIColor(rgb: 0x22252A)
+            self.datePicker.alpha = 1.0
+
             self.view.layoutIfNeeded()
             
             
@@ -306,10 +308,10 @@ class ConcentricCirclesViewController: UIViewController {
             //            self.countdownContainerVerticalTopConstraint.priority = UILayoutPriority(rawValue: 250)
             
             
-            self.datePicker.alpha = 0
             self.bottomOfDateContainerConstraint.constant = 30-(self.dateChangeContainerView.frame.height)
-            
-            
+            self.changeDateButton.backgroundColor = UIColor.clear
+            self.datePicker.alpha = 0.0
+
             self.view.layoutIfNeeded()
             
         }, completion: { (Bool) -> Void in
