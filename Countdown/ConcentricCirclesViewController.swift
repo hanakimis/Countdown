@@ -94,24 +94,11 @@ class ConcentricCirclesViewController: UIViewController {
         
 
     }
-    
+
     
     @IBAction func tapDateButton(_ sender: Any) {
-        today = Date()
-        let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: today,
-                                                                     to: self.datePicker.date, options: [])
-        
-        daysLeft = components.day
-        hoursLeft = components.hour
-        minutesLeft = components.minute
-        secondsLeft = components.second
+        updateDifferenceTime()
      
-//        print("number of days left \(daysLeft)")
-//        print("number of hours left \(hoursLeft)")
-//        print("number of minutes left \(minutesLeft)")
-//        print("number of seconds left \(secondsLeft)")
-        
-        
         // clicking this button should either open or close the date-picker
         // probably should check to make sure the date chosen is logical
         if (self.datePickerContainerOpen) {
@@ -208,30 +195,17 @@ class ConcentricCirclesViewController: UIViewController {
         self.view.addSubview(label)
         self.view.addSubview(daysLeftLabel)
         
-        
     }
 
     
     func updateDifferenceTime() {
         today = Date()
-        let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: today,
-                                                                     to: countdownDate, options: [])
+        let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: today, to: countdownDate, options: [])
         
-
         daysLeft = components.day
         hoursLeft = components.hour
         minutesLeft = components.minute
         secondsLeft = components.second
-        
-
-//        print("today's Date: \(today)")
-//        print("countdown Date: \(countdownDate)")
-//
-//        print("days left \(daysLeft)")
-//        print("hours left \(hoursLeft)")
-//        print("minutes left \(minutesLeft)")
-//        print("seconds left \(secondsLeft)")
-
     }
     
 
@@ -255,18 +229,7 @@ class ConcentricCirclesViewController: UIViewController {
         // need to also check to see if the stored date has passed
         //self.datePicker.date =  Calendar.current.date(byAdding: .day, value: 1, to: Date())!
         
-        
-        
         UIView.animate(withDuration: 0.3, animations: { () -> Void in
-            
-            //            self.toggleDateChanger.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
-            //            self.toggleDateChangerSmallWidthConstraint.priority = UILayoutPriority(rawValue: 750)
-            //            self.toggleDateChangerFullWidthConstraint.priority = UILayoutPriority(rawValue: 250)
-            
-            //            self.countdownContainerVerticalCenterConstraint.priority = UILayoutPriority(rawValue: 250)
-            //            self.countdownContainerVerticalTopConstraint.priority = UILayoutPriority(rawValue: 750)
-    
-            
             
             self.bottomOfDateContainerConstraint.constant = 0
             self.changeDateButton.backgroundColor = UIColor(rgb: 0x22252A)
@@ -287,8 +250,7 @@ class ConcentricCirclesViewController: UIViewController {
         countdownDate = self.datePicker.date
         defaults.set(countdownDate, forKey: "date")
         
-        let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: Date(),
-                                                                     to: countdownDate, options: [])
+        let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: Date(), to: countdownDate, options: [])
         
         defaults.set(components.day, forKey: "totalTime")
         
@@ -300,13 +262,6 @@ class ConcentricCirclesViewController: UIViewController {
         
         
         UIView.animate(withDuration: 0.3, animations: { () -> Void in
-            
-            //            self.toggleDateChangerSmallWidthConstraint.priority = UILayoutPriority(rawValue: 250)
-            //            self.toggleDateChangerFullWidthConstraint.priority = UILayoutPriority(rawValue: 750)
-            
-            //            self.countdownContainerVerticalCenterConstraint.priority = UILayoutPriority(rawValue: 750)
-            //            self.countdownContainerVerticalTopConstraint.priority = UILayoutPriority(rawValue: 250)
-            
             
             self.bottomOfDateContainerConstraint.constant = 30-(self.dateChangeContainerView.frame.height)
             self.changeDateButton.backgroundColor = UIColor.clear
