@@ -69,7 +69,7 @@ class ConcentricCirclesViewController: UIViewController {
                 // start the countdown
                 Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ConcentricCirclesViewController.updateTickers), userInfo: nil, repeats: true)
 
-                
+                closeDatePicker()
                 
             } else {
                 print("the stored date has passed")
@@ -264,8 +264,10 @@ class ConcentricCirclesViewController: UIViewController {
             
             //            self.countdownContainerVerticalCenterConstraint.priority = UILayoutPriority(rawValue: 250)
             //            self.countdownContainerVerticalTopConstraint.priority = UILayoutPriority(rawValue: 750)
+    
             
-            self.dateChangeContainerView.alpha = 1
+            
+            self.datePicker.alpha = 1
             self.bottomOfDateContainerConstraint.constant = 0
             
             self.view.layoutIfNeeded()
@@ -304,8 +306,8 @@ class ConcentricCirclesViewController: UIViewController {
             //            self.countdownContainerVerticalTopConstraint.priority = UILayoutPriority(rawValue: 250)
             
             
-            self.dateChangeContainerView.alpha = 0
-            self.bottomOfDateContainerConstraint.constant = -(self.dateChangeContainerView.frame.height)
+            self.datePicker.alpha = 0
+            self.bottomOfDateContainerConstraint.constant = 30-(self.dateChangeContainerView.frame.height)
             
             
             self.view.layoutIfNeeded()

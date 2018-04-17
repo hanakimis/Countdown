@@ -264,10 +264,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZOm-ab-yWg" userLabel="Update Date container">
-                                <rect key="frame" x="0.0" y="507" width="375" height="160"/>
+                                <rect key="frame" x="0.0" y="421" width="375" height="246"/>
                                 <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aYe-zn-FzS">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                        <color key="backgroundColor" red="0.13145530082897686" green="0.14459952861592043" blue="0.16635975381595836" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <state key="normal" title="Date">
+                                            <color key="titleColor" red="0.9912528395652771" green="0.99629396200180054" blue="0.9960363507270813" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tapDateButton:" destination="rve-gK-muZ" eventType="touchUpInside" id="ACT-i7-GoI"/>
+                                        </connections>
+                                    </button>
                                     <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="UOZ-8A-1Af">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="160"/>
+                                        <rect key="frame" x="0.0" y="30" width="375" height="216"/>
                                         <color key="tintColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <date key="date" timeIntervalSinceReferenceDate="544245999.99235296">
                                             <!--2018-04-01 03:26:39 +0000-->
@@ -276,27 +286,18 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="UOZ-8A-1Af" secondAttribute="bottom" id="8Y5-QU-gHq"/>
-                                    <constraint firstItem="UOZ-8A-1Af" firstAttribute="width" secondItem="ZOm-ab-yWg" secondAttribute="width" id="YM3-LX-i74"/>
-                                    <constraint firstItem="UOZ-8A-1Af" firstAttribute="centerX" secondItem="ZOm-ab-yWg" secondAttribute="centerX" id="j6r-V3-SlE"/>
-                                    <constraint firstAttribute="height" constant="160" id="p8F-w3-EPy"/>
-                                    <constraint firstItem="UOZ-8A-1Af" firstAttribute="height" secondItem="ZOm-ab-yWg" secondAttribute="height" id="yHV-r2-Vwb"/>
+                                    <constraint firstItem="aYe-zn-FzS" firstAttribute="top" secondItem="ZOm-ab-yWg" secondAttribute="top" id="BWd-oj-biJ"/>
+                                    <constraint firstItem="UOZ-8A-1Af" firstAttribute="width" secondItem="ZOm-ab-yWg" secondAttribute="width" id="TBY-V1-XnE"/>
+                                    <constraint firstAttribute="bottom" secondItem="UOZ-8A-1Af" secondAttribute="bottom" id="Y4e-4s-Wk6"/>
+                                    <constraint firstItem="aYe-zn-FzS" firstAttribute="width" secondItem="ZOm-ab-yWg" secondAttribute="width" id="uKb-OM-EZt"/>
+                                    <constraint firstItem="UOZ-8A-1Af" firstAttribute="centerX" secondItem="ZOm-ab-yWg" secondAttribute="centerX" id="wBT-pE-kSc"/>
+                                    <constraint firstItem="aYe-zn-FzS" firstAttribute="centerX" secondItem="ZOm-ab-yWg" secondAttribute="centerX" id="xJr-6X-wCp"/>
+                                    <constraint firstItem="UOZ-8A-1Af" firstAttribute="top" secondItem="aYe-zn-FzS" secondAttribute="bottom" id="zhY-gM-fsf"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJ3-fj-JHO">
                                 <rect key="frame" x="37" y="129" width="300" height="299"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aYe-zn-FzS">
-                                <rect key="frame" x="0.0" y="478" width="375" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.13145530082897686" green="0.14459952861592043" blue="0.16635975381595836" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <state key="normal" title="Date">
-                                    <color key="titleColor" red="0.9912528395652771" green="0.99629396200180054" blue="0.9960363507270813" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="tapDateButton:" destination="rve-gK-muZ" eventType="touchUpInside" id="ACT-i7-GoI"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.091519094502987106" green="0.10120718409311484" blue="0.1149746601654188" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
