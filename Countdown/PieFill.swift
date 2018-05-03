@@ -55,9 +55,6 @@ class PieFill: UIView {
         // center of the view
         let viewCenter = CGPoint(x: bounds.size.width * 0.5, y: bounds.size.height * 0.5)
         
-        // enumerate the total value of the segments by using reduce to sum them
-//        let valueCount = segments.reduce(0, {$0 + $1.value})
-        
         // the starting angle is -90 degrees (top of the circle, as the context is flipped). By default, 0 is the right hand side of the circle, with the positive angle being in an anti-clockwise direction (same as a unit circle in maths).
         let startAngle = -CGFloat.pi * 0.5
 

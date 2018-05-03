@@ -62,9 +62,7 @@ class Ticker: UIView {
         }
     }
     
-    func initializeStatus(howMany: Int) {
-        // status defaults
-        
+    func initializeStatus(howMany: Int) {        
         for i in 0..<howMany {
             tickMarks[i].turnOn()
         }
@@ -79,13 +77,13 @@ class Ticker: UIView {
         
         
         initializeStatus(howMany: howMany)
-//        if howMany == 0 {
-//            for i in 0..<numOfTicks {
-//                tickMarks[i].turnOn()
-//            }
-//        } else {
-//            tickMarks[howMany].turnOff()
-//        }
+        if howMany == 0 {
+            for i in 0..<numOfTicks {
+                tickMarks[i].turnOn()
+            }
+        } else {
+            tickMarks[howMany].turnOff()
+        }
     }
     
     
@@ -110,25 +108,5 @@ class Ticker: UIView {
         return self.center
     }
     
-    
-//    func onTap(tapGestureRecognzier: UITapGestureRecognizer) {
-//        var location = tapGestureRecognzier.location(in: self)
-//        
-//        // Translate location so that (0, 0) is in the center of the radar chart
-//        location = CGPoint(x: location.x - frame.size.width / 2, y: frame.size.height / 2 - location.y)
-//        
-//        var angle = Double(atan(location.x / location.y)) * 180 / M_PI
-//        if location.y < 0 {
-//            angle = angle + 180
-//        } else if location.x < 0 {
-//            angle = angle + 360
-//        }
-//        
-//        let degreesPerIndex = 360.0 / Double(numOfTics)
-//        let index = Int(round(angle / degreesPerIndex)) % numOfTics
-//        
-//        print(index)
-//        
-//    }
     
 }

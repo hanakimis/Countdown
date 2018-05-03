@@ -41,12 +41,18 @@ class ConcentricCirclesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // set the style for the datepicker, and the date control
-        datePickerChooserStyle()
+        // setup datepicker style
+        formatter.dateStyle = .medium
+        self.datePicker.setValue(UIColor.white, forKeyPath: "textColor")
+        self.datePicker.minimumDate = today
+        datePickerContainerOpen = false
         
         
         // if a date is already stored in user defaults, use it
-        if let myDate = defaults.object(forKey: "date") {
+        
+        
+        if (defaults.object(forKey: "YourKey") != nil) {
+            let myDate = defaults.object(forKey: "date")
             thereWasAlreadyDate = true
             print("There is a stored date")
 
@@ -79,17 +85,15 @@ class ConcentricCirclesViewController: UIViewController {
                 // open the datepicker
 
                 displayDatePassed()
-                setDateStartup()
+                openDatePicker()
             }
             
         } else {
             print("NO stored date exists")
             // this means date hasn't been set in User Defaults
-            // open the datepicker, and setup to input a date
-            // Temporary setupL: countdownDate = Calendar.current.date(byAdding: .day, value: 1, to: today)!
+            // do something for setup of the circles
             
-
-            setDateStartup()
+            openDatePicker()
         }
         
 
@@ -97,47 +101,20 @@ class ConcentricCirclesViewController: UIViewController {
 
     
     @IBAction func tapDateButton(_ sender: Any) {
-        updateDifferenceTime()
-     
-        // clicking this button should either open or close the date-picker
-        // probably should check to make sure the date chosen is logical
         if (self.datePickerContainerOpen) {
             closeDatePicker()
         } else {
             openDatePicker()
         }
-
-        
-    }
-    
-    
-    
-    
-    // setup the date style and other UI elements for the ViewController
-    func datePickerChooserStyle() {
-        // setup datepicker style
-        formatter.dateStyle = .medium
-        self.datePicker.setValue(UIColor.white, forKeyPath: "textColor")
-        self.datePicker.minimumDate = today
-        datePickerContainerOpen = false
     }
     
     
     func displayDatePassed() {
-        print("date has passed")
-        // show the stuffs
+        // have a message box in the middle
+        // set label: you made it
+        // confetti
         
-    }
-    
-    
-    // this basically pushes the users to add in a date
-    func setDateStartup() {
-        // need to intialize the timeleft
-        // pieFillView.initialDaysLeft(initialDaysLeft: Int())
-        // use nsdefaults to store initialDaysLeft
-        
-        openDatePicker()
-
+        // clear NS Defaults
     }
     
     
@@ -147,7 +124,6 @@ class ConcentricCirclesViewController: UIViewController {
         // 0. Set size and location of frames
         circlesContainerView.frame.size.width = self.view.frame.width * 0.8
         circlesContainerView.frame.size.height = circlesContainerView.frame.width
-        
         let minutesSize = circlesContainerView.frame.width * 0.8
         let hoursSize = circlesContainerView.frame.width * 0.6
         let pieSize = circlesContainerView.frame.width * 0.6 * 0.6
@@ -161,15 +137,15 @@ class ConcentricCirclesViewController: UIViewController {
         let tickLMinutes:CGFloat = 20.0
         let tickLSeconds:CGFloat = 16.0
         
-
-        // 3. Update the tickers
-        // add tickers for seconds, mins, and hours here
+        
+        // 1. Setup the actual UI Views for each of the visualizations
         hours = Ticker(numOfTicks: 24, tickLength: tickLHours, frame: hoursRect)
         minutes = Ticker(numOfTicks: 60, tickLength: tickLMinutes, frame: minutesRect)
         seconds = Ticker(numOfTicks: 60, tickLength: tickLSeconds, frame: secondsRect)
         pieFillView.frame = pieRect
         
         
+        // 2. Update the center labels
         var labelCenter = CGPoint(x: hours.center.x, y: hours.center.y + 10.0)
         let label = UILabel(frame: CGRect(center: labelCenter, radius: 30.0))
         
@@ -187,7 +163,8 @@ class ConcentricCirclesViewController: UIViewController {
         daysLeftLabel.textColor = UIColor.white
         
         
-        // 4. Add the subviews
+        // 3. Add the views to this view
+        //    Probably should refactor to add to circlesContainerView instead of this VC's view
         self.view.addSubview(seconds)
         self.view.addSubview(minutes)
         self.view.addSubview(hours)
@@ -197,8 +174,8 @@ class ConcentricCirclesViewController: UIViewController {
         
     }
 
-    
-    func updateDifferenceTime() {
+
+    @objc func updateTickers() {
         today = Date()
         let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: today, to: countdownDate, options: [])
         
@@ -206,37 +183,25 @@ class ConcentricCirclesViewController: UIViewController {
         hoursLeft = components.hour
         minutesLeft = components.minute
         secondsLeft = components.second
-    }
-    
-
-    @objc func updateTickers() {
-        // eventually move the uploading of the tickers here
-        updateDifferenceTime()
         
         hours.updateStatus(howMany: hoursLeft)
         minutes.updateStatus(howMany: minutesLeft)
         seconds.updateStatus(howMany: secondsLeft)
         pieFillView.updateFill(daysLeft: CGFloat(daysLeft), totalsDays: CGFloat(daysLeft))
-        
         daysLeftLabel.text = String(daysLeft)
     }
     
     
     
     func openDatePicker() {
-        
-        // check to see if the date is already been there
-        // need to also check to see if the stored date has passed
-        //self.datePicker.date =  Calendar.current.date(byAdding: .day, value: 1, to: Date())!
-        
         UIView.animate(withDuration: 0.3, animations: { () -> Void in
-            
+            // show the date picker by moving it up
             self.bottomOfDateContainerConstraint.constant = 0
             self.changeDateButton.backgroundColor = UIColor(rgb: 0x22252A)
             self.datePicker.alpha = 1.0
-
             self.view.layoutIfNeeded()
             
+            // once we update the view that we add the circles into, we can move these more easily
             
         }, completion: { (Bool) -> Void in
             self.datePickerContainerOpen = true
@@ -248,10 +213,8 @@ class ConcentricCirclesViewController: UIViewController {
         // update the target date
         // update the time left
         countdownDate = self.datePicker.date
-        defaults.set(countdownDate, forKey: "date")
-        
         let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: Date(), to: countdownDate, options: [])
-        
+        defaults.set(components.day, forKey: "date")
         defaults.set(components.day, forKey: "totalTime")
         
         // do we need to do stuff if there was already a date set?
@@ -260,18 +223,14 @@ class ConcentricCirclesViewController: UIViewController {
         let myStringafd = formatter.string(from: countdownDate)
         changeDateButton.setTitle(myStringafd, for: UIControlState.normal)
         
-        
         UIView.animate(withDuration: 0.3, animations: { () -> Void in
-            
             self.bottomOfDateContainerConstraint.constant = 30-(self.dateChangeContainerView.frame.height)
             self.changeDateButton.backgroundColor = UIColor.clear
             self.datePicker.alpha = 0.0
-
             self.view.layoutIfNeeded()
             
         }, completion: { (Bool) -> Void in
             self.datePickerContainerOpen = false
-            Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ConcentricCirclesViewController.updateTickers), userInfo: nil, repeats: true)
         })
     }
     
@@ -282,7 +241,6 @@ class ConcentricCirclesViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
     // MARK: - Navigation
