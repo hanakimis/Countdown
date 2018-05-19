@@ -176,11 +176,7 @@ class ConcentricCirclesViewController: UIViewController {
         minutes = Ticker(numOfTicks: 59, tickLength: tickLMinutes, frame: minutesRect)
         seconds = Ticker(numOfTicks: 59, tickLength: tickLSeconds, frame: secondsRect)
         pieFillView.frame = pieRect
-        
-        hours.resetTickMarks()
-        minutes.resetTickMarks()
-        seconds.resetTickMarks()
-        
+                
         
         // 2. Update the center labels
         var labelCenter = CGPoint(x: hours.center.x, y: hours.center.y + 10.0)
