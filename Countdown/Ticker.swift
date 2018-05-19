@@ -25,24 +25,13 @@ extension CGRect {
 
 class Ticker: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
-
     var tickMarks = [TickMark]() // should be an array
     var numOfTicks = 1 // how many tick marks to have
     var status = 0 // how many tick marks should be "on"; defaults to none
     
-    
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-    
     
     init(numOfTicks: Int, tickLength: CGFloat, frame:CGRect) {
         super.init(frame: CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: frame.height))
@@ -62,6 +51,14 @@ class Ticker: UIView {
         }
     }
     
+    @objc func rotationEnd() -> CGFloat {
+        var endAngle:CGFloat = 0.0
+        
+        // need to calculate here based on the status and number of ticks
+        
+        return endAngle
+    }
+    
     func resetTickMarks() {
         for i in 0..<numOfTicks {
             tickMarks[i].turnOff()
@@ -69,11 +66,10 @@ class Ticker: UIView {
     }
     
     func initializeStatus(howMany: Int) {
-        
         status = howMany
         
         for i in 0..<howMany {
-            tickMarks[i].turnOn()
+            tickMarks[i].animateOn()
         }
         
         for i in howMany..<numOfTicks {
@@ -81,10 +77,8 @@ class Ticker: UIView {
         }
     }
     
-    
     // update the status of the current ticker to show only this many ON
     func updateStatus(howMany: Int) {
-        
         status = howMany
         
         if howMany == numOfTicks {
@@ -92,7 +86,7 @@ class Ticker: UIView {
                 tickMarks[i].turnOn()
             }
         } else {
-            tickMarks[howMany].turnOff()
+            tickMarks[howMany].animateOff()
         }
         
     }

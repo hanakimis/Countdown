@@ -107,13 +107,21 @@ class TickMark: UIView {
     }
     
     func turnOff() {
-        
-        UIView.animate(withDuration: 0.5) { 
-            self.markStatus.frame.size.height = 0.0
-//            self.markStatus.frame.origin.y = tickLength
+        self.markStatus.frame.size.height = 0.0
+//        self.markStatus.frame.origin.y = tickLength
+    }
+    
+    func animateOn() {
+        UIView.animate(withDuration: 0.2) {
+            self.markStatus.frame.size.height = self.tickLength
         }
-        
-        
+    }
+    
+    func animateOff() {
+        UIView.animate(withDuration: 0.5) {
+            self.markStatus.frame.size.height = 0.0
+           
+        }
     }
     
 }

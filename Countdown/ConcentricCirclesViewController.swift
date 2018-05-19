@@ -53,7 +53,7 @@ class ConcentricCirclesViewController: UIViewController {
         setupCircles()
         
         // if a date is already stored in user defaults, use it
-        if (defaults.object(forKey: "YourKey") != nil) {
+        if (defaults.object(forKey: "date") != nil) {
             let myDate = defaults.object(forKey: "date")
             thereWasAlreadyDate = true
             print("There is a stored date")
@@ -207,6 +207,34 @@ class ConcentricCirclesViewController: UIViewController {
         
     }
 
+    func initializeTickers(daysLeft: Int, hoursLeft: Int, minutesLeft: Int, secondsLeft: Int) {
+        // rotate views
+        
+        pieFillView.updateFill(daysLeft: CGFloat(daysLeft), totalDaysSet: CGFloat(daysLeft)) // this should really be an initialize function
+        hours.initializeStatus(howMany: hoursLeft)
+        minutes.initializeStatus(howMany: minutesLeft)
+        seconds.initializeStatus(howMany: secondsLeft)
+        
+        
+        UIView.animate(withDuration: 0.3) {
+            // rotate hours based on days pie
+            var rotation = self.pieFillView.rotationEnd()
+            self.hours.transform = CGAffineTransform(rotationAngle: rotation)
+            
+            // rotate minutes based on hours
+            rotation += self.hours.rotationEnd()
+            self.minutes.transform = CGAffineTransform(rotationAngle: rotation)
+            
+            // rotate seconds based on minutes
+            rotation += self.minutes.rotationEnd()
+            self.seconds.transform = CGAffineTransform(rotationAngle: rotation)
+        }
+        
+        
+        
+        
+
+    }
 
     @objc func updateTickers() {
         today = Date()
@@ -217,24 +245,30 @@ class ConcentricCirclesViewController: UIViewController {
         minutesLeft = components.minute
         secondsLeft = components.second
         
-//        print("days left: \(daysLeft)")
-//        print("hours left: \(hoursLeft)")
-//        print("mins left: \(minutesLeft)")
-//        print("secs left: \(secondsLeft)")
-
+        updateTimeLeftLabel(days: daysLeft, hours: hoursLeft, mins: minutesLeft, secs: secondsLeft)
         
-        if (daysLeft > 0) {
+        
+        // when we set at zero, do a shift for the inside ones
+        hours.updateStatus(howMany: hoursLeft)
+        minutes.updateStatus(howMany: minutesLeft)
+        seconds.updateStatus(howMany: secondsLeft)
+        pieFillView.updateFill(daysLeft: CGFloat(daysLeft), totalDaysSet: CGFloat(daysLeft))
+    }
+    
+    
+    func updateTimeLeftLabel(days: Int, hours: Int, mins: Int, secs: Int) {
+        if (days > 0) {
             timeLeftScaleLabel.text = "days left"
-            timeLeftLabel.text = String(daysLeft)
-        } else if (hoursLeft > 0) {
+            timeLeftLabel.text = String(days)
+        } else if (hours > 0) {
             timeLeftScaleLabel.text = "hours left"
-            timeLeftLabel.text = String(hoursLeft)
-        } else if (minutesLeft > 0) {
+            timeLeftLabel.text = String(hours)
+        } else if (mins > 0) {
             timeLeftScaleLabel.text = "mins left"
-            timeLeftLabel.text = String(minutesLeft)
-        } else if (secondsLeft > 0) {
+            timeLeftLabel.text = String(mins)
+        } else if (secs > 0) {
             timeLeftScaleLabel.text = "secs left"
-            timeLeftLabel.text = String(secondsLeft)
+            timeLeftLabel.text = String(secs)
         } else {
             // stop timer
             if timer != nil {
@@ -245,12 +279,7 @@ class ConcentricCirclesViewController: UIViewController {
             print("Time has ended")
         }
         
-        hours.updateStatus(howMany: hoursLeft)
-        minutes.updateStatus(howMany: minutesLeft)
-        seconds.updateStatus(howMany: secondsLeft)
-        pieFillView.updateFill(daysLeft: CGFloat(daysLeft), totalsDays: CGFloat(daysLeft))
     }
-    
     
     
     func openDatePicker() {
@@ -269,11 +298,16 @@ class ConcentricCirclesViewController: UIViewController {
     }
     
     func closeDatePicker() {
+        countdownDate = self.datePicker.date
+        let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: Date(), to: countdownDate, options: [])
+        daysLeft = components.day
+        hoursLeft = components.hour
+        minutesLeft = components.minute
+        secondsLeft = components.second
+        
         
         // update the target date
         // update the time left
-        countdownDate = self.datePicker.date
-        let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: Date(), to: countdownDate, options: [])
         defaults.set(countdownDate, forKey: "date")
         defaults.set(components.day, forKey: "totalTime")
         
@@ -289,11 +323,7 @@ class ConcentricCirclesViewController: UIViewController {
             self.view.layoutIfNeeded()
             
         }, completion: { (Bool) -> Void in
-            self.hours.initializeStatus(howMany: components.hour!)
-            self.minutes.initializeStatus(howMany: components.minute!)
-            self.seconds.initializeStatus(howMany: components.second!)
-
-            
+            self.initializeTickers(daysLeft: self.daysLeft, hoursLeft: self.hoursLeft, minutesLeft: self.minutesLeft, secondsLeft: self.secondsLeft)
             self.startTimer()
             self.datePickerContainerOpen = false
         })

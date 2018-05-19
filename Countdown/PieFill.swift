@@ -30,19 +30,32 @@ class PieFill: UIView {
         self.totalDays = initialDaysLeft
     }
     
-    func setTotalDays(totalDays: CGFloat) {
-        self.totalDays = totalDays
-    }
-    
-    func setDaysLeft(daysLeft: CGFloat) {
+
+    func updateFill(daysLeft: CGFloat, totalDaysSet: CGFloat) {
+        self.totalDays = totalDaysSet
         self.daysLeft = daysLeft
-    }
-    
-    func updateFill(daysLeft: CGFloat, totalsDays: CGFloat) {
-        setDaysLeft(daysLeft: daysLeft)
-        setTotalDays(totalDays: totalDays)
         
         self.setNeedsDisplay()
+    }
+    
+    @objc func rotationEnd() -> CGFloat {
+        var endAngle:CGFloat = 0.0
+        
+        if self.totalDays > 0 {
+            // just make the circle nice
+            if totalDays <= 7 {
+                totalDays = 7
+            }
+            
+            let percentageLeft = daysLeft/totalDays
+            
+            // the starting angle is -90 degrees (top of the circle, as the context is flipped). By default, 0 is the right hand side of the circle, with the positive angle being in an anti-clockwise direction (same as a unit circle in maths).
+            let startAngle = -CGFloat.pi * 0.5
+
+            endAngle = startAngle + 2 * .pi * percentageLeft
+        }
+        
+        return endAngle
     }
     
     
@@ -70,10 +83,12 @@ class PieFill: UIView {
         
         
         if totalDays > 0 {
+            // just make the circle nice
+            if totalDays <= 7 {
+                totalDays = 7
+            }
+
             let percentageLeft = daysLeft/totalDays
-            
-            print("totalDays \(totalDays)")
-            
             endAngle = startAngle + 2 * .pi * percentageLeft
         }
         
