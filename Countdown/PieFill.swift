@@ -10,8 +10,10 @@ import UIKit
 
 class PieFill: UIView {
     
-    var totalDays: CGFloat = 6.0
-    var daysLeft: CGFloat = 3.0
+    var totalDays: CGFloat = 0.0
+    var daysLeft: CGFloat = 0.0
+    var fillColor = UIColor(rgb: 0x2183B6)
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -58,15 +60,20 @@ class PieFill: UIView {
         // the starting angle is -90 degrees (top of the circle, as the context is flipped). By default, 0 is the right hand side of the circle, with the positive angle being in an anti-clockwise direction (same as a unit circle in maths).
         let startAngle = -CGFloat.pi * 0.5
 
-        ctx?.setFillColor(UIColor(rgb: 0x2183B6).cgColor)
+        ctx?.setFillColor(fillColor.cgColor)
         
         
         // update the end angle of the segment
         // set a dummy size just so that we can see in the example
-        var endAngle:CGFloat = startAngle + .pi
+//        var endAngle:CGFloat = startAngle + (.pi * 0)
+        var endAngle:CGFloat = startAngle
+        
         
         if totalDays > 0 {
             let percentageLeft = daysLeft/totalDays
+            
+            print("totalDays \(totalDays)")
+            
             endAngle = startAngle + 2 * .pi * percentageLeft
         }
         

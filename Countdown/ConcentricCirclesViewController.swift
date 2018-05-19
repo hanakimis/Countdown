@@ -26,8 +26,11 @@ class ConcentricCirclesViewController: UIViewController {
     var minutes = Ticker()
     var seconds = Ticker()
     var pieFillView = PieFill()
-    var daysLeftLabel: UILabel!
+    var timeLeftLabel: UILabel!
+    var timeLeftScaleLabel: UILabel!
     
+    var completedView: UIView!
+    var timer : Timer?
     
     var daysLeft: Int! = 0
     var hoursLeft: Int! = 0
@@ -47,10 +50,9 @@ class ConcentricCirclesViewController: UIViewController {
         self.datePicker.minimumDate = today
         datePickerContainerOpen = false
         
+        setupCircles()
         
         // if a date is already stored in user defaults, use it
-        
-        
         if (defaults.object(forKey: "YourKey") != nil) {
             let myDate = defaults.object(forKey: "date")
             thereWasAlreadyDate = true
@@ -69,13 +71,9 @@ class ConcentricCirclesViewController: UIViewController {
                 let myStringafd = formatter.string(from: countdownDate)
                 changeDateButton.setTitle(myStringafd, for: UIControlState.normal)
                 
-        
-                // set the circles
-                setupCircles()
                 
                 // start the countdown
-                Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ConcentricCirclesViewController.updateTickers), userInfo: nil, repeats: true)
-
+                startTimer()
                 closeDatePicker()
                 
             } else {
@@ -92,11 +90,10 @@ class ConcentricCirclesViewController: UIViewController {
             print("NO stored date exists")
             // this means date hasn't been set in User Defaults
             // do something for setup of the circles
-            
             openDatePicker()
         }
         
-
+//        displayDatePassed()
     }
 
     
@@ -109,12 +106,48 @@ class ConcentricCirclesViewController: UIViewController {
     }
     
     
+    func startTimer() {
+        if timer == nil {
+            timer =  Timer.scheduledTimer(
+                timeInterval: TimeInterval(0.3),
+                target      : self,
+                selector    : #selector(ConcentricCirclesViewController.updateTickers),
+                userInfo    : nil,
+                repeats     : true)
+        }
+    }
+    
+    
     func displayDatePassed() {
         // have a message box in the middle
         // set label: you made it
         // confetti
         
+        
+        completedView = UIView()
+        completedView.frame.size.width = self.view.frame.width
+        completedView.frame.size.height = self.view.frame.height
+        completedView.frame.origin = self.view.frame.origin
+        completedView.backgroundColor = UIColor.blue
+//        completedView.backgroundColor = UIColor(rgb: 0x2183B6)
+        
+
+        
+        
+        let text = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
+        text.text = "Congrats!"
+        text.textColor = UIColor.red
+        text.font = text.font.withSize(30.0)
+        
+        text.frame.origin = CGPoint(x: 100, y: 100)
+        
+        completedView.addSubview(text)
+        self.view.addSubview(completedView)
+
+        
         // clear NS Defaults
+        UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+        UserDefaults.standard.synchronize()
     }
     
     
@@ -139,28 +172,32 @@ class ConcentricCirclesViewController: UIViewController {
         
         
         // 1. Setup the actual UI Views for each of the visualizations
-        hours = Ticker(numOfTicks: 24, tickLength: tickLHours, frame: hoursRect)
-        minutes = Ticker(numOfTicks: 60, tickLength: tickLMinutes, frame: minutesRect)
-        seconds = Ticker(numOfTicks: 60, tickLength: tickLSeconds, frame: secondsRect)
+        hours = Ticker(numOfTicks: 23, tickLength: tickLHours, frame: hoursRect)
+        minutes = Ticker(numOfTicks: 59, tickLength: tickLMinutes, frame: minutesRect)
+        seconds = Ticker(numOfTicks: 59, tickLength: tickLSeconds, frame: secondsRect)
         pieFillView.frame = pieRect
+        
+        hours.resetTickMarks()
+        minutes.resetTickMarks()
+        seconds.resetTickMarks()
         
         
         // 2. Update the center labels
         var labelCenter = CGPoint(x: hours.center.x, y: hours.center.y + 10.0)
-        let label = UILabel(frame: CGRect(center: labelCenter, radius: 30.0))
+        timeLeftScaleLabel = UILabel(frame: CGRect(center: labelCenter, radius: 30.0))
         
-        label.font = UIFont.systemFont(ofSize: 12.0)
-        label.text = "days left"
-        label.textAlignment = .center
-        label.textColor = UIColor.white
+        timeLeftScaleLabel.font = UIFont.systemFont(ofSize: 12.0)
+        timeLeftScaleLabel.text = "days left"
+        timeLeftScaleLabel.textAlignment = .center
+        timeLeftScaleLabel.textColor = UIColor.white
         
         labelCenter = CGPoint(x: hours.center.x, y: hours.center.y - 10.0)
         
-        daysLeftLabel = UILabel(frame: CGRect(center: labelCenter, radius: 30.0))
-        daysLeftLabel.font = UIFont.systemFont(ofSize: 24.0)
-        daysLeftLabel.text = String(daysLeft)
-        daysLeftLabel.textAlignment = .center
-        daysLeftLabel.textColor = UIColor.white
+        timeLeftLabel = UILabel(frame: CGRect(center: labelCenter, radius: 30.0))
+        timeLeftLabel.font = UIFont.systemFont(ofSize: 24.0)
+        timeLeftLabel.text = String(daysLeft)
+        timeLeftLabel.textAlignment = .center
+        timeLeftLabel.textColor = UIColor.white
         
         
         // 3. Add the views to this view
@@ -169,8 +206,8 @@ class ConcentricCirclesViewController: UIViewController {
         self.view.addSubview(minutes)
         self.view.addSubview(hours)
         self.view.addSubview(pieFillView)
-        self.view.addSubview(label)
-        self.view.addSubview(daysLeftLabel)
+        self.view.addSubview(timeLeftScaleLabel)
+        self.view.addSubview(timeLeftLabel)
         
     }
 
@@ -184,11 +221,38 @@ class ConcentricCirclesViewController: UIViewController {
         minutesLeft = components.minute
         secondsLeft = components.second
         
+//        print("days left: \(daysLeft)")
+//        print("hours left: \(hoursLeft)")
+//        print("mins left: \(minutesLeft)")
+//        print("secs left: \(secondsLeft)")
+
+        
+        if (daysLeft > 0) {
+            timeLeftScaleLabel.text = "days left"
+            timeLeftLabel.text = String(daysLeft)
+        } else if (hoursLeft > 0) {
+            timeLeftScaleLabel.text = "hours left"
+            timeLeftLabel.text = String(hoursLeft)
+        } else if (minutesLeft > 0) {
+            timeLeftScaleLabel.text = "mins left"
+            timeLeftLabel.text = String(minutesLeft)
+        } else if (secondsLeft > 0) {
+            timeLeftScaleLabel.text = "secs left"
+            timeLeftLabel.text = String(secondsLeft)
+        } else {
+            // stop timer
+            if timer != nil {
+                timer?.invalidate()
+                timer = nil
+            }
+            displayDatePassed()
+            print("Time has ended")
+        }
+        
         hours.updateStatus(howMany: hoursLeft)
         minutes.updateStatus(howMany: minutesLeft)
         seconds.updateStatus(howMany: secondsLeft)
         pieFillView.updateFill(daysLeft: CGFloat(daysLeft), totalsDays: CGFloat(daysLeft))
-        daysLeftLabel.text = String(daysLeft)
     }
     
     
@@ -214,11 +278,10 @@ class ConcentricCirclesViewController: UIViewController {
         // update the time left
         countdownDate = self.datePicker.date
         let components = (Calendar.current as NSCalendar).components([.second, .minute, .hour, .day], from: Date(), to: countdownDate, options: [])
-        defaults.set(components.day, forKey: "date")
+        defaults.set(countdownDate, forKey: "date")
         defaults.set(components.day, forKey: "totalTime")
         
         // do we need to do stuff if there was already a date set?
-        updateTickers()
         formatter.locale = Locale(identifier: "en_US")
         let myStringafd = formatter.string(from: countdownDate)
         changeDateButton.setTitle(myStringafd, for: UIControlState.normal)
@@ -230,6 +293,7 @@ class ConcentricCirclesViewController: UIViewController {
             self.view.layoutIfNeeded()
             
         }, completion: { (Bool) -> Void in
+            self.startTimer()
             self.datePickerContainerOpen = false
         })
     }

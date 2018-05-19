@@ -62,7 +62,16 @@ class Ticker: UIView {
         }
     }
     
-    func initializeStatus(howMany: Int) {        
+    func resetTickMarks() {
+        for i in 0..<numOfTicks {
+            tickMarks[i].turnOff()
+        }
+    }
+    
+    func initializeStatus(howMany: Int) {
+        
+        status = howMany
+        
         for i in 0..<howMany {
             tickMarks[i].turnOn()
         }
@@ -73,17 +82,19 @@ class Ticker: UIView {
     }
     
     
+    // update the status of the current ticker to show only this many ON
     func updateStatus(howMany: Int) {
         
+        status = howMany
         
-        initializeStatus(howMany: howMany)
-        if howMany == 0 {
+        if howMany == numOfTicks {
             for i in 0..<numOfTicks {
                 tickMarks[i].turnOn()
             }
         } else {
             tickMarks[howMany].turnOff()
         }
+        
     }
     
     
