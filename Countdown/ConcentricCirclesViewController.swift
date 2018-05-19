@@ -289,6 +289,11 @@ class ConcentricCirclesViewController: UIViewController {
             self.view.layoutIfNeeded()
             
         }, completion: { (Bool) -> Void in
+            self.hours.initializeStatus(howMany: components.hour!)
+            self.minutes.initializeStatus(howMany: components.minute!)
+            self.seconds.initializeStatus(howMany: components.second!)
+
+            
             self.startTimer()
             self.datePickerContainerOpen = false
         })
