@@ -222,11 +222,11 @@ class ConcentricCirclesViewController: UIViewController {
             self.hours.transform = CGAffineTransform(rotationAngle: rotation)
             
             // rotate minutes based on hours
-            rotation += self.hours.rotationEnd()
+//            rotation += self.hours.rotationEnd()
             self.minutes.transform = CGAffineTransform(rotationAngle: rotation)
             
             // rotate seconds based on minutes
-            rotation += self.minutes.rotationEnd()
+//            rotation += self.minutes.rotationEnd()
             self.seconds.transform = CGAffineTransform(rotationAngle: rotation)
         }
         
@@ -249,10 +249,26 @@ class ConcentricCirclesViewController: UIViewController {
         
         
         // when we set at zero, do a shift for the inside ones
+        
+        
         hours.updateStatus(howMany: hoursLeft)
         minutes.updateStatus(howMany: minutesLeft)
         seconds.updateStatus(howMany: secondsLeft)
         pieFillView.updateFill(daysLeft: CGFloat(daysLeft), totalDaysSet: CGFloat(daysLeft))
+        
+        UIView.animate(withDuration: 0.3) {
+            // rotate hours based on days pie
+            var rotation = self.pieFillView.rotationEnd()
+            self.hours.transform = CGAffineTransform(rotationAngle: rotation)
+            
+            // rotate minutes based on hours
+            rotation += self.hours.rotationEnd()
+            self.minutes.transform = CGAffineTransform(rotationAngle: rotation)
+            
+            // rotate seconds based on minutes
+            rotation += self.minutes.rotationEnd()
+            self.seconds.transform = CGAffineTransform(rotationAngle: rotation)
+        }
     }
     
     
