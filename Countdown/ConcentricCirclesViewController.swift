@@ -74,7 +74,6 @@ class ConcentricCirclesViewController: UIViewController {
                 
                 // start the countdown
                 startTimer()
-                
                 closeDatePicker()
                 
             } else {
@@ -157,7 +156,7 @@ class ConcentricCirclesViewController: UIViewController {
         self.circlesContainerView.frame.size.width = self.view.frame.width * 0.8
         self.circlesContainerView.frame.size.height = circlesContainerView.frame.width
         
-        self.circlesContainerView.backgroundColor = UIColor.brown
+//        self.circlesContainerView.backgroundColor = UIColor.brown
         
         
         let minutesSize = circlesContainerView.frame.width * 0.8
