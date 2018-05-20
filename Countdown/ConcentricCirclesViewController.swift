@@ -74,6 +74,7 @@ class ConcentricCirclesViewController: UIViewController {
                 
                 // start the countdown
                 startTimer()
+                
                 closeDatePicker()
                 
             } else {
@@ -90,10 +91,13 @@ class ConcentricCirclesViewController: UIViewController {
             print("NO stored date exists")
             // this means date hasn't been set in User Defaults
             // do something for setup of the circles
+        
             openDatePicker()
         }
         
-//        displayDatePassed()
+        
+//       displayDatePassed()
+
     }
 
     
@@ -123,23 +127,19 @@ class ConcentricCirclesViewController: UIViewController {
         // set label: you made it
         // confetti
         
-        
         completedView = UIView()
+        completedView.frame.origin = circlesContainerView.frame.origin
         completedView.frame.size.width = self.view.frame.width
-        completedView.frame.size.height = self.view.frame.height
-        completedView.frame.origin = self.view.frame.origin
-        completedView.backgroundColor = UIColor.blue
-//        completedView.backgroundColor = UIColor(rgb: 0x2183B6)
-        
+        completedView.frame.size.height = self.view.frame.width
 
-        
-        
-        let text = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
+//        completedView.backgroundColor = UIColor.purple
+        //completedView.backgroundColor = UIColor(rgb: 0x262B31)
+    
+
+        let text = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
         text.text = "Congrats!"
         text.textColor = UIColor.red
         text.font = text.font.withSize(30.0)
-        
-        text.frame.origin = CGPoint(x: 100, y: 100)
         
         completedView.addSubview(text)
         self.view.addSubview(completedView)
@@ -153,10 +153,13 @@ class ConcentricCirclesViewController: UIViewController {
     
     
     func setupCircles() {
-        
         // 0. Set size and location of frames
-        circlesContainerView.frame.size.width = self.view.frame.width * 0.8
-        circlesContainerView.frame.size.height = circlesContainerView.frame.width
+        self.circlesContainerView.frame.size.width = self.view.frame.width * 0.8
+        self.circlesContainerView.frame.size.height = circlesContainerView.frame.width
+        
+        self.circlesContainerView.backgroundColor = UIColor.brown
+        
+        
         let minutesSize = circlesContainerView.frame.width * 0.8
         let hoursSize = circlesContainerView.frame.width * 0.6
         let pieSize = circlesContainerView.frame.width * 0.6 * 0.6
@@ -229,12 +232,8 @@ class ConcentricCirclesViewController: UIViewController {
             rotation += self.minutes.rotationEnd()
             self.seconds.transform = CGAffineTransform(rotationAngle: rotation)
         }
-        
-        
-        
-        
-
     }
+    
 
     @objc func updateTickers() {
         today = Date()
@@ -299,11 +298,13 @@ class ConcentricCirclesViewController: UIViewController {
     
     
     func openDatePicker() {
+        
         UIView.animate(withDuration: 0.3, animations: { () -> Void in
             // show the date picker by moving it up
             self.bottomOfDateContainerConstraint.constant = 0
             self.changeDateButton.backgroundColor = UIColor(rgb: 0x22252A)
             self.datePicker.alpha = 1.0
+            
             self.view.layoutIfNeeded()
             
             // once we update the view that we add the circles into, we can move these more easily
@@ -336,6 +337,7 @@ class ConcentricCirclesViewController: UIViewController {
             self.bottomOfDateContainerConstraint.constant = 30-(self.dateChangeContainerView.frame.height)
             self.changeDateButton.backgroundColor = UIColor.clear
             self.datePicker.alpha = 0.0
+            
             self.view.layoutIfNeeded()
             
         }, completion: { (Bool) -> Void in

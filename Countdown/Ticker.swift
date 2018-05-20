@@ -57,11 +57,6 @@ class Ticker: UIView {
         // need to calculate here based on the status and number of ticks
         endAngle = CGFloat((Double.pi*2)/Double(numOfTicks)) * CGFloat(status - numOfTicks-1)
         
-        print("numOfTicks: \(numOfTicks)")
-        print("status: \(status)")
-
-        
-        print("end Angle: \(endAngle)")
         return endAngle
     }
     
