@@ -10,6 +10,8 @@ import UIKit
 
 class ConcentricCirclesViewController: UIViewController {
 
+    
+    @IBOutlet weak var contentContainerView: UIView!
     @IBOutlet weak var circlesContainerView: UIView!
     @IBOutlet weak var dateChangeContainerView: UIView!
     @IBOutlet weak var datePicker: UIDatePicker!
@@ -153,20 +155,21 @@ class ConcentricCirclesViewController: UIViewController {
     
     func setupCircles() {
         // 0. Set size and location of frames
-        self.circlesContainerView.frame.size.width = self.view.frame.width * 0.8
-        self.circlesContainerView.frame.size.height = circlesContainerView.frame.width
+//        circlesContainerView.backgroundColor = UIColor.brown
         
-//        self.circlesContainerView.backgroundColor = UIColor.brown
+        let circlesCenter = circlesContainerView.frame.width / 2.0
+        let secondsSize = (circlesContainerView.frame.width) / 2.0
+        let minutesSize = (circlesContainerView.frame.width * 0.8) / 2.0
+        let hoursSize = (circlesContainerView.frame.width * 0.6) / 2.0
+        let pieSize = (circlesContainerView.frame.width * 0.6 * 0.6) / 2.0
         
         
-        let minutesSize = circlesContainerView.frame.width * 0.8
-        let hoursSize = circlesContainerView.frame.width * 0.6
-        let pieSize = circlesContainerView.frame.width * 0.6 * 0.6
+        // this is taking the items before it has been resized for the keyboard to be closed
+        let secondsRect = CGRect(center: CGPoint(x: circlesCenter, y: circlesCenter), radius: secondsSize)
+        let minutesRect = CGRect(center: CGPoint(x: circlesCenter, y: circlesCenter), radius: minutesSize)
+        let hoursRect = CGRect(center: CGPoint(x: circlesCenter, y: circlesCenter), radius: hoursSize)
+        let pieRect = CGRect(center: CGPoint(x: circlesCenter, y: circlesCenter), radius: pieSize)
         
-        let secondsRect = circlesContainerView.frame
-        let minutesRect = CGRect(center: circlesContainerView.center, width: minutesSize, height: minutesSize)
-        let hoursRect = CGRect(center: circlesContainerView.center, width: hoursSize, height: hoursSize)
-        let pieRect = CGRect(center: circlesContainerView.center, width: pieSize, height: pieSize)
         
         let tickLHours:CGFloat = 24.0
         let tickLMinutes:CGFloat = 20.0
@@ -174,11 +177,11 @@ class ConcentricCirclesViewController: UIViewController {
         
         
         // 1. Setup the actual UI Views for each of the visualizations
+        pieFillView.frame = pieRect
         hours = Ticker(numOfTicks: 23, tickLength: tickLHours, frame: hoursRect)
         minutes = Ticker(numOfTicks: 59, tickLength: tickLMinutes, frame: minutesRect)
         seconds = Ticker(numOfTicks: 59, tickLength: tickLSeconds, frame: secondsRect)
-        pieFillView.frame = pieRect
-                
+        
         
         // 2. Update the center labels
         var labelCenter = CGPoint(x: hours.center.x, y: hours.center.y + 10.0)
@@ -199,13 +202,12 @@ class ConcentricCirclesViewController: UIViewController {
         
         
         // 3. Add the views to this view
-        //    Probably should refactor to add to circlesContainerView instead of this VC's view
-        self.view.addSubview(seconds)
-        self.view.addSubview(minutes)
-        self.view.addSubview(hours)
-        self.view.addSubview(pieFillView)
-        self.view.addSubview(timeLeftScaleLabel)
-        self.view.addSubview(timeLeftLabel)
+        circlesContainerView.addSubview(seconds)
+        circlesContainerView.addSubview(minutes)
+        circlesContainerView.addSubview(hours)
+        circlesContainerView.addSubview(pieFillView)
+        circlesContainerView.addSubview(timeLeftScaleLabel)
+        circlesContainerView.addSubview(timeLeftLabel)
         
     }
 

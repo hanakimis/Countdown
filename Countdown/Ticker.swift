@@ -35,6 +35,7 @@ class Ticker: UIView {
     
     init(numOfTicks: Int, tickLength: CGFloat, frame:CGRect) {
         super.init(frame: CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: frame.height))
+        
         self.numOfTicks = numOfTicks
         
         let rotationStep = (Double.pi*2) / Double(self.numOfTicks)

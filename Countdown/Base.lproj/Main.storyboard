@@ -296,16 +296,27 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wJ3-fj-JHO">
-                                <rect key="frame" x="37" y="183.5" width="300" height="300"/>
+                                <rect key="frame" x="37" y="20" width="300" height="401"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9KK-d8-jQt">
+                                        <rect key="frame" x="0.0" y="50.5" width="300" height="300"/>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="9KK-d8-jQt" firstAttribute="width" secondItem="wJ3-fj-JHO" secondAttribute="width" id="Ard-Ot-Gdq"/>
+                                    <constraint firstItem="9KK-d8-jQt" firstAttribute="centerX" secondItem="wJ3-fj-JHO" secondAttribute="centerX" id="Dl3-0x-a4N"/>
+                                    <constraint firstItem="9KK-d8-jQt" firstAttribute="height" secondItem="wJ3-fj-JHO" secondAttribute="width" id="lZk-bx-Sj2"/>
+                                    <constraint firstItem="9KK-d8-jQt" firstAttribute="centerY" secondItem="wJ3-fj-JHO" secondAttribute="centerY" id="uBV-UA-472"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.090196078431372548" green="0.10196078431372549" blue="0.11372549019607843" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
+                            <constraint firstItem="ZOm-ab-yWg" firstAttribute="top" secondItem="wJ3-fj-JHO" secondAttribute="bottom" id="BTD-2c-HQQ"/>
                             <constraint firstItem="ZOm-ab-yWg" firstAttribute="width" secondItem="BAG-xU-lCF" secondAttribute="width" id="Ezv-4o-akl"/>
-                            <constraint firstItem="wJ3-fj-JHO" firstAttribute="centerY" secondItem="BAG-xU-lCF" secondAttribute="centerY" id="Rk5-X6-eIM"/>
                             <constraint firstItem="ZOm-ab-yWg" firstAttribute="centerX" secondItem="BAG-xU-lCF" secondAttribute="centerX" id="cjL-Xu-Mn9"/>
                             <constraint firstItem="EbQ-vb-iLb" firstAttribute="top" secondItem="ZOm-ab-yWg" secondAttribute="bottom" id="eZJ-PB-5bi"/>
-                            <constraint firstItem="wJ3-fj-JHO" firstAttribute="height" secondItem="BAG-xU-lCF" secondAttribute="width" multiplier="0.8" id="lo2-da-8sF"/>
+                            <constraint firstItem="wJ3-fj-JHO" firstAttribute="top" secondItem="OvF-E5-zCY" secondAttribute="bottom" id="evY-EV-xYx"/>
                             <constraint firstItem="wJ3-fj-JHO" firstAttribute="width" secondItem="BAG-xU-lCF" secondAttribute="width" multiplier="0.8" id="x5s-U8-YgX"/>
                             <constraint firstItem="wJ3-fj-JHO" firstAttribute="centerX" secondItem="BAG-xU-lCF" secondAttribute="centerX" id="yiV-tV-opX"/>
                         </constraints>
@@ -313,7 +324,8 @@
                     <connections>
                         <outlet property="bottomOfDateContainerConstraint" destination="eZJ-PB-5bi" id="nc6-BX-v2E"/>
                         <outlet property="changeDateButton" destination="aYe-zn-FzS" id="Ls0-Kh-QHw"/>
-                        <outlet property="circlesContainerView" destination="wJ3-fj-JHO" id="90f-9d-PJ6"/>
+                        <outlet property="circlesContainerView" destination="9KK-d8-jQt" id="bUA-8O-f2n"/>
+                        <outlet property="contentContainerView" destination="wJ3-fj-JHO" id="2ah-Le-tvq"/>
                         <outlet property="dateChangeContainerView" destination="ZOm-ab-yWg" id="8VT-mr-i8w"/>
                         <outlet property="datePicker" destination="UOZ-8A-1Af" id="6OP-gV-oa0"/>
                     </connections>
