@@ -222,11 +222,11 @@ class ConcentricCirclesViewController: UIViewController {
             self.hours.transform = CGAffineTransform(rotationAngle: rotation)
             
             // rotate minutes based on hours
-//            rotation += self.hours.rotationEnd()
+            rotation += self.hours.rotationEnd()
             self.minutes.transform = CGAffineTransform(rotationAngle: rotation)
             
             // rotate seconds based on minutes
-//            rotation += self.minutes.rotationEnd()
+            rotation += self.minutes.rotationEnd()
             self.seconds.transform = CGAffineTransform(rotationAngle: rotation)
         }
         
