@@ -137,12 +137,22 @@ class ConcentricCirclesViewController: UIViewController {
         //completedView.backgroundColor = UIColor(rgb: 0x262B31)
     
 
-        let text = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
-        text.text = "Congrats!"
-        text.textColor = UIColor.red
-        text.font = text.font.withSize(30.0)
+        var labelCenter = CGPoint(x: completedView.center.x, y: completedView.center.y + 20.0)
         
-        completedView.addSubview(text)
+        let congrats = UILabel(frame: CGRect(center: labelCenter, width: 200.0, height: 50.0))
+        congrats.font = UIFont.systemFont(ofSize: 30.0)
+        congrats.text = "Congrats!"
+        congrats.textColor = UIColor.white
+        congrats.font = congrats.font.withSize(30.0)
+        
+        let message = UILabel(frame: CGRect(center: labelCenter, width: 200.0, height: 50.0))
+        message.font = UIFont.systemFont(ofSize: 30.0)
+        message.text = "Congrats!"
+        message.textColor = UIColor.white
+        message.font = congrats.font.withSize(30.0)
+        
+        completedView.addSubview(congrats)
+        completedView.addSubview(message)
         self.view.addSubview(completedView)
 
         
@@ -248,8 +258,7 @@ class ConcentricCirclesViewController: UIViewController {
         updateTimeLeftLabel(days: daysLeft, hours: hoursLeft, mins: minutesLeft, secs: secondsLeft)
         
         
-        // when we set at zero, do a shift for the inside ones
-        
+        // TODO: when we set at zero, do a shift for the inside ones
         
         hours.updateStatus(howMany: hoursLeft)
         minutes.updateStatus(howMany: minutesLeft)
