@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="R2D-iM-QeM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -266,13 +266,13 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jiM-7n-Cy5" userLabel="Hours container">
                                                 <rect key="frame" x="22" y="-2" width="100" height="143"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Dmt-nD-c0S">
+                                                    <view userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Dmt-nD-c0S" customClass="TickDialView" customModule="Countdown" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="22" width="100" height="100"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="100" id="A7l-EN-mQa"/>
                                                             <constraint firstAttribute="width" constant="100" id="ffa-dK-vLl"/>
                                                         </constraints>
-                                                    </imageView>
+                                                    </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hours" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GF0-jI-lTn">
                                                         <rect key="frame" x="0.0" y="56" width="100" height="21"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
@@ -300,13 +300,13 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BmT-TC-pub" userLabel="Minutes container">
                                                 <rect key="frame" x="22" y="141" width="100" height="143"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1yb-l9-0hu">
+                                                    <view userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1yb-l9-0hu" customClass="TickDialView" customModule="Countdown" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="22" width="100" height="100"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="100" id="7mb-RH-aqk"/>
                                                             <constraint firstAttribute="height" constant="100" id="u0b-o4-MCa"/>
                                                         </constraints>
-                                                    </imageView>
+                                                    </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Minutes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diC-Wg-0ex">
                                                         <rect key="frame" x="0.0" y="56" width="100" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -334,13 +334,13 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kPN-mc-tbE" userLabel="seconds container">
                                                 <rect key="frame" x="22" y="284" width="100" height="143"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pVV-ts-bgm">
+                                                    <view userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pVV-ts-bgm" customClass="TickDialView" customModule="Countdown" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="22" width="100" height="100"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="100" id="VHN-WF-yBy"/>
                                                             <constraint firstAttribute="width" constant="100" id="lZJ-Ui-B3n"/>
                                                         </constraints>
-                                                    </imageView>
+                                                    </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seconds" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lDN-0p-Sy1">
                                                         <rect key="frame" x="0.0" y="56" width="100" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -462,11 +462,11 @@
                         <outlet property="countdownContainerVerticalTopConstraint" destination="sAk-e5-2yv" id="nTE-SM-IGe"/>
                         <outlet property="datePicker" destination="uXt-Mh-gtL" id="O9e-vX-ydT"/>
                         <outlet property="daysLeftlabel" destination="kRx-UY-CNC" id="mHJ-zU-csF"/>
-                        <outlet property="hoursImageView" destination="Dmt-nD-c0S" id="pPI-GN-B1t"/>
+                        <outlet property="hoursDial" destination="Dmt-nD-c0S" id="pPI-GN-B1t"/>
                         <outlet property="hoursLeftLabel" destination="GF0-jI-lTn" id="Cvr-G1-mC2"/>
-                        <outlet property="minutesImageView" destination="1yb-l9-0hu" id="EM2-ta-lau"/>
+                        <outlet property="minutesDial" destination="1yb-l9-0hu" id="EM2-ta-lau"/>
                         <outlet property="minutesLeftLabel" destination="diC-Wg-0ex" id="pqj-t9-bRX"/>
-                        <outlet property="secondsImageView" destination="pVV-ts-bgm" id="0ol-7a-NNL"/>
+                        <outlet property="secondsDial" destination="pVV-ts-bgm" id="0ol-7a-NNL"/>
                         <outlet property="secondsLeftLabel" destination="lDN-0p-Sy1" id="L8e-7T-UmN"/>
                         <outlet property="toggleDateChanger" destination="xbV-rd-7M1" id="siI-H0-gW1"/>
                         <outlet property="toggleDateChangerFullWidthConstraint" destination="Hkm-Qo-kDC" id="nGE-f5-A6a"/>
@@ -477,30 +477,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="274" y="404"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="2Vk-em-sMg">
-            <objects>
-                <viewController id="R2D-iM-QeM" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Ahe-Uu-rVY"/>
-                        <viewControllerLayoutGuide type="bottom" id="HOi-W0-aXg"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="hlO-qJ-Ygp">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7NA-KK-zJi" customClass="TotalRemainingUIView" customModule="Countdown" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Hnj-JM-gwu" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="787" y="404"/>
         </scene>
     </scenes>
 </document>

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		80330A1B1C14F39C00B8A3F4 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80330A1A1C14F39C00B8A3F4 /* Timer.swift */; };
 		8055AC911BCBA56F00FDC2A5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8055AC901BCBA56F00FDC2A5 /* Images.xcassets */; };
 		809C66F21AAD862700B79D17 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C66F11AAD862700B79D17 /* AppDelegate.swift */; };
 		809C66F41AAD862700B79D17 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C66F31AAD862700B79D17 /* ViewController.swift */; };
@@ -15,7 +14,7 @@
 		809C66FC1AAD862700B79D17 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 809C66FA1AAD862700B79D17 /* LaunchScreen.xib */; };
 		809C67081AAD862700B79D17 /* CountdownTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C67071AAD862700B79D17 /* CountdownTests.swift */; };
 		809C67121AAD87CA00B79D17 /* CountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C67111AAD87CA00B79D17 /* CountdownViewController.swift */; };
-		80A9FE5E1C8D6D13002830B5 /* TotalRemainingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A9FE5D1C8D6D13002830B5 /* TotalRemainingUIView.swift */; };
+		80DA10021C8D6D13002830B5 /* TickDialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DA10011C8D6D13002830B5 /* TickDialView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,7 +28,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		80330A1A1C14F39C00B8A3F4 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		8055AC901BCBA56F00FDC2A5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		809C66EC1AAD862700B79D17 /* Countdown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Countdown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		809C66F01AAD862700B79D17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -41,7 +39,7 @@
 		809C67061AAD862700B79D17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		809C67071AAD862700B79D17 /* CountdownTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownTests.swift; sourceTree = "<group>"; };
 		809C67111AAD87CA00B79D17 /* CountdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountdownViewController.swift; sourceTree = "<group>"; };
-		80A9FE5D1C8D6D13002830B5 /* TotalRemainingUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TotalRemainingUIView.swift; sourceTree = "<group>"; };
+		80DA10011C8D6D13002830B5 /* TickDialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TickDialView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,9 +84,8 @@
 				809C66F11AAD862700B79D17 /* AppDelegate.swift */,
 				809C66F31AAD862700B79D17 /* ViewController.swift */,
 				809C66F51AAD862700B79D17 /* Main.storyboard */,
-				80A9FE5D1C8D6D13002830B5 /* TotalRemainingUIView.swift */,
 				809C67111AAD87CA00B79D17 /* CountdownViewController.swift */,
-				80330A1A1C14F39C00B8A3F4 /* Timer.swift */,
+				80DA10011C8D6D13002830B5 /* TickDialView.swift */,
 				809C66FA1AAD862700B79D17 /* LaunchScreen.xib */,
 				8055AC901BCBA56F00FDC2A5 /* Images.xcassets */,
 				809C66EF1AAD862700B79D17 /* Supporting Files */,
@@ -226,9 +223,8 @@
 			files = (
 				809C67121AAD87CA00B79D17 /* CountdownViewController.swift in Sources */,
 				809C66F41AAD862700B79D17 /* ViewController.swift in Sources */,
-				80A9FE5E1C8D6D13002830B5 /* TotalRemainingUIView.swift in Sources */,
 				809C66F21AAD862700B79D17 /* AppDelegate.swift in Sources */,
-				80330A1B1C14F39C00B8A3F4 /* Timer.swift in Sources */,
+				80DA10021C8D6D13002830B5 /* TickDialView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
