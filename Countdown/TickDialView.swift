@@ -239,14 +239,16 @@ final class TickDialView: UIView {
                 }
             }
 
-            // Ripple In: a faint front that arrives from the UPCOMING side and
-            // collapses inward into the selected tick.
+            // Ripple In: a faint front sweeps in from the UPCOMING side. Its crest
+            // travels from the far ticks past the center, so once it settles every
+            // upcoming tick is back to its original color and only the current tick
+            // stays blue.
             if !isSweeping && i != sel && (selectStyle == .rippleIn || selectStyle == .rippleWake) {
                 var a = (i - sel) % total; if a < 0 { a += total }  // 0 at current, grows into the future
                 if a >= 1 && a <= 9 {
-                    let front = (1 - easeOutCubic(p)) * 7
+                    let front = 7 - easeOutCubic(p) * 10          // 7 (far upcoming) -> -3 (past center)
                     let sig: CGFloat = 1.4
-                    let inten = exp(-pow(CGFloat(a) - front, 2) / (2 * sig * sig)) * 0.5 * (1 - 0.2 * p)
+                    let inten = exp(-pow(CGFloat(a) - front, 2) / (2 * sig * sig)) * 0.55
                     if inten > 0.03 {
                         r1 = outer + inten * 4
                         color = accentColor.withAlphaComponent(min(0.55, inten))
