@@ -36,6 +36,7 @@ class CountdownViewController: UIViewController {
     private var countdownDate = Date()
     private var datePickerContainerOpen = false
     private var timer: Timer?
+    private var didInitialSweep = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +55,10 @@ class CountdownViewController: UIViewController {
         hoursDial.total = 24
         minutesDial.total = 60
         secondsDial.total = 60
+
+        // Apply the saved selected-tick style to every dial.
+        applySavedStyle()
+        setupSettingsButton()
 
         // Restore a previously chosen date, if there is one.
         if let saved = defaults.object(forKey: "date") as? Date {
@@ -74,6 +79,52 @@ class CountdownViewController: UIViewController {
         closeDatePicker()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard !didInitialSweep else { return }
+        didInitialSweep = true
+        sweepDialsToNow()          // fill the rings in on first appearance
+    }
+
+    // MARK: - Selected-tick style
+
+    private func applySavedStyle() {
+        let style = TickDialView.savedStyle
+        [hoursDial, minutesDial, secondsDial].forEach { $0?.selectStyle = style }
+    }
+
+    private func setupSettingsButton() {
+        let button = UIButton(type: .system)
+        if let gear = UIImage(systemName: "gearshape") {
+            button.setImage(gear, for: .normal)
+        } else {
+            button.setTitle("⚙︎", for: .normal)
+        }
+        button.tintColor = UIColor(white: 1, alpha: 0.55)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
+        view.addSubview(button)
+        NSLayoutConstraint.activate([
+            button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 6),
+            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            button.widthAnchor.constraint(equalToConstant: 34),
+            button.heightAnchor.constraint(equalToConstant: 34)
+        ])
+    }
+
+    @objc private func openSettings() {
+        let settings = StyleSettingsViewController(style: .grouped)
+        settings.delegate = self
+        present(UINavigationController(rootViewController: settings), animated: true)
+    }
+
+    private func sweepDialsToNow() {
+        let c = Calendar.current.dateComponents(componentSet, from: Date(), to: countdownDate)
+        hoursDial.sweepIn(to: max(0, c.hour ?? 0))
+        minutesDial.sweepIn(to: max(0, c.minute ?? 0))
+        secondsDial.sweepIn(to: max(0, c.second ?? 0))
+    }
+
     @IBAction func toggleDateChangerClicked(_ sender: Any) {
         if datePickerContainerOpen {
             closeDatePicker()
@@ -86,6 +137,7 @@ class CountdownViewController: UIViewController {
         countdownDate = datePicker.date
         defaults.set(countdownDate, forKey: "date")
         updateDifferenceLabels()
+        sweepDialsToNow()          // re-sweep the rings to the new numbers
         closeDatePicker()
         updateBadge()
     }
@@ -154,5 +206,11 @@ class CountdownViewController: UIViewController {
         hoursDial.value = hours
         minutesDial.value = minutes
         secondsDial.value = seconds
+    }
+}
+
+extension CountdownViewController: StyleSettingsDelegate {
+    func styleSettingsDidChange(_ style: TickDialView.SelectStyle) {
+        [hoursDial, minutesDial, secondsDial].forEach { $0?.selectStyle = style }
     }
 }
