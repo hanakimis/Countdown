@@ -38,12 +38,33 @@ final class TickDialView: UIView {
         set { UserDefaults.standard.set(newValue.rawValue, forKey: "tickStyle") }
     }
 
+    // MARK: - Rollover (reset) styles
+
+    /// Played when the dial rolls over — value jumps up, e.g. seconds 0 -> 59.
+    enum ResetStyle: String, CaseIterable {
+        case none, dissolve, twist
+
+        var title: String {
+            switch self {
+            case .none:     return "None"
+            case .dissolve: return "Dissolve"
+            case .twist:    return "Twist"
+            }
+        }
+    }
+
+    static var savedResetStyle: ResetStyle {
+        get { ResetStyle(rawValue: UserDefaults.standard.string(forKey: "resetStyle") ?? "") ?? .dissolve }
+        set { UserDefaults.standard.set(newValue.rawValue, forKey: "resetStyle") }
+    }
+
     // MARK: - Configuration
 
     /// Number of ticks around the ring (24 for hours, 60 for minutes/seconds).
     @IBInspectable var total: Int = 60 { didSet { setNeedsDisplay() } }
 
     var selectStyle: SelectStyle = TickDialView.savedStyle { didSet { setNeedsDisplay() } }
+    var resetStyle: ResetStyle = TickDialView.savedResetStyle { didSet { setNeedsDisplay() } }
 
     @IBInspectable var filledColor: UIColor = UIColor(white: 0.592, alpha: 0.9) { didSet { setNeedsDisplay() } }
     @IBInspectable var trackColor: UIColor = UIColor(white: 0.592, alpha: 0.14) { didSet { setNeedsDisplay() } }
@@ -63,7 +84,11 @@ final class TickDialView: UIView {
             previousValue = oldValue
             if isSweeping { return }                 // the sweep owns the visuals
             renderValue = CGFloat(clampedValue)      // snap the fill
-            beginSelectionPhase()                    // animate the accent tick per style
+            if resetStyle != .none && value > oldValue {
+                beginReset()                         // rolled over (e.g. 0 -> 59)
+            } else {
+                beginSelectionPhase()                // normal tick: animate the accent tick
+            }
         }
     }
 
@@ -83,6 +108,11 @@ final class TickDialView: UIView {
     private var sweepTo: CGFloat = 0
     private var sweepStart: CFTimeInterval = 0
     private var sweepDuration: CFTimeInterval = 0.8
+
+    private var isResetting = false
+    private var resetPhase: CGFloat = 1              // 0 = just rolled over, 1 = reformed
+    private var resetStart: CFTimeInterval = 0
+    private var resetDuration: CFTimeInterval = 0.8
 
     private var link: CADisplayLink?
 
@@ -118,6 +148,7 @@ final class TickDialView: UIView {
             return
         }
         isSweeping = true
+        isResetting = false
         sweepFrom = 0
         sweepTo = CGFloat(target)
         sweepStart = CACurrentMediaTime()
@@ -130,10 +161,19 @@ final class TickDialView: UIView {
     // MARK: - Driving the animation
 
     private func beginSelectionPhase() {
+        isResetting = false
         selectionDuration = duration(for: selectStyle)
         guard window != nil else { selectionPhase = 1; setNeedsDisplay(); return }
         phaseStart = CACurrentMediaTime()
         selectionPhase = 0
+        ensureLink()
+    }
+
+    private func beginReset() {
+        guard window != nil else { isResetting = false; setNeedsDisplay(); return }
+        isResetting = true
+        resetPhase = 0
+        resetStart = CACurrentMediaTime()
         ensureLink()
     }
 
@@ -152,6 +192,12 @@ final class TickDialView: UIView {
             let t = min(1, (now - sweepStart) / sweepDuration)
             renderValue = sweepFrom + (sweepTo - sweepFrom) * easeInOut(CGFloat(t))
             if t >= 1 { isSweeping = false; renderValue = sweepTo } else { active = true }
+        }
+
+        if isResetting {
+            let tr = (now - resetStart) / resetDuration
+            resetPhase = CGFloat(min(1, tr))
+            if tr >= 1 { isResetting = false } else { active = true }
         }
 
         let ts = (now - phaseStart) / selectionDuration
@@ -196,6 +242,45 @@ final class TickDialView: UIView {
             path.lineWidth = w
             color.setStroke()
             path.stroke()
+        }
+
+        // Rollover: reform the whole ring with the chosen gesture, then stop.
+        if isResetting && resetStyle != .none {
+            func faded(_ c: UIColor, _ f: CGFloat) -> UIColor {
+                c.withAlphaComponent(c.cgColor.alpha * max(0, min(1, f)))
+            }
+            func rnd(_ i: Int) -> CGFloat {           // stable per-tick pseudo-random in [0,1)
+                let x = sin(CGFloat(i) * 12.9898 + 1) * 43758.5453
+                return x - floor(x)
+            }
+            func markTwisted(_ angle: CGFloat, _ rot: CGFloat, _ scale: CGFloat, _ color: UIColor) {
+                let mx = cx + cos(angle) * (inner + outer) / 2
+                let my = cy + sin(angle) * (inner + outer) / 2
+                let half = (outer - inner) / 2 * scale
+                let ta = angle + rot
+                let path = UIBezierPath()
+                path.move(to: CGPoint(x: mx - cos(ta) * half, y: my - sin(ta) * half))
+                path.addLine(to: CGPoint(x: mx + cos(ta) * half, y: my + sin(ta) * half))
+                path.lineCapStyle = .round
+                path.lineWidth = tickWidth
+                color.setStroke()
+                path.stroke()
+            }
+            for i in 0..<total {
+                let ang = angleAt(CGFloat(i))
+                let base: UIColor = (i == sel) ? accentColor : (i < sel ? filledColor : trackColor)
+                let vis = max(0, min(1, (resetPhase - rnd(i) * 0.4) / 0.6))   // staggered reform
+                switch resetStyle {
+                case .dissolve:
+                    markTwisted(ang, 0, 1, faded(base, min(1, vis * 1.15)))
+                case .twist:
+                    let dir: CGFloat = rnd(i) < 0.5 ? 1 : -1
+                    markTwisted(ang, (1 - vis) * .pi * 0.7 * dir, vis, faded(base, vis))
+                case .none:
+                    break
+                }
+            }
+            return
         }
 
         for i in 0..<total {

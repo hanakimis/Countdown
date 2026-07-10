@@ -2,24 +2,25 @@
 //  StyleSettingsViewController.swift
 //  Countdown
 //
-//  A small settings sheet for choosing how the selected tick animates.
-//  Lists every TickDialView.SelectStyle, checks the current one, and persists
-//  the choice. Presented from the gear button on the countdown screen.
+//  A small settings sheet with two choices: how the selected tick animates
+//  each second, and how the ring resets when a dial rolls over. Both persist
+//  to UserDefaults. Presented from the gear button on the countdown screen.
 //
 
 import UIKit
 
 protocol StyleSettingsDelegate: AnyObject {
-    func styleSettingsDidChange(_ style: TickDialView.SelectStyle)
+    func stylesDidChange()
 }
 
 final class StyleSettingsViewController: UITableViewController {
 
     weak var delegate: StyleSettingsDelegate?
 
-    private let styles = TickDialView.SelectStyle.allCases
+    private let selectStyles = TickDialView.SelectStyle.allCases
+    private let resetStyles = TickDialView.ResetStyle.allCases
 
-    private let blurbs: [TickDialView.SelectStyle: String] = [
+    private let selectBlurbs: [TickDialView.SelectStyle: String] = [
         .classic:    "Steady accent tick, no animation.",
         .launch:     "Shoots out from the center to its slot.",
         .eject:      "The previous tick flies outward as the new one pops in.",
@@ -28,9 +29,15 @@ final class StyleSettingsViewController: UITableViewController {
         .rippleWake: "Ripple In plus the past-bright wake trail."
     ]
 
+    private let resetBlurbs: [TickDialView.ResetStyle: String] = [
+        .none:     "No rollover flourish.",
+        .dissolve: "Ticks scatter out and speckle back in.",
+        .twist:    "Ticks spin on themselves, then unwind into place."
+    ]
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Tick Style"
+        title = "Animations"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
                                                             target: self, action: #selector(done))
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -38,30 +45,50 @@ final class StyleSettingsViewController: UITableViewController {
 
     @objc private func done() { dismiss(animated: true) }
 
+    override func numberOfSections(in tableView: UITableView) -> Int { 2 }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        section == 0 ? "Selected tick" : "Rollover (at zero)"
+    }
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        styles.count
+        section == 0 ? selectStyles.count : resetStyles.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let style = styles[indexPath.row]
+        let title: String
+        let subtitle: String?
+        let checked: Bool
+        if indexPath.section == 0 {
+            let style = selectStyles[indexPath.row]
+            title = style.title; subtitle = selectBlurbs[style]
+            checked = style == TickDialView.savedStyle
+        } else {
+            let style = resetStyles[indexPath.row]
+            title = style.title; subtitle = resetBlurbs[style]
+            checked = style == TickDialView.savedResetStyle
+        }
         if #available(iOS 14.0, *) {
             var content = cell.defaultContentConfiguration()
-            content.text = style.title
-            content.secondaryText = blurbs[style]
+            content.text = title
+            content.secondaryText = subtitle
             cell.contentConfiguration = content
         } else {
-            cell.textLabel?.text = style.title
-            cell.detailTextLabel?.text = blurbs[style]
+            cell.textLabel?.text = title
+            cell.detailTextLabel?.text = subtitle
         }
-        cell.accessoryType = (style == TickDialView.savedStyle) ? .checkmark : .none
+        cell.accessoryType = checked ? .checkmark : .none
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let style = styles[indexPath.row]
-        TickDialView.savedStyle = style
-        delegate?.styleSettingsDidChange(style)
+        if indexPath.section == 0 {
+            TickDialView.savedStyle = selectStyles[indexPath.row]
+        } else {
+            TickDialView.savedResetStyle = resetStyles[indexPath.row]
+        }
+        delegate?.stylesDidChange()
         tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
     }

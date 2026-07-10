@@ -89,8 +89,12 @@ class CountdownViewController: UIViewController {
     // MARK: - Selected-tick style
 
     private func applySavedStyle() {
-        let style = TickDialView.savedStyle
-        [hoursDial, minutesDial, secondsDial].forEach { $0?.selectStyle = style }
+        let select = TickDialView.savedStyle
+        let reset = TickDialView.savedResetStyle
+        [hoursDial, minutesDial, secondsDial].forEach {
+            $0?.selectStyle = select
+            $0?.resetStyle = reset
+        }
     }
 
     private func setupSettingsButton() {
@@ -210,7 +214,7 @@ class CountdownViewController: UIViewController {
 }
 
 extension CountdownViewController: StyleSettingsDelegate {
-    func styleSettingsDidChange(_ style: TickDialView.SelectStyle) {
-        [hoursDial, minutesDial, secondsDial].forEach { $0?.selectStyle = style }
+    func stylesDidChange() {
+        applySavedStyle()
     }
 }
