@@ -1,0 +1,59 @@
+name: Screenshot
+
+on:
+  workflow_dispatch:
+
+jobs:
+  screenshot:
+    name: Simulator screenshot
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Boot a simulator
+        id: sim
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; c=[x for rt,l in d.items() if 'iOS' in rt for x in l if x.get('isAvailable') and 'iPhone' in x['name']]; print(c[0]['udid'] if c else '')")
+          echo "Chosen simulator UDID: $UDID"
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+
+      - name: Build
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project Countdown.xcodeproj \
+            -scheme Countdown \
+            -configuration Debug \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Install and seed a countdown date
+        run: |
+          UDID="${{ steps.sim.outputs.udid }}"
+          APP=$(find build/Build/Products/Debug-iphonesimulator -maxdepth 1 -name '*.app' | head -1)
+          echo "Installing $APP"
+          xcrun simctl install "$UDID" "$APP"
+          # Pre-seed a future date so the dials show a real countdown, not zeros.
+          CONT=$(xcrun simctl get_app_container "$UDID" hana.Countdown data)
+          mkdir -p "$CONT/Library/Preferences"
+          PLIST="$CONT/Library/Preferences/hana.Countdown.plist"
+          FUTURE=$(date -u -v+128d "+%Y-%m-%d %H:%M:%S +0000")
+          echo "Seeding countdown date: $FUTURE"
+          /usr/bin/defaults write "$PLIST" date -date "$FUTURE" || true
+
+      - name: Launch and capture
+        run: |
+          UDID="${{ steps.sim.outputs.udid }}"
+          SIMCTL_CHILD_SCREENSHOTS=1 xcrun simctl launch "$UDID" hana.Countdown || true
+          sleep 6
+          xcrun simctl io "$UDID" screenshot screenshot.png
+          ls -la screenshot.png
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-screenshot
+          path: screenshot.png
+          if-no-files-found: error

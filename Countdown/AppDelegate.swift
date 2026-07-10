@@ -17,7 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Ask permission to show the days-remaining count on the app icon badge.
-        UNUserNotificationCenter.current().requestAuthorization(options: [.badge]) { _, _ in }
+        // Skipped during automated screenshots so the system alert doesn't cover
+        // the UI (set via SIMCTL_CHILD_SCREENSHOTS=1).
+        if ProcessInfo.processInfo.environment["SCREENSHOTS"] == nil {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.badge]) { _, _ in }
+        }
         return true
     }
 }
