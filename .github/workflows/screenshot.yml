@@ -2,6 +2,9 @@ name: Screenshot
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ "claude/legacy-app-review-cgu1b1" ]
+    paths: [ ".github/workflows/screenshot.yml", "Countdown/**" ]
 
 jobs:
   screenshot:
