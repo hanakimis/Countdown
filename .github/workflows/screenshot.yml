@@ -10,6 +10,8 @@ jobs:
   screenshot:
     name: Simulator screenshot
     runs-on: macos-14
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -60,3 +62,13 @@ jobs:
           name: app-screenshot
           path: screenshot.png
           if-no-files-found: error
+
+      - name: Publish screenshot to ci-screenshot branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p .ci-artifacts
+          cp screenshot.png .ci-artifacts/screenshot.png
+          git add -f .ci-artifacts/screenshot.png
+          git commit -m "CI app screenshot [skip ci]"
+          git push -f origin HEAD:ci-screenshot
