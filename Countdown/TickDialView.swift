@@ -73,8 +73,9 @@ final class TickDialView: UIView {
     @IBInspectable var tickWidth: CGFloat = 2.7 { didSet { setNeedsDisplay() } }
     @IBInspectable var tickLengthRatio: CGFloat = 0.24 { didSet { setNeedsDisplay() } }
 
-    /// Pulls the ring in from the edge so it hugs the centered number.
-    @IBInspectable var ringScale: CGFloat = 0.8 { didSet { setNeedsDisplay() } }
+    /// How much of the view the ring uses. Larger = bigger radius, so the ticks
+    /// (especially the 60-tick minute/second rings) get more space between them.
+    @IBInspectable var ringScale: CGFloat = 0.95 { didSet { setNeedsDisplay() } }
 
     /// How many past ticks carry the Wake glow.
     private let wakeLength = 7
