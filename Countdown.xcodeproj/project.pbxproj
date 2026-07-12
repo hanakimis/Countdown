@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		80330A1B1C14F39C00B8A3F4 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80330A1A1C14F39C00B8A3F4 /* Timer.swift */; };
 		8055AC911BCBA56F00FDC2A5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8055AC901BCBA56F00FDC2A5 /* Images.xcassets */; };
 		809C66F21AAD862700B79D17 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C66F11AAD862700B79D17 /* AppDelegate.swift */; };
-		809C66F41AAD862700B79D17 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C66F31AAD862700B79D17 /* ViewController.swift */; };
 		809C66F71AAD862700B79D17 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 809C66F51AAD862700B79D17 /* Main.storyboard */; };
 		809C66FC1AAD862700B79D17 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 809C66FA1AAD862700B79D17 /* LaunchScreen.xib */; };
 		809C67081AAD862700B79D17 /* CountdownTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C67071AAD862700B79D17 /* CountdownTests.swift */; };
 		809C67121AAD87CA00B79D17 /* CountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C67111AAD87CA00B79D17 /* CountdownViewController.swift */; };
-		80A9FE5E1C8D6D13002830B5 /* TotalRemainingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A9FE5D1C8D6D13002830B5 /* TotalRemainingUIView.swift */; };
+		80DA10021C8D6D13002830B5 /* TickDialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DA10011C8D6D13002830B5 /* TickDialView.swift */; };
+		80DA10041C8D6D13002830B5 /* StyleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DA10031C8D6D13002830B5 /* StyleSettingsViewController.swift */; };
+		80DA10061C8D6D13002830B5 /* DaysRingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DA10051C8D6D13002830B5 /* DaysRingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,19 +29,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		80330A1A1C14F39C00B8A3F4 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		8055AC901BCBA56F00FDC2A5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		809C66EC1AAD862700B79D17 /* Countdown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Countdown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		809C66F01AAD862700B79D17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		809C66F11AAD862700B79D17 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		809C66F31AAD862700B79D17 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		809C66F61AAD862700B79D17 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		809C66FB1AAD862700B79D17 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		809C67011AAD862700B79D17 /* CountdownTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountdownTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		809C67061AAD862700B79D17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		809C67071AAD862700B79D17 /* CountdownTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownTests.swift; sourceTree = "<group>"; };
 		809C67111AAD87CA00B79D17 /* CountdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountdownViewController.swift; sourceTree = "<group>"; };
-		80A9FE5D1C8D6D13002830B5 /* TotalRemainingUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TotalRemainingUIView.swift; sourceTree = "<group>"; };
+		80DA10011C8D6D13002830B5 /* TickDialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TickDialView.swift; sourceTree = "<group>"; };
+		80DA10031C8D6D13002830B5 /* StyleSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSettingsViewController.swift; sourceTree = "<group>"; };
+		80DA10051C8D6D13002830B5 /* DaysRingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaysRingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,11 +84,11 @@
 			isa = PBXGroup;
 			children = (
 				809C66F11AAD862700B79D17 /* AppDelegate.swift */,
-				809C66F31AAD862700B79D17 /* ViewController.swift */,
 				809C66F51AAD862700B79D17 /* Main.storyboard */,
-				80A9FE5D1C8D6D13002830B5 /* TotalRemainingUIView.swift */,
 				809C67111AAD87CA00B79D17 /* CountdownViewController.swift */,
-				80330A1A1C14F39C00B8A3F4 /* Timer.swift */,
+				80DA10011C8D6D13002830B5 /* TickDialView.swift */,
+				80DA10031C8D6D13002830B5 /* StyleSettingsViewController.swift */,
+				80DA10051C8D6D13002830B5 /* DaysRingsView.swift */,
 				809C66FA1AAD862700B79D17 /* LaunchScreen.xib */,
 				8055AC901BCBA56F00FDC2A5 /* Images.xcassets */,
 				809C66EF1AAD862700B79D17 /* Supporting Files */,
@@ -225,10 +225,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				809C67121AAD87CA00B79D17 /* CountdownViewController.swift in Sources */,
-				809C66F41AAD862700B79D17 /* ViewController.swift in Sources */,
-				80A9FE5E1C8D6D13002830B5 /* TotalRemainingUIView.swift in Sources */,
 				809C66F21AAD862700B79D17 /* AppDelegate.swift in Sources */,
-				80330A1B1C14F39C00B8A3F4 /* Timer.swift in Sources */,
+				80DA10021C8D6D13002830B5 /* TickDialView.swift in Sources */,
+				80DA10041C8D6D13002830B5 /* StyleSettingsViewController.swift in Sources */,
+				80DA10061C8D6D13002830B5 /* DaysRingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,11 +305,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -341,9 +342,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -353,7 +355,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Countdown/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "hana.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -365,7 +367,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Countdown/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "hana.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

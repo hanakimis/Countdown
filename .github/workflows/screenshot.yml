@@ -1,0 +1,68 @@
+name: Screenshot
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "claude/legacy-app-review-cgu1b1" ]
+    paths: [ ".github/workflows/screenshot.yml", "Countdown/**" ]
+
+jobs:
+  screenshot:
+    name: Simulator screenshot
+    runs-on: macos-14
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Boot a simulator
+        id: sim
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; c=[x for rt,l in d.items() if 'iOS' in rt for x in l if x.get('isAvailable') and 'iPhone' in x['name']]; print(c[0]['udid'] if c else '')")
+          echo "Chosen simulator UDID: $UDID"
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+
+      - name: Build
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project Countdown.xcodeproj \
+            -scheme Countdown \
+            -configuration Debug \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Install
+        run: |
+          UDID="${{ steps.sim.outputs.udid }}"
+          APP=$(find build/Build/Products/Debug-iphonesimulator -maxdepth 1 -name '*.app' | head -1)
+          echo "Installing $APP"
+          xcrun simctl install "$UDID" "$APP"
+
+      - name: Launch and capture
+        run: |
+          UDID="${{ steps.sim.outputs.udid }}"
+          # SEED_DAYS gives a populated countdown; SCREENSHOTS skips the badge prompt.
+          SIMCTL_CHILD_SCREENSHOTS=1 SIMCTL_CHILD_SEED_DAYS=128 xcrun simctl launch "$UDID" hana.Countdown || true
+          sleep 6
+          xcrun simctl io "$UDID" screenshot screenshot.png
+          ls -la screenshot.png
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-screenshot
+          path: screenshot.png
+          if-no-files-found: error
+
+      - name: Publish screenshot to ci-screenshot branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p .ci-artifacts
+          cp screenshot.png .ci-artifacts/screenshot.png
+          git add -f .ci-artifacts/screenshot.png
+          git commit -m "CI app screenshot [skip ci]"
+          git push -f origin HEAD:ci-screenshot

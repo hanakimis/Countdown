@@ -7,180 +7,243 @@
 //
 
 import UIKit
+import UserNotifications
 
 class CountdownViewController: UIViewController {
 
     @IBOutlet weak var datePicker: UIDatePicker!
-    
+
     @IBOutlet weak var daysLeftlabel: UILabel!
     @IBOutlet weak var hoursLeftLabel: UILabel!
     @IBOutlet weak var minutesLeftLabel: UILabel!
     @IBOutlet weak var secondsLeftLabel: UILabel!
     @IBOutlet weak var toggleDateChanger: UIButton!
-    
-    @IBOutlet weak var hoursImageView: UIImageView!
-    @IBOutlet weak var minutesImageView: UIImageView!
-    @IBOutlet weak var secondsImageView: UIImageView!
-    
+
+    @IBOutlet weak var hoursDial: TickDialView!
+    @IBOutlet weak var minutesDial: TickDialView!
+    @IBOutlet weak var secondsDial: TickDialView!
+
+    @IBOutlet weak var daysLinesContainer: UIView!
+    private var daysRings: DaysRingsView?
+
     @IBOutlet weak var toggleDateChangerSmallWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var toggleDateChangerFullWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var updateDateBottomLayoutConstraint: NSLayoutConstraint!
     @IBOutlet weak var countdownContainerVerticalCenterConstraint: NSLayoutConstraint!
     @IBOutlet weak var countdownContainerVerticalTopConstraint: NSLayoutConstraint!
-    
-    let formatter = NSDateFormatter()
-    let defaults = NSUserDefaults.standardUserDefaults()
-    var countdownDate: NSDate!
-    var today = NSDate()
-    var datePickerContainerOpen = false
-    
-        
-    
-    
-    
-    
-    
+
+    private let formatter = DateFormatter()
+    private let defaults = UserDefaults.standard
+    private let componentSet: Set<Calendar.Component> = [.day, .hour, .minute, .second]
+
+    private var countdownDate = Date()
+    private var datePickerContainerOpen = false
+    private var timer: Timer?
+    private var didInitialSweep = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // setup the date style
-        formatter.dateStyle = .MediumStyle
 
-        
-        // setup the datepicker
-        datePicker.datePickerMode = UIDatePickerMode.Date
-        datePicker.minimumDate = today
-        
-        
-        // update if a date has been stored
-        // need to do a check to see if the date is before today
-        if let myDate = defaults.objectForKey("date") {
-            countdownDate = myDate as! NSDate
-            datePicker.date = countdownDate
+        formatter.dateStyle = .medium
+
+        datePicker.datePickerMode = .date
+        datePicker.minimumDate = Date()
+        // Keep the classic spinning wheels the original layout was built around,
+        // rather than the compact/inline pickers that became the default later.
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        }
+
+        // One dial per unit; the ring count matches the unit's range.
+        hoursDial.total = 24
+        minutesDial.total = 60
+        secondsDial.total = 60
+
+        // Apply the saved selected-tick style to every dial.
+        applySavedStyle()
+        setupSettingsButton()
+        setupDaysRings()
+
+        // Restore a previously chosen date, if there is one.
+        if let saved = defaults.object(forKey: "date") as? Date {
+            countdownDate = saved
+            datePicker.date = saved
         } else {
             countdownDate = datePicker.date
         }
-        
-        // update the labels
+
+        // Screenshot hook: seed a populated countdown (e.g. SIMCTL_CHILD_SEED_DAYS=128).
+        if let seed = ProcessInfo.processInfo.environment["SEED_DAYS"], let d = Int(seed) {
+            let offset = TimeInterval(d * 86400 + 8 * 3600 + 39 * 60 + 16)
+            countdownDate = Date().addingTimeInterval(offset)
+            datePicker.date = countdownDate
+        }
+
         updateDifferenceLabels()
 
-        // use a timer to update the times
-        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateDifferenceLabels"), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1.0,
+                                     target: self,
+                                     selector: #selector(updateDifferenceLabels),
+                                     userInfo: nil,
+                                     repeats: true)
 
-        let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day], fromDate: today,
-            toDate: countdownDate, options: [])
-        hoursImageView.image = UIImage(named: "hour\(components.hour)")
-        minutesImageView.image = UIImage(named: "minorsec\(components.minute)")
-        secondsImageView.image = UIImage(named: "minorsec\(components.second)")
-        
         closeDatePicker()
     }
-  
-    
-    @IBAction func toggleDateChangerClicked(sender: AnyObject) {
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard !didInitialSweep else { return }
+        didInitialSweep = true
+        sweepDialsToNow()          // fill the rings in on first appearance
+    }
+
+    // MARK: - Selected-tick style
+
+    private func applySavedStyle() {
+        let select = TickDialView.savedStyle
+        let reset = TickDialView.savedResetStyle
+        [hoursDial, minutesDial, secondsDial].forEach {
+            $0?.selectStyle = select
+            $0?.resetStyle = reset
+        }
+    }
+
+    private func setupSettingsButton() {
+        let button = UIButton(type: .system)
+        if let gear = UIImage(systemName: "gearshape") {
+            button.setImage(gear, for: .normal)
+        } else {
+            button.setTitle("⚙︎", for: .normal)
+        }
+        button.tintColor = UIColor(white: 1, alpha: 0.55)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
+        view.addSubview(button)
+        NSLayoutConstraint.activate([
+            button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 6),
+            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            button.widthAnchor.constraint(equalToConstant: 34),
+            button.heightAnchor.constraint(equalToConstant: 34)
+        ])
+    }
+
+    @objc private func openSettings() {
+        let settings = StyleSettingsViewController(style: .grouped)
+        settings.delegate = self
+        present(UINavigationController(rootViewController: settings), animated: true)
+    }
+
+    private func setupDaysRings() {
+        guard let container = daysLinesContainer else { return }
+        // Hide the old placeholder lines and lay the rings view over their area.
+        container.subviews.forEach { $0.isHidden = true }
+        let rings = DaysRingsView(frame: container.bounds)
+        rings.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(rings)
+        NSLayoutConstraint.activate([
+            rings.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            rings.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            rings.topAnchor.constraint(equalTo: container.topAnchor),
+            rings.bottomAnchor.constraint(equalTo: container.bottomAnchor)
+        ])
+        daysRings = rings
+    }
+
+    private func sweepDialsToNow() {
+        let c = Calendar.current.dateComponents(componentSet, from: Date(), to: countdownDate)
+        hoursDial.sweepIn(to: max(0, c.hour ?? 0))
+        minutesDial.sweepIn(to: max(0, c.minute ?? 0))
+        secondsDial.sweepIn(to: max(0, c.second ?? 0))
+    }
+
+    @IBAction func toggleDateChangerClicked(_ sender: Any) {
         if datePickerContainerOpen {
             closeDatePicker()
         } else {
             openDatePicker()
         }
     }
-    
-    
-    @IBAction func chooseNewDate(sender: AnyObject) {
+
+    @IBAction func chooseNewDate(_ sender: Any) {
         countdownDate = datePicker.date
-        defaults.setObject(countdownDate, forKey: "date")
+        defaults.set(countdownDate, forKey: "date")
         updateDifferenceLabels()
+        sweepDialsToNow()          // re-sweep the rings to the new numbers
         closeDatePicker()
-        updateBadgeIcon()
+        updateBadge()
     }
-    
-    
-    func updateBadgeIcon() {
-        today = NSDate()
-        
-        let components = NSCalendar.currentCalendar().components([.Day], fromDate: today,
-            toDate: countdownDate, options: [])
-        let localNotification = UILocalNotification()
-        localNotification.applicationIconBadgeNumber = components.day
-        UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
+
+    private func updateBadge() {
+        let days = Calendar.current.dateComponents([.day], from: Date(), to: countdownDate).day ?? 0
+        let count = max(0, days)
+        if #available(iOS 16.0, *) {
+            UNUserNotificationCenter.current().setBadgeCount(count)
+        } else {
+            UIApplication.shared.applicationIconBadgeNumber = count
+        }
     }
-    
-    
-    func openDatePicker() {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.toggleDateChanger.contentHorizontalAlignment = .Center
-            self.toggleDateChanger.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
-            self.toggleDateChanger.setTitle("X", forState: .Normal)
-            self.toggleDateChangerSmallWidthConstraint.priority = 750
-            self.toggleDateChangerFullWidthConstraint.priority = 250
+
+    private func openDatePicker() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.toggleDateChanger.contentHorizontalAlignment = .center
+            self.toggleDateChanger.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            self.toggleDateChanger.setTitle("✕", for: .normal)
+            self.toggleDateChangerSmallWidthConstraint.priority = UILayoutPriority(750)
+            self.toggleDateChangerFullWidthConstraint.priority = UILayoutPriority(250)
             self.updateDateBottomLayoutConstraint.constant = 0
-            self.countdownContainerVerticalCenterConstraint.priority = 250
-            self.countdownContainerVerticalTopConstraint.priority = 750
-            
-            self.view.layoutIfNeeded()
+            self.countdownContainerVerticalCenterConstraint.priority = UILayoutPriority(250)
+            self.countdownContainerVerticalTopConstraint.priority = UILayoutPriority(750)
 
-            // animate the countdown date label
-            
+            self.view.layoutIfNeeded()
             self.datePicker.alpha = 1
-
-            }) { (Bool) -> Void in
-                self.datePickerContainerOpen = true
-        }
+        }, completion: { _ in
+            self.datePickerContainerOpen = true
+        })
     }
-    
-    
-    func closeDatePicker() {
-        
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+
+    private func closeDatePicker() {
+        UIView.animate(withDuration: 0.3, animations: {
             self.datePicker.alpha = 0
-            
-            self.toggleDateChanger.contentHorizontalAlignment = .Left
-            self.toggleDateChanger.contentEdgeInsets = UIEdgeInsetsMake(0.0, 32.0, 16.0, 0.0)
-            self.toggleDateChanger.setTitle(self.formatter.stringFromDate(self.datePicker.date), forState: .Normal)
-            self.toggleDateChangerSmallWidthConstraint.priority = 250
-            self.toggleDateChangerFullWidthConstraint.priority = 750
+
+            self.toggleDateChanger.contentHorizontalAlignment = .left
+            self.toggleDateChanger.contentEdgeInsets = UIEdgeInsets(top: 0, left: 32, bottom: 16, right: 0)
+            self.toggleDateChanger.setTitle(self.formatter.string(from: self.datePicker.date), for: .normal)
+            self.toggleDateChangerSmallWidthConstraint.priority = UILayoutPriority(250)
+            self.toggleDateChangerFullWidthConstraint.priority = UILayoutPriority(750)
             self.updateDateBottomLayoutConstraint.constant = -160
-            self.countdownContainerVerticalCenterConstraint.priority = 750
-            self.countdownContainerVerticalTopConstraint.priority = 250
-            
+            self.countdownContainerVerticalCenterConstraint.priority = UILayoutPriority(750)
+            self.countdownContainerVerticalTopConstraint.priority = UILayoutPriority(250)
+
             self.view.layoutIfNeeded()
-            
-            }) { (Bool) -> Void in
-                self.datePickerContainerOpen = false
-        }
+        }, completion: { _ in
+            self.datePickerContainerOpen = false
+        })
     }
-    
-    
-    func updateDifferenceLabels() {
-        today = NSDate()
-        
-        let components = NSCalendar.currentCalendar().components([.Second, .Minute, .Hour, .Day], fromDate: today,
-            toDate: countdownDate, options: [])
 
-        daysLeftlabel.text    = "\(components.day) days left"
-        hoursLeftLabel.text   = "\(components.hour)"
-        minutesLeftLabel.text = "\(components.minute)"
-        secondsLeftLabel.text = "\(components.second)"
-        
-        hoursImageView.image = UIImage(named: "hour\(components.hour)")
-        minutesImageView.image = UIImage(named: "minorsec\(components.minute)")
-        secondsImageView.image = UIImage(named: "minorsec\(components.second)")
-        
+    @objc private func updateDifferenceLabels() {
+        let now = Date()
+        let components = Calendar.current.dateComponents(componentSet, from: now, to: countdownDate)
+
+        let days = max(0, components.day ?? 0)
+        let hours = max(0, components.hour ?? 0)
+        let minutes = max(0, components.minute ?? 0)
+        let seconds = max(0, components.second ?? 0)
+
+        daysLeftlabel.text = "\(days) Days Left"
+        hoursLeftLabel.text = "\(hours)"
+        minutesLeftLabel.text = "\(minutes)"
+        secondsLeftLabel.text = "\(seconds)"
+
+        hoursDial.value = hours
+        minutesDial.value = minutes
+        secondsDial.value = seconds
+
+        daysRings?.update(days: days, hours: hours, minutes: minutes, seconds: seconds)
     }
-    
+}
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+extension CountdownViewController: StyleSettingsDelegate {
+    func stylesDidChange() {
+        applySavedStyle()
     }
-    
-    
-
-
-    
-    
-    
-    
-    
-
 }
