@@ -70,7 +70,7 @@ final class TickDialView: UIView {
     @IBInspectable var trackColor: UIColor = UIColor(white: 0.592, alpha: 0.14) { didSet { setNeedsDisplay() } }
     @IBInspectable var accentColor: UIColor = UIColor(red: 0.749, green: 0.910, blue: 0.984, alpha: 1) { didSet { setNeedsDisplay() } }
 
-    @IBInspectable var tickWidth: CGFloat = 2.7 { didSet { setNeedsDisplay() } }
+    @IBInspectable var tickWidth: CGFloat = 2.3 { didSet { setNeedsDisplay() } }
     @IBInspectable var tickLengthRatio: CGFloat = 0.24 { didSet { setNeedsDisplay() } }
 
     /// How much of the view the ring uses. Larger = bigger radius, so the ticks

@@ -269,8 +269,8 @@
                                                     <view userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Dmt-nD-c0S" customClass="TickDialView" customModule="Countdown" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="22" width="100" height="100"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="100" id="A7l-EN-mQa"/>
-                                                            <constraint firstAttribute="width" constant="100" id="ffa-dK-vLl"/>
+                                                            <constraint firstAttribute="height" constant="116" id="A7l-EN-mQa"/>
+                                                            <constraint firstAttribute="width" constant="116" id="ffa-dK-vLl"/>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hours" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GF0-jI-lTn">
@@ -303,8 +303,8 @@
                                                     <view userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1yb-l9-0hu" customClass="TickDialView" customModule="Countdown" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="22" width="100" height="100"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="100" id="7mb-RH-aqk"/>
-                                                            <constraint firstAttribute="height" constant="100" id="u0b-o4-MCa"/>
+                                                            <constraint firstAttribute="width" constant="116" id="7mb-RH-aqk"/>
+                                                            <constraint firstAttribute="height" constant="116" id="u0b-o4-MCa"/>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Minutes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diC-Wg-0ex">
@@ -337,8 +337,8 @@
                                                     <view userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pVV-ts-bgm" customClass="TickDialView" customModule="Countdown" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="22" width="100" height="100"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="100" id="VHN-WF-yBy"/>
-                                                            <constraint firstAttribute="width" constant="100" id="lZJ-Ui-B3n"/>
+                                                            <constraint firstAttribute="height" constant="116" id="VHN-WF-yBy"/>
+                                                            <constraint firstAttribute="width" constant="116" id="lZJ-Ui-B3n"/>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seconds" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lDN-0p-Sy1">
