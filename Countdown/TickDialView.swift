@@ -71,7 +71,10 @@ final class TickDialView: UIView {
     @IBInspectable var accentColor: UIColor = UIColor(red: 0.749, green: 0.910, blue: 0.984, alpha: 1) { didSet { setNeedsDisplay() } }
 
     @IBInspectable var tickWidth: CGFloat = 2.7 { didSet { setNeedsDisplay() } }
-    @IBInspectable var tickLengthRatio: CGFloat = 0.15 { didSet { setNeedsDisplay() } }
+    @IBInspectable var tickLengthRatio: CGFloat = 0.24 { didSet { setNeedsDisplay() } }
+
+    /// Pulls the ring in from the edge so it hugs the centered number.
+    @IBInspectable var ringScale: CGFloat = 0.8 { didSet { setNeedsDisplay() } }
 
     /// How many past ticks carry the Wake glow.
     private let wakeLength = 7
@@ -224,7 +227,7 @@ final class TickDialView: UIView {
         guard total > 0 else { return }
 
         let cx = rect.midX, cy = rect.midY
-        let outer = min(rect.width, rect.height) / 2 - tickWidth
+        let outer = (min(rect.width, rect.height) / 2 - tickWidth) * ringScale
         let inner = outer - outer * tickLengthRatio
         let stepAngle = 2 * CGFloat.pi / CGFloat(total)
 

@@ -68,6 +68,13 @@ class CountdownViewController: UIViewController {
             countdownDate = datePicker.date
         }
 
+        // Screenshot hook: seed a populated countdown (e.g. SIMCTL_CHILD_SEED_DAYS=128).
+        if let seed = ProcessInfo.processInfo.environment["SEED_DAYS"], let d = Int(seed) {
+            let offset = TimeInterval(d * 86400 + 8 * 3600 + 39 * 60 + 16)
+            countdownDate = Date().addingTimeInterval(offset)
+            datePicker.date = countdownDate
+        }
+
         updateDifferenceLabels()
 
         timer = Timer.scheduledTimer(timeInterval: 1.0,
