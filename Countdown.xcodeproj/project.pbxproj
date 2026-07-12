@@ -16,6 +16,7 @@
 		809C67121AAD87CA00B79D17 /* CountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C67111AAD87CA00B79D17 /* CountdownViewController.swift */; };
 		80DA10021C8D6D13002830B5 /* TickDialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DA10011C8D6D13002830B5 /* TickDialView.swift */; };
 		80DA10041C8D6D13002830B5 /* StyleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DA10031C8D6D13002830B5 /* StyleSettingsViewController.swift */; };
+		80DA10061C8D6D13002830B5 /* DaysRingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DA10051C8D6D13002830B5 /* DaysRingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,7 @@
 		809C67111AAD87CA00B79D17 /* CountdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountdownViewController.swift; sourceTree = "<group>"; };
 		80DA10011C8D6D13002830B5 /* TickDialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TickDialView.swift; sourceTree = "<group>"; };
 		80DA10031C8D6D13002830B5 /* StyleSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSettingsViewController.swift; sourceTree = "<group>"; };
+		80DA10051C8D6D13002830B5 /* DaysRingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaysRingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				809C67111AAD87CA00B79D17 /* CountdownViewController.swift */,
 				80DA10011C8D6D13002830B5 /* TickDialView.swift */,
 				80DA10031C8D6D13002830B5 /* StyleSettingsViewController.swift */,
+				80DA10051C8D6D13002830B5 /* DaysRingsView.swift */,
 				809C66FA1AAD862700B79D17 /* LaunchScreen.xib */,
 				8055AC901BCBA56F00FDC2A5 /* Images.xcassets */,
 				809C66EF1AAD862700B79D17 /* Supporting Files */,
@@ -229,6 +232,7 @@
 				809C66F21AAD862700B79D17 /* AppDelegate.swift in Sources */,
 				80DA10021C8D6D13002830B5 /* TickDialView.swift in Sources */,
 				80DA10041C8D6D13002830B5 /* StyleSettingsViewController.swift in Sources */,
+				80DA10061C8D6D13002830B5 /* DaysRingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -23,6 +23,9 @@ class CountdownViewController: UIViewController {
     @IBOutlet weak var minutesDial: TickDialView!
     @IBOutlet weak var secondsDial: TickDialView!
 
+    @IBOutlet weak var daysLinesContainer: UIView!
+    private var daysRings: DaysRingsView?
+
     @IBOutlet weak var toggleDateChangerSmallWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var toggleDateChangerFullWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var updateDateBottomLayoutConstraint: NSLayoutConstraint!
@@ -59,6 +62,7 @@ class CountdownViewController: UIViewController {
         // Apply the saved selected-tick style to every dial.
         applySavedStyle()
         setupSettingsButton()
+        setupDaysRings()
 
         // Restore a previously chosen date, if there is one.
         if let saved = defaults.object(forKey: "date") as? Date {
@@ -127,6 +131,22 @@ class CountdownViewController: UIViewController {
         let settings = StyleSettingsViewController(style: .grouped)
         settings.delegate = self
         present(UINavigationController(rootViewController: settings), animated: true)
+    }
+
+    private func setupDaysRings() {
+        guard let container = daysLinesContainer else { return }
+        // Hide the old placeholder lines and lay the rings view over their area.
+        container.subviews.forEach { $0.isHidden = true }
+        let rings = DaysRingsView(frame: container.bounds)
+        rings.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(rings)
+        NSLayoutConstraint.activate([
+            rings.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            rings.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            rings.topAnchor.constraint(equalTo: container.topAnchor),
+            rings.bottomAnchor.constraint(equalTo: container.bottomAnchor)
+        ])
+        daysRings = rings
     }
 
     private func sweepDialsToNow() {
@@ -217,6 +237,8 @@ class CountdownViewController: UIViewController {
         hoursDial.value = hours
         minutesDial.value = minutes
         secondsDial.value = seconds
+
+        daysRings?.update(days: days, hours: hours, minutes: minutes, seconds: seconds)
     }
 }
 

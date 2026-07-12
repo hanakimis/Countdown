@@ -462,6 +462,7 @@
                         <outlet property="countdownContainerVerticalTopConstraint" destination="sAk-e5-2yv" id="nTE-SM-IGe"/>
                         <outlet property="datePicker" destination="uXt-Mh-gtL" id="O9e-vX-ydT"/>
                         <outlet property="daysLeftlabel" destination="kRx-UY-CNC" id="mHJ-zU-csF"/>
+                        <outlet property="daysLinesContainer" destination="fHh-hy-TJ1" id="d0R-99-Lns"/>
                         <outlet property="hoursDial" destination="Dmt-nD-c0S" id="pPI-GN-B1t"/>
                         <outlet property="hoursLeftLabel" destination="GF0-jI-lTn" id="Cvr-G1-mC2"/>
                         <outlet property="minutesDial" destination="1yb-l9-0hu" id="EM2-ta-lau"/>
