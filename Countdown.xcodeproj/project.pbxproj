@@ -9,13 +9,14 @@
 /* Begin PBXBuildFile section */
 		8055AC911BCBA56F00FDC2A5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8055AC901BCBA56F00FDC2A5 /* Images.xcassets */; };
 		809C66F21AAD862700B79D17 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C66F11AAD862700B79D17 /* AppDelegate.swift */; };
-		809C66F71AAD862700B79D17 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 809C66F51AAD862700B79D17 /* Main.storyboard */; };
 		809C66FC1AAD862700B79D17 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 809C66FA1AAD862700B79D17 /* LaunchScreen.xib */; };
 		809C67081AAD862700B79D17 /* CountdownTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C67071AAD862700B79D17 /* CountdownTests.swift */; };
 		809C67121AAD87CA00B79D17 /* CountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C67111AAD87CA00B79D17 /* CountdownViewController.swift */; };
 		80DA10021C8D6D13002830B5 /* TickDialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DA10011C8D6D13002830B5 /* TickDialView.swift */; };
-		80DA10041C8D6D13002830B5 /* StyleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DA10031C8D6D13002830B5 /* StyleSettingsViewController.swift */; };
-		80DA10061C8D6D13002830B5 /* DaysRingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DA10051C8D6D13002830B5 /* DaysRingsView.swift */; };
+		80AA00000000000000000002 /* VisualStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA00000000000000000001 /* VisualStyle.swift */; };
+		80AA00000000000000000004 /* ConcentricDialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA00000000000000000003 /* ConcentricDialView.swift */; };
+		80AA00000000000000000006 /* DotLedgerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA00000000000000000005 /* DotLedgerView.swift */; };
+		80AA00000000000000000008 /* SettingsSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA00000000000000000007 /* SettingsSheetViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,15 +34,16 @@
 		809C66EC1AAD862700B79D17 /* Countdown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Countdown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		809C66F01AAD862700B79D17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		809C66F11AAD862700B79D17 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		809C66F61AAD862700B79D17 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		809C66FB1AAD862700B79D17 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		809C67011AAD862700B79D17 /* CountdownTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountdownTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		809C67061AAD862700B79D17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		809C67071AAD862700B79D17 /* CountdownTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownTests.swift; sourceTree = "<group>"; };
 		809C67111AAD87CA00B79D17 /* CountdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountdownViewController.swift; sourceTree = "<group>"; };
 		80DA10011C8D6D13002830B5 /* TickDialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TickDialView.swift; sourceTree = "<group>"; };
-		80DA10031C8D6D13002830B5 /* StyleSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSettingsViewController.swift; sourceTree = "<group>"; };
-		80DA10051C8D6D13002830B5 /* DaysRingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaysRingsView.swift; sourceTree = "<group>"; };
+		80AA00000000000000000001 /* VisualStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualStyle.swift; sourceTree = "<group>"; };
+		80AA00000000000000000003 /* ConcentricDialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcentricDialView.swift; sourceTree = "<group>"; };
+		80AA00000000000000000005 /* DotLedgerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotLedgerView.swift; sourceTree = "<group>"; };
+		80AA00000000000000000007 /* SettingsSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsSheetViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,11 +86,12 @@
 			isa = PBXGroup;
 			children = (
 				809C66F11AAD862700B79D17 /* AppDelegate.swift */,
-				809C66F51AAD862700B79D17 /* Main.storyboard */,
 				809C67111AAD87CA00B79D17 /* CountdownViewController.swift */,
 				80DA10011C8D6D13002830B5 /* TickDialView.swift */,
-				80DA10031C8D6D13002830B5 /* StyleSettingsViewController.swift */,
-				80DA10051C8D6D13002830B5 /* DaysRingsView.swift */,
+				80AA00000000000000000001 /* VisualStyle.swift */,
+				80AA00000000000000000003 /* ConcentricDialView.swift */,
+				80AA00000000000000000005 /* DotLedgerView.swift */,
+				80AA00000000000000000007 /* SettingsSheetViewController.swift */,
 				809C66FA1AAD862700B79D17 /* LaunchScreen.xib */,
 				8055AC901BCBA56F00FDC2A5 /* Images.xcassets */,
 				809C66EF1AAD862700B79D17 /* Supporting Files */,
@@ -205,7 +208,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8055AC911BCBA56F00FDC2A5 /* Images.xcassets in Resources */,
-				809C66F71AAD862700B79D17 /* Main.storyboard in Resources */,
 				809C66FC1AAD862700B79D17 /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -227,8 +229,10 @@
 				809C67121AAD87CA00B79D17 /* CountdownViewController.swift in Sources */,
 				809C66F21AAD862700B79D17 /* AppDelegate.swift in Sources */,
 				80DA10021C8D6D13002830B5 /* TickDialView.swift in Sources */,
-				80DA10041C8D6D13002830B5 /* StyleSettingsViewController.swift in Sources */,
-				80DA10061C8D6D13002830B5 /* DaysRingsView.swift in Sources */,
+				80AA00000000000000000002 /* VisualStyle.swift in Sources */,
+				80AA00000000000000000004 /* ConcentricDialView.swift in Sources */,
+				80AA00000000000000000006 /* DotLedgerView.swift in Sources */,
+				80AA00000000000000000008 /* SettingsSheetViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,14 +255,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		809C66F51AAD862700B79D17 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				809C66F61AAD862700B79D17 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		809C66FA1AAD862700B79D17 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
