@@ -22,6 +22,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if ProcessInfo.processInfo.environment["SCREENSHOTS"] == nil {
             UNUserNotificationCenter.current().requestAuthorization(options: [.badge]) { _, _ in }
         }
+
+        // The screen is built entirely in code (no storyboard).
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = CountdownViewController()
+        window.makeKeyAndVisible()
+        self.window = window
         return true
     }
 }
