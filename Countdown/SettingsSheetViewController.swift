@@ -90,11 +90,11 @@ final class SettingsSheetViewController: UIViewController {
         }
         refreshSelection()
 
-        // DATE section
-        let dateCaption = sectionCaption("DATE")
+        // DATE & TIME section
+        let dateCaption = sectionCaption("DATE & TIME")
 
         let picker = UIDatePicker()
-        picker.datePickerMode = .date
+        picker.datePickerMode = .dateAndTime
         picker.preferredDatePickerStyle = .wheels
         // Floor at today for new/future targets, but never above the saved
         // date — otherwise an already-elapsed target would be silently clamped
