@@ -21,6 +21,7 @@ final class CountdownViewController: UIViewController {
     private let componentSet: Set<Calendar.Component> = [.day, .hour, .minute, .second]
 
     private var countdownDate = Date()
+    private var startDate = Date()               // when this countdown began — sizes the dot grid's total span
     private var style = VisualStyle.saved
     private var timer: Timer?
     private var didInitialRefill = false
@@ -59,6 +60,21 @@ final class CountdownViewController: UIViewController {
         return f
     }()
 
+    private let timeFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "h:mm a"                            // 3:30 PM
+        return f
+    }()
+
+    /// A target at exactly 00:00 is treated as a pure calendar-day target:
+    /// showing "12:00 AM" there would be noise, so the time is only surfaced
+    /// when the user actually set one. Uses the current calendar/time zone so
+    /// "midnight" means midnight where the user is.
+    private func isMidnight(_ date: Date) -> Bool {
+        let c = Calendar.current.dateComponents([.hour, .minute], from: date)
+        return (c.hour ?? 0) == 0 && (c.minute ?? 0) == 0
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -76,10 +92,27 @@ final class CountdownViewController: UIViewController {
         if let saved = defaults.object(forKey: "date") as? Date {
             countdownDate = saved
         }
+        // The dot grid drains over the whole span, so it needs to know when the
+        // countdown began. Existing installs (saved target, no start) seed to now
+        // → the grid starts full today and drains from here.
+        if let savedStart = defaults.object(forKey: "startDate") as? Date {
+            startDate = savedStart
+        } else {
+            defaults.set(startDate, forKey: "startDate")
+        }
 
         // Screenshot hook: seed a populated countdown (e.g. SIMCTL_CHILD_SEED_DAYS=64).
         if let seed = ProcessInfo.processInfo.environment["SEED_DAYS"], let d = Int(seed) {
-            countdownDate = Date().addingTimeInterval(TimeInterval(d * 86400 + 8 * 3600 + 39 * 60 + 16))
+            // Sub-day offset; SEED_SECS shrinks it so a rollover fires soon after
+            // launch (for capturing the dissolve animation).
+            let subDay = ProcessInfo.processInfo.environment["SEED_SECS"].flatMap(Int.init) ?? (8 * 3600 + 39 * 60 + 16)
+            countdownDate = Date().addingTimeInterval(TimeInterval(d * 86400 + subDay))
+            startDate = Date()                 // start = now so the seeded span shows a full grid
+            // Optional: backdate the start so the grid shows a partial drain
+            // (SIMCTL_CHILD_SEED_ELAPSED=20 → 20 days already emptied).
+            if let e = ProcessInfo.processInfo.environment["SEED_ELAPSED"], let elapsed = Int(e) {
+                startDate = Date().addingTimeInterval(TimeInterval(-elapsed * 86400))
+            }
         }
         // Screenshot hook: force a style (SIMCTL_CHILD_STYLE=editorial).
         if let forced = ProcessInfo.processInfo.environment["STYLE"].flatMap(VisualStyle.init) {
@@ -175,27 +208,19 @@ final class CountdownViewController: UIViewController {
         ])
     }
 
-    /// The dot ledger block, pinned above the bottom edge with its caption.
-    private func addDotLedger(captionColor: UIColor, accent: UIColor, stroke: UIColor) {
-        let caption = UILabel()
-        caption.font = .systemFont(ofSize: 11, weight: .semibold)
-        caption.textColor = captionColor
-        caption.setText("ONE DOT PER DAY", kern: 1.5)
-
+    /// The dot ledger block, pinned above the bottom edge.
+    private func addDotLedger(accent: UIColor, stroke: UIColor) {
         let ledger = DotLedgerView()
         ledger.accentColor = accent
         ledger.strokeColor = stroke
         dotLedger = ledger
 
-        [caption, ledger].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            styleRoot.addSubview($0)
-        }
+        ledger.translatesAutoresizingMaskIntoConstraints = false
+        styleRoot.addSubview(ledger)
         NSLayoutConstraint.activate([
             ledger.leadingAnchor.constraint(equalTo: styleRoot.leadingAnchor, constant: 32),
-            ledger.bottomAnchor.constraint(equalTo: styleRoot.bottomAnchor, constant: -56),
-            caption.leadingAnchor.constraint(equalTo: ledger.leadingAnchor),
-            caption.bottomAnchor.constraint(equalTo: ledger.topAnchor, constant: -12)
+            ledger.trailingAnchor.constraint(equalTo: styleRoot.trailingAnchor, constant: -32),
+            ledger.bottomAnchor.constraint(equalTo: styleRoot.bottomAnchor, constant: -56)
         ])
     }
 
@@ -288,16 +313,18 @@ final class CountdownViewController: UIViewController {
             $0.translatesAutoresizingMaskIntoConstraints = false
             styleRoot.addSubview($0)
         }
-        NSLayoutConstraint.activate([
-            days.topAnchor.constraint(equalTo: previousRow!.bottomAnchor, constant: 40),
-            days.leadingAnchor.constraint(equalTo: styleRoot.leadingAnchor, constant: 32),
-            caption.topAnchor.constraint(equalTo: days.bottomAnchor, constant: 6),
-            caption.leadingAnchor.constraint(equalTo: days.leadingAnchor)
-        ])
 
-        addDotLedger(captionColor: white.withAlphaComponent(0.35),
-                     accent: style.accent,
+        addDotLedger(accent: style.accent,
                      stroke: white.withAlphaComponent(0.28))
+
+        // The days block sits just above the dot grid (bottom-up), riding along
+        // as the grid's height changes with the day count.
+        NSLayoutConstraint.activate([
+            days.leadingAnchor.constraint(equalTo: styleRoot.leadingAnchor, constant: 32),
+            caption.leadingAnchor.constraint(equalTo: days.leadingAnchor),
+            caption.topAnchor.constraint(equalTo: days.bottomAnchor, constant: 6),
+            caption.bottomAnchor.constraint(equalTo: dotLedger!.topAnchor, constant: -20)
+        ])
     }
 
     // MARK: - Style 2 · Editorial
@@ -315,10 +342,14 @@ final class CountdownViewController: UIViewController {
         dial.selectedTickWidth = 2.5
         concentricDial = dial
 
-        // Dial center: serif days numeral over an SF "days" caption.
+        // Dial center: serif days numeral over an SF "days" caption. Big at 1–2
+        // digits; auto-shrinks so a 3-digit count doesn't crowd the inner ring.
         let days = UILabel()
         days.font = Fonts.serif(52, tabular: true)
         days.textColor = ink
+        days.textAlignment = .center
+        days.adjustsFontSizeToFitWidth = true
+        days.minimumScaleFactor = 0.55
         daysNumeralLabel = days
 
         let daysCaption = UILabel()
@@ -366,6 +397,8 @@ final class CountdownViewController: UIViewController {
 
             days.centerXAnchor.constraint(equalTo: dial.centerXAnchor),
             days.centerYAnchor.constraint(equalTo: dial.centerYAnchor, constant: -10),
+            days.widthAnchor.constraint(equalTo: dial.widthAnchor, multiplier: 0.26),  // keep the numeral inside the inner ring
+
             daysCaption.centerXAnchor.constraint(equalTo: dial.centerXAnchor),
             daysCaption.topAnchor.constraint(equalTo: days.bottomAnchor, constant: -2),
 
@@ -376,8 +409,7 @@ final class CountdownViewController: UIViewController {
             unitsRow.topAnchor.constraint(equalTo: until.bottomAnchor, constant: 28)
         ])
 
-        addDotLedger(captionColor: ink.withAlphaComponent(0.35),
-                     accent: style.accent,
+        addDotLedger(accent: style.accent,
                      stroke: ink.withAlphaComponent(0.35))
     }
 
@@ -526,7 +558,10 @@ final class CountdownViewController: UIViewController {
         let minutes = max(0, components.minute ?? 0)
         let seconds = max(0, components.second ?? 0)
 
-        let shortDate = shortDateFormatter.string(from: countdownDate).uppercased()
+        var shortDate = shortDateFormatter.string(from: countdownDate).uppercased()
+        if !isMidnight(countdownDate) {
+            shortDate += "  " + timeFormatter.string(from: countdownDate).uppercased()
+        }
 
         switch style {
         case .ledger:
@@ -537,7 +572,11 @@ final class CountdownViewController: UIViewController {
         case .editorial:
             headerDateLabel?.setText(shortDate, kern: 2.5)
             daysNumeralLabel?.text = "\(days)"
-            untilLabel?.text = "until \(longDateFormatter.string(from: countdownDate))"
+            var until = "until \(longDateFormatter.string(from: countdownDate))"
+            if !isMidnight(countdownDate) {
+                until += " at \(timeFormatter.string(from: countdownDate))"
+            }
+            untilLabel?.text = until
             concentricDial?.setValues(seconds: seconds, minutes: minutes, hours: hours, animated: animateRollovers)
             for (label, value) in zip(unitValueLabels, [hours, minutes, seconds]) { label.text = "\(value)" }
         case .tminus:
@@ -547,7 +586,14 @@ final class CountdownViewController: UIViewController {
             for (label, value) in zip(unitValueLabels, [hours, minutes, seconds]) { label.text = "\(value)" }
         }
 
-        dotLedger?.days = days
+        // Total span = whole journey from start to target; the grid holds that
+        // many dots: `days` solid, one current-day gauge, the rest elapsed.
+        // `dayFraction` is how much of the current day is still left, so the
+        // gauge on the leading dot depletes with the hours/minutes/seconds.
+        let spanDays = Calendar.current.dateComponents([.day], from: startDate, to: countdownDate).day ?? days
+        let totalDays = max(spanDays, days + 1, 1)          // +1 leaves room for the current-day dot
+        let dayFraction = CGFloat(hours * 3600 + minutes * 60 + seconds) / 86_400
+        dotLedger?.setValues(total: totalDays, wholeDays: days, dayFraction: dayFraction, animated: animateRollovers)
         updateBadge(days: days)          // keep the home-screen badge in step with the on-screen count
     }
 
@@ -610,6 +656,8 @@ extension CountdownViewController: SettingsSheetDelegate {
     func settingsSheet(_ sheet: SettingsSheetViewController, didPick date: Date) {
         countdownDate = date
         defaults.set(date, forKey: "date")
+        startDate = Date()                     // a freshly picked target restarts the span → grid fills up
+        defaults.set(startDate, forKey: "startDate")
         refresh(animateRollovers: false)       // update numerals now, without per-wheel-step volleys
         scheduleRefillVolley()                  // one clean sweep once the wheel settles
     }
