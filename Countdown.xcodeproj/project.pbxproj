@@ -17,6 +17,10 @@
 		80AA00000000000000000004 /* ConcentricDialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA00000000000000000003 /* ConcentricDialView.swift */; };
 		80AA00000000000000000006 /* DotLedgerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA00000000000000000005 /* DotLedgerView.swift */; };
 		80AA00000000000000000008 /* SettingsSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA00000000000000000007 /* SettingsSheetViewController.swift */; };
+		80AA00000000000000000102 /* AppIcon-Editorial@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80AA00000000000000000101 /* AppIcon-Editorial@2x.png */; };
+		80AA00000000000000000104 /* AppIcon-Editorial@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80AA00000000000000000103 /* AppIcon-Editorial@3x.png */; };
+		80AA00000000000000000106 /* AppIcon-TMinus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80AA00000000000000000105 /* AppIcon-TMinus@2x.png */; };
+		80AA00000000000000000108 /* AppIcon-TMinus@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80AA00000000000000000107 /* AppIcon-TMinus@3x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +48,10 @@
 		80AA00000000000000000003 /* ConcentricDialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcentricDialView.swift; sourceTree = "<group>"; };
 		80AA00000000000000000005 /* DotLedgerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotLedgerView.swift; sourceTree = "<group>"; };
 		80AA00000000000000000007 /* SettingsSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsSheetViewController.swift; sourceTree = "<group>"; };
+		80AA00000000000000000101 /* AppIcon-Editorial@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon-Editorial@2x.png"; sourceTree = "<group>"; };
+		80AA00000000000000000103 /* AppIcon-Editorial@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon-Editorial@3x.png"; sourceTree = "<group>"; };
+		80AA00000000000000000105 /* AppIcon-TMinus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon-TMinus@2x.png"; sourceTree = "<group>"; };
+		80AA00000000000000000107 /* AppIcon-TMinus@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon-TMinus@3x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,9 +102,21 @@
 				80AA00000000000000000007 /* SettingsSheetViewController.swift */,
 				809C66FA1AAD862700B79D17 /* LaunchScreen.xib */,
 				8055AC901BCBA56F00FDC2A5 /* Images.xcassets */,
+				80AA00000000000000000100 /* AlternateIcons */,
 				809C66EF1AAD862700B79D17 /* Supporting Files */,
 			);
 			path = Countdown;
+			sourceTree = "<group>";
+		};
+		80AA00000000000000000100 /* AlternateIcons */ = {
+			isa = PBXGroup;
+			children = (
+				80AA00000000000000000101 /* AppIcon-Editorial@2x.png */,
+				80AA00000000000000000103 /* AppIcon-Editorial@3x.png */,
+				80AA00000000000000000105 /* AppIcon-TMinus@2x.png */,
+				80AA00000000000000000107 /* AppIcon-TMinus@3x.png */,
+			);
+			path = AlternateIcons;
 			sourceTree = "<group>";
 		};
 		809C66EF1AAD862700B79D17 /* Supporting Files */ = {
@@ -209,6 +229,10 @@
 			files = (
 				8055AC911BCBA56F00FDC2A5 /* Images.xcassets in Resources */,
 				809C66FC1AAD862700B79D17 /* LaunchScreen.xib in Resources */,
+				80AA00000000000000000102 /* AppIcon-Editorial@2x.png in Resources */,
+				80AA00000000000000000104 /* AppIcon-Editorial@3x.png in Resources */,
+				80AA00000000000000000106 /* AppIcon-TMinus@2x.png in Resources */,
+				80AA00000000000000000108 /* AppIcon-TMinus@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
