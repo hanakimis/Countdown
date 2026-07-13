@@ -20,6 +20,34 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>CFBundleIcons</key>
+	<dict>
+		<!-- Primary icon (Ledger, the default style) is supplied by the
+		     asset catalog's AppIcon set, so it is intentionally NOT redeclared
+		     here — that would collide with the asset-catalog-generated
+		     CFBundlePrimaryIcon. setAlternateIconName(nil) restores it. -->
+		<key>CFBundleAlternateIcons</key>
+		<dict>
+			<key>AppIcon-Editorial</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>AppIcon-Editorial</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>AppIcon-TMinus</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>AppIcon-TMinus</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+		</dict>
+	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

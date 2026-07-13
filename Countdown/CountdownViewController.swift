@@ -585,6 +585,26 @@ extension CountdownViewController: SettingsSheetDelegate {
     func settingsSheet(_ sheet: SettingsSheetViewController, didSelect style: VisualStyle) {
         VisualStyle.saved = style
         switchStyle(to: style)                 // re-renders instantly behind the sheet
+        applyIcon(for: style)                  // swap the home-screen icon to match
+    }
+
+    /// Switches the home-screen app icon to match the chosen style.
+    ///
+    /// Ledger is the asset-catalog *primary*, selected by passing `nil`;
+    /// Editorial and T-Minus are loose alternate icons declared in Info.plist
+    /// under `CFBundleAlternateIcons`. `setAlternateIconName` always shows a
+    /// one-time system alert, so this fires ONLY when the icon actually
+    /// changes — never redundantly, and never on launch.
+    private func applyIcon(for style: VisualStyle) {
+        guard UIApplication.shared.supportsAlternateIcons else { return }
+        let name: String?
+        switch style {
+        case .ledger:    name = nil                    // restore the primary
+        case .editorial: name = "AppIcon-Editorial"
+        case .tminus:    name = "AppIcon-TMinus"
+        }
+        guard UIApplication.shared.alternateIconName != name else { return }
+        UIApplication.shared.setAlternateIconName(name)
     }
 
     func settingsSheet(_ sheet: SettingsSheetViewController, didPick date: Date) {
