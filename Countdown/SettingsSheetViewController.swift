@@ -17,11 +17,24 @@ protocol SettingsSheetDelegate: AnyObject {
 
 final class SettingsSheetViewController: UIViewController {
 
+    /// A fixed, achromatic palette keeps the settings chrome independent of
+    /// whichever countdown style is visible behind it. Theme colors belong
+    /// only inside the three previews.
+    private enum Palette {
+        static let background = UIColor(hex: 0x1C1C1E)
+        static let surface = UIColor(hex: 0x2C2C2E)
+        static let primaryText = UIColor.white
+        static let secondaryText = UIColor(white: 1, alpha: 0.64)
+        static let tertiaryText = UIColor(white: 1, alpha: 0.42)
+        static let border = UIColor(white: 1, alpha: 0.12)
+        static let selectedBorder = UIColor(white: 1, alpha: 0.82)
+        static let selectedFill = UIColor(white: 1, alpha: 0.08)
+    }
+
     weak var delegate: SettingsSheetDelegate?
 
     private let initialDate: Date
     private var cards: [StyleCardView] = []
-    private let sheetAccent = UIColor(hex: 0xBFE8FB)
 
     init(currentDate: Date) {
         initialDate = currentDate
@@ -38,7 +51,7 @@ final class SettingsSheetViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(hex: 0x2A3140)
+        view.backgroundColor = Palette.background
         overrideUserInterfaceStyle = .dark
 
         let scroll = UIScrollView()
@@ -67,12 +80,12 @@ final class SettingsSheetViewController: UIViewController {
         let title = UILabel()
         title.text = "Countdown"
         title.font = .systemFont(ofSize: 19, weight: .semibold)
-        title.textColor = .white
+        title.textColor = Palette.primaryText
 
         let done = UIButton(type: .system)
         done.setTitle("Done", for: .normal)
         done.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
-        done.setTitleColor(sheetAccent, for: .normal)
+        done.setTitleColor(Palette.primaryText, for: .normal)
         done.addTarget(self, action: #selector(dismissSheet), for: .touchUpInside)
 
         // STYLE section
@@ -83,7 +96,15 @@ final class SettingsSheetViewController: UIViewController {
         cardsRow.distribution = .fillEqually
         cardsRow.spacing = 10
         for style in VisualStyle.allCases {
-            let card = StyleCardView(style: style, accent: sheetAccent)
+            let card = StyleCardView(
+                style: style,
+                surface: Palette.surface,
+                textColor: Palette.secondaryText,
+                borderColor: Palette.border,
+                selectedFill: Palette.selectedFill,
+                selectedTextColor: Palette.primaryText,
+                selectedBorderColor: Palette.selectedBorder
+            )
             card.addTarget(self, action: #selector(cardTapped(_:)), for: .touchUpInside)
             cards.append(card)
             cardsRow.addArrangedSubview(card)
@@ -106,20 +127,20 @@ final class SettingsSheetViewController: UIViewController {
         // Refill animation row — informational; the volley is the single
         // shipped animation (the old 6-style list is retired).
         let refillRow = UIView()
-        refillRow.backgroundColor = UIColor(white: 1, alpha: 0.05)
+        refillRow.backgroundColor = Palette.surface
         refillRow.layer.cornerRadius = 12
         refillRow.layer.borderWidth = 1
-        refillRow.layer.borderColor = UIColor(white: 1, alpha: 0.08).cgColor
+        refillRow.layer.borderColor = Palette.border.cgColor
 
         let refillLabel = UILabel()
         refillLabel.text = "Refill animation"
         refillLabel.font = .systemFont(ofSize: 14)
-        refillLabel.textColor = UIColor(white: 1, alpha: 0.6)
+        refillLabel.textColor = Palette.secondaryText
 
         let refillValue = UILabel()
         refillValue.text = "Launch volley"
         refillValue.font = .systemFont(ofSize: 14, weight: .medium)
-        refillValue.textColor = .white
+        refillValue.textColor = Palette.primaryText
 
         [title, done, styleCaption, cardsRow, dateCaption, picker, refillRow].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -168,7 +189,7 @@ final class SettingsSheetViewController: UIViewController {
     private func sectionCaption(_ text: String) -> UILabel {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .semibold)
-        label.textColor = UIColor(white: 1, alpha: 0.4)
+        label.textColor = Palette.tertiaryText
         label.setText(text, kern: 1.5)
         return label
     }
@@ -196,15 +217,31 @@ final class SettingsSheetViewController: UIViewController {
 private final class StyleCardView: UIControl {
 
     let style: VisualStyle
-    private let accent: UIColor
+    private let surface: UIColor
+    private let textColor: UIColor
+    private let borderColor: UIColor
+    private let selectedFill: UIColor
+    private let selectedTextColor: UIColor
+    private let selectedBorderColor: UIColor
     private let nameLabel = UILabel()
     private let thumb: StyleThumbView
 
     var isChosen: Bool = false { didSet { refresh() } }
 
-    init(style: VisualStyle, accent: UIColor) {
+    init(style: VisualStyle,
+         surface: UIColor,
+         textColor: UIColor,
+         borderColor: UIColor,
+         selectedFill: UIColor,
+         selectedTextColor: UIColor,
+         selectedBorderColor: UIColor) {
         self.style = style
-        self.accent = accent
+        self.surface = surface
+        self.textColor = textColor
+        self.borderColor = borderColor
+        self.selectedFill = selectedFill
+        self.selectedTextColor = selectedTextColor
+        self.selectedBorderColor = selectedBorderColor
         self.thumb = StyleThumbView(style: style)
         super.init(frame: .zero)
 
@@ -236,16 +273,16 @@ private final class StyleCardView: UIControl {
 
     private func refresh() {
         if isChosen {
-            backgroundColor = accent.withAlphaComponent(0.1)
+            backgroundColor = selectedFill
             layer.borderWidth = 1.5
-            layer.borderColor = accent.cgColor
-            nameLabel.textColor = accent
+            layer.borderColor = selectedBorderColor.cgColor
+            nameLabel.textColor = selectedTextColor
             nameLabel.text = "\(style.title) ✓"
         } else {
-            backgroundColor = UIColor(white: 1, alpha: 0.05)
+            backgroundColor = surface
             layer.borderWidth = 1
-            layer.borderColor = UIColor(white: 1, alpha: 0.1).cgColor
-            nameLabel.textColor = UIColor(white: 1, alpha: 0.7)
+            layer.borderColor = borderColor.cgColor
+            nameLabel.textColor = textColor
             nameLabel.text = style.title
         }
     }
