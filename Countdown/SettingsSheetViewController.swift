@@ -3,7 +3,7 @@
 //  Countdown
 //
 //  The unified settings sheet: style picker (three preview cards), the
-//  target-date wheels and the (informational) refill-animation row, all in
+//  target-date wheels and animation settings, all in
 //  one UISheetPresentationController bottom sheet. Replaces the old gear
 //  menu and the inline bottom date picker.
 //
@@ -124,31 +124,25 @@ final class SettingsSheetViewController: UIViewController {
         picker.date = initialDate
         picker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
 
-        // Refill animation row — informational; the volley is the single
-        // shipped animation (the old 6-style list is retired).
-        let refillRow = UIView()
-        refillRow.backgroundColor = Palette.surface
-        refillRow.layer.cornerRadius = 12
-        refillRow.layer.borderWidth = 1
-        refillRow.layer.borderColor = Palette.border.cgColor
+        // Only Launch volley ships today, so these are informational for now.
+        // The choices are modeled separately so Tap can become independently
+        // selectable as soon as another animation is added.
+        let animationCaption = sectionCaption("ANIMATION")
+        let animationRows = UIStackView(arrangedSubviews: [
+            animationRow(label: "Refill", value: DialAnimationSettings.refill.title),
+            animationRow(label: "Tap", value: DialAnimationSettings.tap.title)
+        ])
+        animationRows.axis = .vertical
+        animationRows.spacing = 1 / UIScreen.main.scale
+        animationRows.backgroundColor = Palette.border
+        animationRows.layer.cornerRadius = 12
+        animationRows.layer.borderWidth = 1
+        animationRows.layer.borderColor = Palette.border.cgColor
+        animationRows.layer.masksToBounds = true
 
-        let refillLabel = UILabel()
-        refillLabel.text = "Refill animation"
-        refillLabel.font = .systemFont(ofSize: 14)
-        refillLabel.textColor = Palette.secondaryText
-
-        let refillValue = UILabel()
-        refillValue.text = "Launch volley"
-        refillValue.font = .systemFont(ofSize: 14, weight: .medium)
-        refillValue.textColor = Palette.primaryText
-
-        [title, done, styleCaption, cardsRow, dateCaption, picker, refillRow].forEach {
+        [title, done, styleCaption, cardsRow, dateCaption, picker, animationCaption, animationRows].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             content.addSubview($0)
-        }
-        [refillLabel, refillValue].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            refillRow.addSubview($0)
         }
 
         NSLayoutConstraint.activate([
@@ -173,16 +167,13 @@ final class SettingsSheetViewController: UIViewController {
             picker.trailingAnchor.constraint(equalTo: content.trailingAnchor, constant: -20),
             picker.heightAnchor.constraint(equalToConstant: 180),
 
-            refillRow.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: 14),
-            refillRow.leadingAnchor.constraint(equalTo: content.leadingAnchor, constant: 20),
-            refillRow.trailingAnchor.constraint(equalTo: content.trailingAnchor, constant: -20),
-            refillRow.bottomAnchor.constraint(equalTo: content.bottomAnchor, constant: -28),
+            animationCaption.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: 14),
+            animationCaption.leadingAnchor.constraint(equalTo: content.leadingAnchor, constant: 20),
 
-            refillLabel.topAnchor.constraint(equalTo: refillRow.topAnchor, constant: 14),
-            refillLabel.bottomAnchor.constraint(equalTo: refillRow.bottomAnchor, constant: -14),
-            refillLabel.leadingAnchor.constraint(equalTo: refillRow.leadingAnchor, constant: 16),
-            refillValue.centerYAnchor.constraint(equalTo: refillLabel.centerYAnchor),
-            refillValue.trailingAnchor.constraint(equalTo: refillRow.trailingAnchor, constant: -16)
+            animationRows.topAnchor.constraint(equalTo: animationCaption.bottomAnchor, constant: 10),
+            animationRows.leadingAnchor.constraint(equalTo: content.leadingAnchor, constant: 20),
+            animationRows.trailingAnchor.constraint(equalTo: content.trailingAnchor, constant: -20),
+            animationRows.bottomAnchor.constraint(equalTo: content.bottomAnchor, constant: -28)
         ])
     }
 
@@ -192,6 +183,34 @@ final class SettingsSheetViewController: UIViewController {
         label.textColor = Palette.tertiaryText
         label.setText(text, kern: 1.5)
         return label
+    }
+
+    private func animationRow(label: String, value: String) -> UIView {
+        let row = UIView()
+        row.backgroundColor = Palette.surface
+
+        let labelView = UILabel()
+        labelView.text = label
+        labelView.font = .systemFont(ofSize: 14)
+        labelView.textColor = Palette.secondaryText
+
+        let valueView = UILabel()
+        valueView.text = value
+        valueView.font = .systemFont(ofSize: 14, weight: .medium)
+        valueView.textColor = Palette.primaryText
+
+        [labelView, valueView].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            row.addSubview($0)
+        }
+        NSLayoutConstraint.activate([
+            labelView.topAnchor.constraint(equalTo: row.topAnchor, constant: 14),
+            labelView.bottomAnchor.constraint(equalTo: row.bottomAnchor, constant: -14),
+            labelView.leadingAnchor.constraint(equalTo: row.leadingAnchor, constant: 16),
+            valueView.centerYAnchor.constraint(equalTo: labelView.centerYAnchor),
+            valueView.trailingAnchor.constraint(equalTo: row.trailingAnchor, constant: -16)
+        ])
+        return row
     }
 
     private func refreshSelection() {

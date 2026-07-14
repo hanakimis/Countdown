@@ -29,6 +29,10 @@ final class ConcentricDialView: UIView {
     var tickWidth: CGFloat = 1.9 { didSet { setNeedsDisplay() } }
     var selectedTickWidth: CGFloat = 2.5 { didSet { setNeedsDisplay() } }
 
+    /// Animation played when the dial is tapped. A concentric dial treats all
+    /// three rings as one control, so a tap replays every ring together.
+    var tapAnimation: DialAnimation = DialAnimationSettings.tap
+
     // Concentric geometry as fractions of the dial size (design tokens).
     private let bandRatio: CGFloat = 0.08
     private let gapRatio: CGFloat = 0.032
@@ -48,9 +52,8 @@ final class ConcentricDialView: UIView {
         let new = [seconds, minutes, hours]
         guard new != values else { return }
         if animated {
-            for k in 0..<3 where new[k] > values[k] {
-                volleyStarts[k] = window != nil ? CACurrentMediaTime() : nil
-            }
+            let rolledOver = (0..<3).filter { new[$0] > values[$0] }
+            play(DialAnimationSettings.refill, on: rolledOver)
         }
         values = new
         if volleyStarts.contains(where: { $0 != nil }) { ensureLink() }
@@ -59,9 +62,18 @@ final class ConcentricDialView: UIView {
 
     /// Volley-refill every ring (on appear / date change).
     func refillAll() {
-        guard window != nil else { volleyStarts = [nil, nil, nil]; setNeedsDisplay(); return }
+        play(DialAnimationSettings.refill, on: Array(0..<3))
+    }
+
+    private func startLaunchVolley(on rings: [Int]) {
+        guard !rings.isEmpty else { return }
+        guard window != nil else {
+            rings.forEach { volleyStarts[$0] = nil }
+            setNeedsDisplay()
+            return
+        }
         let now = CACurrentMediaTime()
-        volleyStarts = [now, now, now]
+        rings.forEach { volleyStarts[$0] = now }
         ensureLink()
         setNeedsDisplay()
     }
@@ -75,6 +87,7 @@ final class ConcentricDialView: UIView {
         backgroundColor = .clear
         isOpaque = false
         contentMode = .redraw
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapDial)))
     }
 
     deinit { link?.invalidate() }
@@ -82,6 +95,16 @@ final class ConcentricDialView: UIView {
     override func willMove(toWindow newWindow: UIWindow?) {
         super.willMove(toWindow: newWindow)
         if newWindow == nil { link?.invalidate(); link = nil }
+    }
+
+    @objc private func didTapDial() {
+        play(tapAnimation, on: Array(0..<3))
+    }
+
+    private func play(_ animation: DialAnimation, on rings: [Int]) {
+        switch animation {
+        case .launchVolley: startLaunchVolley(on: rings)
+        }
     }
 
     // MARK: - Display link

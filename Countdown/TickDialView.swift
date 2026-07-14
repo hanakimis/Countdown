@@ -13,6 +13,33 @@
 import UIKit
 import QuartzCore
 
+/// Animations a dial can play. Keeping the choice separate from the trigger
+/// lets taps use their own animation later without changing refill behavior.
+enum DialAnimation: String, CaseIterable {
+    case launchVolley
+
+    var title: String {
+        switch self {
+        case .launchVolley: return "Launch volley"
+        }
+    }
+}
+
+enum DialAnimationSettings {
+    /// The animation used when a ring fills on appear, rollover, or date edit.
+    static let refill: DialAnimation = .launchVolley
+
+    /// Persisted separately so a future picker can give taps a different
+    /// animation without coupling that choice to automatic refills.
+    static var tap: DialAnimation {
+        get {
+            let rawValue = UserDefaults.standard.string(forKey: "tapAnimation")
+            return rawValue.flatMap(DialAnimation.init(rawValue:)) ?? refill
+        }
+        set { UserDefaults.standard.set(newValue.rawValue, forKey: "tapAnimation") }
+    }
+}
+
 /// Shared launch-volley math (also used by ConcentricDialView).
 enum Volley {
     /// Per-tick delay spread: `hash(i) × 420 ms`.
@@ -103,6 +130,10 @@ final class TickDialView: UIView {
     /// How much of the view the ring uses.
     var ringScale: CGFloat = 0.95 { didSet { setNeedsDisplay() } }
 
+    /// Animation played when this dial is tapped. This is intentionally
+    /// independent from automatic refill animation configuration.
+    var tapAnimation: DialAnimation = DialAnimationSettings.tap
+
     // MARK: - Value
 
     private(set) var value: Int = 0
@@ -137,6 +168,7 @@ final class TickDialView: UIView {
         backgroundColor = .clear
         isOpaque = false
         contentMode = .redraw
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapDial)))
     }
 
     deinit { link?.invalidate() }
@@ -152,10 +184,24 @@ final class TickDialView: UIView {
     /// to its slot on its own delay. Called automatically on rollover; call
     /// directly on appear or after a date change.
     func refill() {
+        play(DialAnimationSettings.refill)
+    }
+
+    private func startLaunchVolley() {
         guard window != nil else { volleyStart = nil; setNeedsDisplay(); return }
         volleyStart = CACurrentMediaTime()
         ensureLink()
         setNeedsDisplay()
+    }
+
+    @objc private func didTapDial() {
+        play(tapAnimation)
+    }
+
+    private func play(_ animation: DialAnimation) {
+        switch animation {
+        case .launchVolley: startLaunchVolley()
+        }
     }
 
     // MARK: - Display link
