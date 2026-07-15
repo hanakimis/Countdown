@@ -133,8 +133,8 @@ final class CountdownViewController: UIViewController {
         super.viewDidAppear(animated)
         guard !didInitialRefill else { return }
         didInitialRefill = true
-        // Volley the rings in on first appearance — slightly delayed so the
-        // launch transition doesn't swallow the animation.
+        // Refill the rings in on first appearance (in the selected style) —
+        // slightly delayed so the launch transition doesn't swallow it.
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { self.refillAllRings() }
 
         // Screenshot hook: open the settings sheet (SIMCTL_CHILD_SHOW_SETTINGS=1).
@@ -651,6 +651,12 @@ extension CountdownViewController: SettingsSheetDelegate {
         }
         guard UIApplication.shared.alternateIconName != name else { return }
         UIApplication.shared.setAlternateIconName(name)
+    }
+
+    /// The user picked a new refill style — replay it on the live rings so the
+    /// choice is visible behind the sheet.
+    func settingsSheetDidChangeRefillStyle(_ sheet: SettingsSheetViewController) {
+        refillAllRings()
     }
 
     func settingsSheet(_ sheet: SettingsSheetViewController, didPick date: Date) {

@@ -13,6 +13,9 @@ import UIKit
 protocol SettingsSheetDelegate: AnyObject {
     func settingsSheet(_ sheet: SettingsSheetViewController, didSelect style: VisualStyle)
     func settingsSheet(_ sheet: SettingsSheetViewController, didPick date: Date)
+    /// Fired when the refill style changes so the host can replay it live on
+    /// the rings behind the sheet — a picker preview.
+    func settingsSheetDidChangeRefillStyle(_ sheet: SettingsSheetViewController)
 }
 
 final class SettingsSheetViewController: UIViewController {
@@ -35,6 +38,14 @@ final class SettingsSheetViewController: UIViewController {
 
     private let initialDate: Date
     private var cards: [StyleCardView] = []
+
+    // The two animation pickers: whole-row buttons whose UIMenu carries the
+    // choices. Kept as references so a selection can rebuild the menu (to move
+    // the checkmark) and refresh the value label.
+    private let refillRow = UIButton(type: .system)
+    private let refillValue = UILabel()
+    private let tickPassRow = UIButton(type: .system)
+    private let tickPassValue = UILabel()
 
     init(currentDate: Date) {
         initialDate = currentDate
@@ -124,14 +135,13 @@ final class SettingsSheetViewController: UIViewController {
         picker.date = initialDate
         picker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
 
-        // Only Launch volley ships today, so these are informational for now.
-        // The choices are modeled separately so Tap can become independently
-        // selectable as soon as another animation is added.
+        // Two tappable pickers: how rings refill, and how each second's tick
+        // exits. Each row opens a UIMenu of the style choices.
         let animationCaption = sectionCaption("ANIMATION")
-        let animationRows = UIStackView(arrangedSubviews: [
-            animationRow(label: "Refill", value: DialAnimationSettings.refill.title),
-            animationRow(label: "Tap", value: DialAnimationSettings.tap.title)
-        ])
+        configurePickerRow(refillRow, title: "Refill animation", value: refillValue)
+        configurePickerRow(tickPassRow, title: "Second tick", value: tickPassValue)
+        refreshAnimationMenus()
+        let animationRows = UIStackView(arrangedSubviews: [refillRow, tickPassRow])
         animationRows.axis = .vertical
         animationRows.spacing = 1 / UIScreen.main.scale
         animationRows.backgroundColor = Palette.border
@@ -185,32 +195,65 @@ final class SettingsSheetViewController: UIViewController {
         return label
     }
 
-    private func animationRow(label: String, value: String) -> UIView {
-        let row = UIView()
+    /// Lays out a whole-row picker button: title on the left, current value +
+    /// a chevron on the right. The menu is attached later in
+    /// `refreshAnimationMenus()`.
+    private func configurePickerRow(_ row: UIButton, title: String, value: UILabel) {
         row.backgroundColor = Palette.surface
+        row.showsMenuAsPrimaryAction = true      // one tap opens the menu, no drag
 
         let labelView = UILabel()
-        labelView.text = label
+        labelView.text = title
         labelView.font = .systemFont(ofSize: 14)
         labelView.textColor = Palette.secondaryText
 
-        let valueView = UILabel()
-        valueView.text = value
-        valueView.font = .systemFont(ofSize: 14, weight: .medium)
-        valueView.textColor = Palette.primaryText
+        value.font = .systemFont(ofSize: 14, weight: .medium)
+        value.textColor = Palette.primaryText
+        value.textAlignment = .right
 
-        [labelView, valueView].forEach {
+        let chevron = UIImageView(image: UIImage(systemName: "chevron.up.chevron.down",
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: 11, weight: .semibold)))
+        chevron.tintColor = Palette.tertiaryText
+
+        [labelView, value, chevron].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.isUserInteractionEnabled = false      // let taps fall through to the button
             row.addSubview($0)
         }
         NSLayoutConstraint.activate([
             labelView.topAnchor.constraint(equalTo: row.topAnchor, constant: 14),
             labelView.bottomAnchor.constraint(equalTo: row.bottomAnchor, constant: -14),
             labelView.leadingAnchor.constraint(equalTo: row.leadingAnchor, constant: 16),
-            valueView.centerYAnchor.constraint(equalTo: labelView.centerYAnchor),
-            valueView.trailingAnchor.constraint(equalTo: row.trailingAnchor, constant: -16)
+            chevron.centerYAnchor.constraint(equalTo: labelView.centerYAnchor),
+            chevron.trailingAnchor.constraint(equalTo: row.trailingAnchor, constant: -16),
+            value.centerYAnchor.constraint(equalTo: labelView.centerYAnchor),
+            value.trailingAnchor.constraint(equalTo: chevron.leadingAnchor, constant: -8)
         ])
-        return row
+    }
+
+    /// (Re)builds both menus so the checkmark tracks the current selection, and
+    /// updates the value labels. Called on load and after every pick.
+    private func refreshAnimationMenus() {
+        let refill = DialAnimationSettings.refillStyle
+        refillValue.text = refill.title
+        refillRow.menu = UIMenu(children: RefillStyle.allCases.map { style in
+            UIAction(title: style.title, state: style == refill ? .on : .off) { [weak self] _ in
+                guard let self else { return }
+                DialAnimationSettings.refillStyle = style
+                self.refreshAnimationMenus()
+                self.delegate?.settingsSheetDidChangeRefillStyle(self)   // live preview
+            }
+        })
+
+        let tickPass = DialAnimationSettings.tickPassStyle
+        tickPassValue.text = tickPass.title
+        tickPassRow.menu = UIMenu(children: TickPassStyle.allCases.map { style in
+            UIAction(title: style.title, state: style == tickPass ? .on : .off) { [weak self] _ in
+                guard let self else { return }
+                DialAnimationSettings.tickPassStyle = style
+                self.refreshAnimationMenus()
+            }
+        })
     }
 
     private func refreshSelection() {
