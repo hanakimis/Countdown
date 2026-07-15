@@ -92,9 +92,9 @@ final class CountdownViewController: UIViewController {
         if let saved = defaults.object(forKey: "date") as? Date {
             countdownDate = saved
         }
-        // The dot grid drains over the whole span, so it needs to know when the
+        // The dot grid fills in over the whole span, so it needs to know when the
         // countdown began. Existing installs (saved target, no start) seed to now
-        // → the grid starts full today and drains from here.
+        // → the grid starts empty today and fills from here.
         if let savedStart = defaults.object(forKey: "startDate") as? Date {
             startDate = savedStart
         } else {
@@ -108,8 +108,8 @@ final class CountdownViewController: UIViewController {
             let subDay = ProcessInfo.processInfo.environment["SEED_SECS"].flatMap(Int.init) ?? (8 * 3600 + 39 * 60 + 16)
             countdownDate = Date().addingTimeInterval(TimeInterval(d * 86400 + subDay))
             startDate = Date()                 // start = now so the seeded span shows a full grid
-            // Optional: backdate the start so the grid shows a partial drain
-            // (SIMCTL_CHILD_SEED_ELAPSED=20 → 20 days already emptied).
+            // Optional: backdate the start so the grid shows a partial fill
+            // (SIMCTL_CHILD_SEED_ELAPSED=20 → 20 days already filled in).
             if let e = ProcessInfo.processInfo.environment["SEED_ELAPSED"], let elapsed = Int(e) {
                 startDate = Date().addingTimeInterval(TimeInterval(-elapsed * 86400))
             }
@@ -209,10 +209,11 @@ final class CountdownViewController: UIViewController {
     }
 
     /// The dot ledger block, pinned above the bottom edge.
-    private func addDotLedger(accent: UIColor, stroke: UIColor) {
+    private func addDotLedger(accent: UIColor, stroke: UIColor, elapsed: UIColor) {
         let ledger = DotLedgerView()
         ledger.accentColor = accent
         ledger.strokeColor = stroke
+        ledger.elapsedColor = elapsed
         dotLedger = ledger
 
         ledger.translatesAutoresizingMaskIntoConstraints = false
@@ -315,7 +316,8 @@ final class CountdownViewController: UIViewController {
         }
 
         addDotLedger(accent: style.accent,
-                     stroke: white.withAlphaComponent(0.28))
+                     stroke: white.withAlphaComponent(0.28),
+                     elapsed: style.ledgerElapsedDotColor)
 
         // The days block sits just above the dot grid (bottom-up), riding along
         // as the grid's height changes with the day count.
@@ -410,7 +412,8 @@ final class CountdownViewController: UIViewController {
         ])
 
         addDotLedger(accent: style.accent,
-                     stroke: ink.withAlphaComponent(0.35))
+                     stroke: ink.withAlphaComponent(0.35),
+                     elapsed: style.ledgerElapsedDotColor)
     }
 
     // MARK: - Style 3 · T-Minus
@@ -586,12 +589,13 @@ final class CountdownViewController: UIViewController {
             for (label, value) in zip(unitValueLabels, [hours, minutes, seconds]) { label.text = "\(value)" }
         }
 
-        // Total span = whole journey from start to target; the grid holds that
-        // many dots: `days` solid, one current-day gauge, the rest elapsed.
-        // `dayFraction` is how much of the current day is still left, so the
-        // gauge on the leading dot depletes with the hours/minutes/seconds.
+        // Grid size is frozen at the original span (start→target, both fixed and
+        // persisted, so this never changes over the countdown's life). The grid
+        // fills in as days pass: `total − wholeDays` days are already elapsed
+        // (filled discs), one is today (the depleting gauge), the rest remain
+        // (outlined). `dayFraction` is how much of the current day is still left.
         let spanDays = Calendar.current.dateComponents([.day], from: startDate, to: countdownDate).day ?? days
-        let totalDays = max(spanDays, days + 1, 1)          // +1 leaves room for the current-day dot
+        let totalDays = max(spanDays, days, 1)              // fixed original day count = the grid size
         let dayFraction = CGFloat(hours * 3600 + minutes * 60 + seconds) / 86_400
         dotLedger?.setValues(total: totalDays, wholeDays: days, dayFraction: dayFraction, animated: animateRollovers)
         updateBadge(days: days)          // keep the home-screen badge in step with the on-screen count
@@ -659,10 +663,15 @@ extension CountdownViewController: SettingsSheetDelegate {
         refillAllRings()
     }
 
+    /// The user picked a new ledger load style — replay it on the live dot grid.
+    func settingsSheetDidChangeLedgerLoadStyle(_ sheet: SettingsSheetViewController) {
+        dotLedger?.replayLoad()
+    }
+
     func settingsSheet(_ sheet: SettingsSheetViewController, didPick date: Date) {
         countdownDate = date
         defaults.set(date, forKey: "date")
-        startDate = Date()                     // a freshly picked target restarts the span → grid fills up
+        startDate = Date()                     // a freshly picked target restarts the span → grid empties, fills anew
         defaults.set(startDate, forKey: "startDate")
         refresh(animateRollovers: false)       // update numerals now, without per-wheel-step volleys
         scheduleRefillVolley()                  // one clean sweep once the wheel settles

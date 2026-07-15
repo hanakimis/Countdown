@@ -79,6 +79,18 @@ enum VisualStyle: String, CaseIterable {
         }
     }
 
+    /// Filled elapsed-day discs in the dot ledger: the style's foreground at a
+    /// reduced alpha so passed days read as spent-but-present (per the ledger
+    /// handoff). Distinct per style — darker ink reads at a higher alpha than
+    /// white-on-dark.
+    var ledgerElapsedDotColor: UIColor {
+        switch self {
+        case .ledger:    return UIColor(white: 1, alpha: 0.5)
+        case .editorial: return foreground.withAlphaComponent(0.6)
+        case .tminus:    return UIColor(white: 1, alpha: 0.35)
+        }
+    }
+
     /// Ledger's dial fill — rgba(151,151,151,0.9), carried over from the
     /// original dials.
     static let ledgerFilled = UIColor(white: 0.592, alpha: 0.9)
