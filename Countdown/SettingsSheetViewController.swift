@@ -16,6 +16,9 @@ protocol SettingsSheetDelegate: AnyObject {
     /// Fired when the refill style changes so the host can replay it live on
     /// the rings behind the sheet — a picker preview.
     func settingsSheetDidChangeRefillStyle(_ sheet: SettingsSheetViewController)
+    /// Fired when the ledger load style changes so the host can replay it live
+    /// on the dot grid behind the sheet.
+    func settingsSheetDidChangeLedgerLoadStyle(_ sheet: SettingsSheetViewController)
 }
 
 final class SettingsSheetViewController: UIViewController {
@@ -56,6 +59,8 @@ final class SettingsSheetViewController: UIViewController {
     private let refillValue = UILabel()
     private let tickPassRow = UIButton(type: .system)
     private let tickPassValue = UILabel()
+    private let ledgerRow = UIButton(type: .system)
+    private let ledgerValue = UILabel()
 
     init(currentDate: Date) {
         initialDate = currentDate
@@ -153,8 +158,9 @@ final class SettingsSheetViewController: UIViewController {
         let animationCaption = sectionCaption("ANIMATION")
         configurePickerRow(refillRow, title: "Refill animation", value: refillValue)
         configurePickerRow(tickPassRow, title: "Second tick", value: tickPassValue)
+        configurePickerRow(ledgerRow, title: "Ledger animation", value: ledgerValue)
         refreshAnimationMenus()
-        let animationRows = UIStackView(arrangedSubviews: [refillRow, tickPassRow])
+        let animationRows = UIStackView(arrangedSubviews: [refillRow, tickPassRow, ledgerRow])
         animationRows.axis = .vertical
         animationRows.spacing = 1 / UIScreen.main.scale
         animationRows.backgroundColor = Palette.border
@@ -276,6 +282,17 @@ final class SettingsSheetViewController: UIViewController {
                 guard let self else { return }
                 DialAnimationSettings.tickPassStyle = style
                 self.refreshAnimationMenus()
+            }
+        })
+
+        let ledger = DialAnimationSettings.ledgerLoadStyle
+        ledgerValue.text = ledger.title
+        ledgerRow.menu = UIMenu(children: LedgerLoadStyle.allCases.map { style in
+            UIAction(title: style.title, state: style == ledger ? .on : .off) { [weak self] _ in
+                guard let self else { return }
+                DialAnimationSettings.ledgerLoadStyle = style
+                self.refreshAnimationMenus()
+                self.delegate?.settingsSheetDidChangeLedgerLoadStyle(self)   // live preview
             }
         })
     }
