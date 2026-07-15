@@ -39,6 +39,16 @@ final class SettingsSheetViewController: UIViewController {
     private let initialDate: Date
     private var cards: [StyleCardView] = []
 
+    private let scroll = UIScrollView()
+
+    /// Identifier for the content-sized detent that opens the sheet tall enough
+    /// to reveal every section — style, date, and animation — without a drag.
+    private static let fitDetentID = UISheetPresentationController.Detent.Identifier("fitContent")
+
+    /// Height the fit detent resolves to. Seeded with a sensible default, then
+    /// refined from the real laid-out content in `viewDidLayoutSubviews`.
+    private var contentHeight: CGFloat = 560
+
     // The two animation pickers: whole-row buttons whose UIMenu carries the
     // choices. Kept as references so a selection can rebuild the menu (to move
     // the checkmark) and refresh the value label.
@@ -52,7 +62,23 @@ final class SettingsSheetViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .pageSheet
         if let sheet = sheetPresentationController {
-            sheet.detents = [.medium(), .large()]
+            if #available(iOS 16.0, *) {
+                // A content-sized detent so the sheet opens tall enough to show
+                // the animation pickers without dragging. `.large()` stays
+                // available for anyone who wants the full-height sheet.
+                let fit = UISheetPresentationController.Detent.custom(
+                    identifier: Self.fitDetentID
+                ) { [weak self] context in
+                    let target = self?.contentHeight ?? context.maximumDetentValue
+                    return min(target, context.maximumDetentValue)
+                }
+                sheet.detents = [fit, .large()]
+                sheet.selectedDetentIdentifier = Self.fitDetentID
+            } else {
+                // iOS 15 has no custom detent; open full-height so every section
+                // is visible without a drag.
+                sheet.detents = [.large()]
+            }
             sheet.prefersGrabberVisible = true
             sheet.preferredCornerRadius = 24
         }
@@ -65,7 +91,6 @@ final class SettingsSheetViewController: UIViewController {
         view.backgroundColor = Palette.background
         overrideUserInterfaceStyle = .dark
 
-        let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
         scroll.alwaysBounceVertical = true
         view.addSubview(scroll)
@@ -86,18 +111,6 @@ final class SettingsSheetViewController: UIViewController {
             content.bottomAnchor.constraint(equalTo: scroll.contentLayoutGuide.bottomAnchor),
             content.widthAnchor.constraint(equalTo: scroll.frameLayoutGuide.widthAnchor)
         ])
-
-        // Title row
-        let title = UILabel()
-        title.text = "Countdown"
-        title.font = .systemFont(ofSize: 19, weight: .semibold)
-        title.textColor = Palette.primaryText
-
-        let done = UIButton(type: .system)
-        done.setTitle("Done", for: .normal)
-        done.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
-        done.setTitleColor(Palette.primaryText, for: .normal)
-        done.addTarget(self, action: #selector(dismissSheet), for: .touchUpInside)
 
         // STYLE section
         let styleCaption = sectionCaption("STYLE")
@@ -150,18 +163,15 @@ final class SettingsSheetViewController: UIViewController {
         animationRows.layer.borderColor = Palette.border.cgColor
         animationRows.layer.masksToBounds = true
 
-        [title, done, styleCaption, cardsRow, dateCaption, picker, animationCaption, animationRows].forEach {
+        [styleCaption, cardsRow, dateCaption, picker, animationCaption, animationRows].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             content.addSubview($0)
         }
 
         NSLayoutConstraint.activate([
-            title.topAnchor.constraint(equalTo: content.topAnchor, constant: 26),
-            title.leadingAnchor.constraint(equalTo: content.leadingAnchor, constant: 20),
-            done.centerYAnchor.constraint(equalTo: title.centerYAnchor),
-            done.trailingAnchor.constraint(equalTo: content.trailingAnchor, constant: -20),
-
-            styleCaption.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 24),
+            // No title/Done row: the grabber handles dismissal, so the first
+            // section starts just below it and reclaims that vertical space.
+            styleCaption.topAnchor.constraint(equalTo: content.topAnchor, constant: 28),
             styleCaption.leadingAnchor.constraint(equalTo: content.leadingAnchor, constant: 20),
 
             cardsRow.topAnchor.constraint(equalTo: styleCaption.bottomAnchor, constant: 10),
@@ -185,6 +195,20 @@ final class SettingsSheetViewController: UIViewController {
             animationRows.trailingAnchor.constraint(equalTo: content.trailingAnchor, constant: -20),
             animationRows.bottomAnchor.constraint(equalTo: content.bottomAnchor, constant: -28)
         ])
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        guard #available(iOS 16.0, *) else { return }
+        // Once Auto Layout has resolved the scroll content, size the fit detent
+        // to it (plus the bottom safe area) so the sheet rests exactly tall
+        // enough to show every section. invalidateDetents re-runs the resolver.
+        let target = scroll.contentSize.height + view.safeAreaInsets.bottom
+        guard target > 0, abs(target - contentHeight) > 0.5 else { return }
+        contentHeight = target
+        sheetPresentationController?.animateChanges {
+            sheetPresentationController?.invalidateDetents()
+        }
     }
 
     private func sectionCaption(_ text: String) -> UILabel {
@@ -270,8 +294,6 @@ final class SettingsSheetViewController: UIViewController {
     @objc private func dateChanged(_ picker: UIDatePicker) {
         delegate?.settingsSheet(self, didPick: picker.date)
     }
-
-    @objc private func dismissSheet() { dismiss(animated: true) }
 }
 
 // MARK: - Style cards
