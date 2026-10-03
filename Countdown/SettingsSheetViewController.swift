@@ -4,7 +4,7 @@
 //
 //  The unified settings sheet: style picker (three preview cards), the
 //  target-date wheels and animation settings (each with a live preview tile
-//  and a pop-up select), all in one UISheetPresentationController
+//  and an inline wheel), all in one UISheetPresentationController
 //  bottom sheet. Replaces the old gear
 //  menu and the inline bottom date picker.
 //
@@ -155,8 +155,8 @@ final class SettingsSheetViewController: UIViewController {
         picker.date = initialDate
         picker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
 
-        // One card per animation setting: live preview + pop-up select. Picking
-        // an option saves it and plays it in the preview straight away.
+        // One card per animation setting: live preview + inline wheel. Landing
+        // on an option saves it and plays it in the preview straight away.
         let animationCaption = sectionCaption("ANIMATION")
         configurePreviews()
 
@@ -287,9 +287,7 @@ final class SettingsSheetViewController: UIViewController {
             colors: .init(surface: Palette.surface,
                           border: Palette.border,
                           title: Palette.secondaryText,
-                          value: Palette.primaryText,
-                          fieldFill: Palette.background,
-                          fieldBorder: Palette.border),
+                          value: Palette.primaryText),
             onSelect: { select(options[$0]) },
             onReplay: replay)
     }
@@ -363,23 +361,31 @@ final class SettingsSheetViewController: UIViewController {
 // MARK: - Animation picker cards
 
 /// One animation setting: a large live preview filling the left half, its
-/// title and a pop-up select on the right. Picking an option (or tapping the
-/// preview) replays the animation.
-private final class AnimationPickerCard: UIView {
+/// title and an inline wheel on the right — scrolled in place, like the date
+/// wheels above. Landing on an option (or tapping the preview) replays it.
+private final class AnimationPickerCard: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
 
     struct Colors {
-        let surface, border, title, value, fieldFill, fieldBorder: UIColor
+        let surface, border, title, value: UIColor
     }
 
     /// The preview's backdrop — painted in the current visual style by the sheet.
     let tile = UIView()
 
+    private let options: [String]
+    private let colors: Colors
+    private let onSelect: (Int) -> Void
     private let onReplay: () -> Void
-    private let select = UIButton(type: .system)
+    private var selectedIndex: Int
+    private let wheel = UIPickerView()
 
     init(title: String, options: [String], selectedIndex: Int, preview: UIView, colors: Colors,
          onSelect: @escaping (Int) -> Void, onReplay: @escaping () -> Void) {
+        self.options = options
+        self.colors = colors
+        self.onSelect = onSelect
         self.onReplay = onReplay
+        self.selectedIndex = selectedIndex
         super.init(frame: .zero)
 
         backgroundColor = colors.surface
@@ -404,53 +410,18 @@ private final class AnimationPickerCard: UIView {
         titleLabel.text = title
         titleLabel.font = .systemFont(ofSize: 13, weight: .medium)
         titleLabel.textColor = colors.title
+        // The wheel resists shrinking harder than a label does by default; without
+        // this the title is the one that gets squeezed to zero height.
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        wheel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
 
-        // Pop-up select: the menu marks the current option, and
-        // changesSelectionAsPrimaryAction keeps the button title in sync.
-        let actions = options.enumerated().map { i, option in
-            UIAction(title: option, state: i == selectedIndex ? .on : .off) { [weak self] _ in
-                UISelectionFeedbackGenerator().selectionChanged()
-                onSelect(i)
-                // Let the menu finish dismissing so the replay isn't hidden under it.
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { self?.onReplay() }
-            }
-        }
-        select.menu = UIMenu(children: actions)
-        select.showsMenuAsPrimaryAction = true
-        select.changesSelectionAsPrimaryAction = true
-        select.accessibilityLabel = title
-        var config = UIButton.Configuration.plain()
-        config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 30)
-        config.baseForegroundColor = colors.value
-        config.background.backgroundColor = colors.fieldFill
-        config.background.strokeColor = colors.fieldBorder
-        config.background.strokeWidth = 1
-        config.background.cornerRadius = 10
-        if #available(iOS 16.0, *) {
-            config.indicator = .none                 // the custom chevron below sits at the trailing edge
-        }
-        config.titleLineBreakMode = .byTruncatingTail
-        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attrs in
-            var attrs = attrs
-            attrs.font = .systemFont(ofSize: 15, weight: .medium)
-            return attrs
-        }
-        select.configuration = config
-        select.contentHorizontalAlignment = .leading
+        wheel.dataSource = self
+        wheel.delegate = self
+        wheel.accessibilityLabel = title
+        wheel.clipsToBounds = true                   // its 3-D rows otherwise spill over the title
+        wheel.selectRow(selectedIndex, inComponent: 0, animated: false)
 
-        // Chevron pinned to the field's trailing edge, like a native select.
-        let chevron = UIImageView(image: UIImage(systemName: "chevron.up.chevron.down",
-            withConfiguration: UIImage.SymbolConfiguration(pointSize: 12, weight: .semibold)))
-        chevron.tintColor = colors.title
-        chevron.isUserInteractionEnabled = false
-        chevron.translatesAutoresizingMaskIntoConstraints = false
-        select.addSubview(chevron)
-
-        let column = UIStackView(arrangedSubviews: [titleLabel, select])
-        column.axis = .vertical
-        column.spacing = 8
-
-        [tile, column].forEach {
+        [tile, titleLabel, wheel].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             addSubview($0)
         }
@@ -465,13 +436,15 @@ private final class AnimationPickerCard: UIView {
             preview.centerXAnchor.constraint(equalTo: tile.centerXAnchor),
             preview.centerYAnchor.constraint(equalTo: tile.centerYAnchor),
 
-            column.leadingAnchor.constraint(equalTo: tile.trailingAnchor, constant: 14),
-            column.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            column.centerYAnchor.constraint(equalTo: tile.centerYAnchor),
-            select.heightAnchor.constraint(equalToConstant: 40),
+            titleLabel.topAnchor.constraint(equalTo: tile.topAnchor, constant: 2),
+            titleLabel.leadingAnchor.constraint(equalTo: tile.trailingAnchor, constant: 14),
 
-            chevron.trailingAnchor.constraint(equalTo: select.trailingAnchor, constant: -12),
-            chevron.centerYAnchor.constraint(equalTo: select.centerYAnchor)
+            // ~100 pt of wheel under the title: the chosen row plus a faded
+            // neighbour above and below, like the date wheels.
+            wheel.leadingAnchor.constraint(equalTo: tile.trailingAnchor, constant: 4),
+            wheel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
+            wheel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            wheel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4)
         ])
 
         // Dials are square and fill the tile's height; the dot grid keeps its
@@ -485,6 +458,38 @@ private final class AnimationPickerCard: UIView {
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    // MARK: Wheel
+
+    func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        options.count
+    }
+
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat { 30 }
+
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int,
+                    reusing view: UIView?) -> UIView {
+        let label = (view as? UILabel) ?? UILabel()
+        label.text = options[row]
+        label.font = .systemFont(ofSize: 18, weight: .medium)
+        label.textColor = colors.value
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.8
+        label.textAlignment = .left
+        return label
+    }
+
+    /// Fires once the wheel settles. The wheel gives its own detent haptics,
+    /// so this only persists the choice and plays it.
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if row != selectedIndex {
+            selectedIndex = row
+            onSelect(row)
+        }
+        onReplay()
+    }
 
     @objc private func tileTapped() { onReplay() }
 }
