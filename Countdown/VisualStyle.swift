@@ -91,6 +91,17 @@ enum VisualStyle: String, CaseIterable {
         }
     }
 
+    /// Outlined remaining-day rings in the dot ledger.
+    var ledgerStrokeColor: UIColor {
+        foreground.withAlphaComponent(self == .editorial ? 0.35 : 0.28)
+    }
+
+    /// Fill for a single-ring dial drawn in this style (the settings previews):
+    /// Ledger's own dial fill, else the outer concentric ring's color.
+    var singleDialFilledColor: UIColor {
+        self == .ledger ? VisualStyle.ledgerFilled : concentricFilledColors[0]
+    }
+
     /// Ledger's dial fill — rgba(151,151,151,0.9), carried over from the
     /// original dials.
     static let ledgerFilled = UIColor(white: 0.592, alpha: 0.9)

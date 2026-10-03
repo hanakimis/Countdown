@@ -3,8 +3,9 @@
 //  Countdown
 //
 //  The unified settings sheet: style picker (three preview cards), the
-//  target-date wheels and animation settings, all in
-//  one UISheetPresentationController bottom sheet. Replaces the old gear
+//  target-date wheels and animation settings (each with a live preview tile
+//  and tap-to-pick option chips), all in one UISheetPresentationController
+//  bottom sheet. Replaces the old gear
 //  menu and the inline bottom date picker.
 //
 
@@ -52,15 +53,16 @@ final class SettingsSheetViewController: UIViewController {
     /// refined from the real laid-out content in `viewDidLayoutSubviews`.
     private var contentHeight: CGFloat = 560
 
-    // The two animation pickers: whole-row buttons whose UIMenu carries the
-    // choices. Kept as references so a selection can rebuild the menu (to move
-    // the checkmark) and refresh the value label.
-    private let refillRow = UIButton(type: .system)
-    private let refillValue = UILabel()
-    private let tickPassRow = UIButton(type: .system)
-    private let tickPassValue = UILabel()
-    private let ledgerRow = UIButton(type: .system)
-    private let ledgerValue = UILabel()
+    // Animation previews: a miniature dial / dot grid per setting, drawn in the
+    // current visual style's colors so a pick plays here exactly as it will on
+    // the countdown. (The real dot grid sits behind the sheet, out of view.)
+    private let refillPreview = TickDialView()
+    private let tickPassPreview = TickDialView()
+    private let ledgerPreview = DotLedgerView()
+    private var animationCards: [AnimationPickerCard] = []
+    /// Drives the tick-pass preview like a seconds ring while the sheet is up.
+    private var tickTimer: Timer?
+    private var didPlayIntro = false
 
     init(currentDate: Date) {
         initialDate = currentDate
@@ -153,21 +155,42 @@ final class SettingsSheetViewController: UIViewController {
         picker.date = initialDate
         picker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
 
-        // Two tappable pickers: how rings refill, and how each second's tick
-        // exits. Each row opens a UIMenu of the style choices.
+        // One card per animation setting: live preview + option chips. A chip
+        // tap saves the choice and plays it in the preview straight away.
         let animationCaption = sectionCaption("ANIMATION")
-        configurePickerRow(refillRow, title: "Refill animation", value: refillValue)
-        configurePickerRow(tickPassRow, title: "Second tick", value: tickPassValue)
-        configurePickerRow(ledgerRow, title: "Ledger animation", value: ledgerValue)
-        refreshAnimationMenus()
-        let animationRows = UIStackView(arrangedSubviews: [refillRow, tickPassRow, ledgerRow])
+        configurePreviews()
+
+        let refillCard = animationCard(
+            title: "Refill", current: DialAnimationSettings.refillStyle, label: \.title,
+            preview: refillPreview,
+            select: { [weak self] style in
+                guard let self else { return }
+                DialAnimationSettings.refillStyle = style
+                self.delegate?.settingsSheetDidChangeRefillStyle(self)   // also replay the rings behind the sheet
+            },
+            replay: { [weak self] in self?.refillPreview.refill() })
+
+        let tickPassCard = animationCard(
+            title: "Second tick", current: DialAnimationSettings.tickPassStyle, label: \.title,
+            preview: tickPassPreview,
+            select: { DialAnimationSettings.tickPassStyle = $0 },
+            replay: { [weak self] in self?.tickPreviewNow() })
+
+        let ledgerCard = animationCard(
+            title: "Dot ledger", current: DialAnimationSettings.ledgerLoadStyle, label: \.title,
+            preview: ledgerPreview,
+            select: { [weak self] style in
+                guard let self else { return }
+                DialAnimationSettings.ledgerLoadStyle = style
+                self.delegate?.settingsSheetDidChangeLedgerLoadStyle(self)
+            },
+            replay: { [weak self] in self?.ledgerPreview.replayLoad() })
+
+        animationCards = [refillCard, tickPassCard, ledgerCard]
+        applyPreviewStyle(VisualStyle.saved)
+        let animationRows = UIStackView(arrangedSubviews: animationCards)
         animationRows.axis = .vertical
-        animationRows.spacing = 1 / UIScreen.main.scale
-        animationRows.backgroundColor = Palette.border
-        animationRows.layer.cornerRadius = 12
-        animationRows.layer.borderWidth = 1
-        animationRows.layer.borderColor = Palette.border.cgColor
-        animationRows.layer.masksToBounds = true
+        animationRows.spacing = 8
 
         [styleCaption, cardsRow, dateCaption, picker, animationCaption, animationRows].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -207,14 +230,32 @@ final class SettingsSheetViewController: UIViewController {
         super.viewDidLayoutSubviews()
         guard #available(iOS 16.0, *) else { return }
         // Once Auto Layout has resolved the scroll content, size the fit detent
-        // to it (plus the bottom safe area) so the sheet rests exactly tall
-        // enough to show every section. invalidateDetents re-runs the resolver.
-        let target = scroll.contentSize.height + view.safeAreaInsets.bottom
+        // to it so the sheet rests exactly tall enough to show every section.
+        // Custom detent heights exclude the bottom safe area — UIKit adds it —
+        // so it isn't added here. invalidateDetents re-runs the resolver.
+        let target = scroll.contentSize.height
         guard target > 0, abs(target - contentHeight) > 0.5 else { return }
         contentHeight = target
         sheetPresentationController?.animateChanges {
             sheetPresentationController?.invalidateDetents()
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        startTickTimer()
+        // Play the selected refill once as the sheet lands (the ledger preview
+        // plays its own load on first layout).
+        if !didPlayIntro {
+            didPlayIntro = true
+            refillPreview.refill()
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tickTimer?.invalidate()
+        tickTimer = nil
     }
 
     private func sectionCaption(_ text: String) -> UILabel {
@@ -225,76 +266,82 @@ final class SettingsSheetViewController: UIViewController {
         return label
     }
 
-    /// Lays out a whole-row picker button: title on the left, current value +
-    /// a chevron on the right. The menu is attached later in
-    /// `refreshAnimationMenus()`.
-    private func configurePickerRow(_ row: UIButton, title: String, value: UILabel) {
-        row.backgroundColor = Palette.surface
-        row.showsMenuAsPrimaryAction = true      // one tap opens the menu, no drag
+    // MARK: Animation previews
 
-        let labelView = UILabel()
-        labelView.text = title
-        labelView.font = .systemFont(ofSize: 14)
-        labelView.textColor = Palette.secondaryText
-
-        value.font = .systemFont(ofSize: 14, weight: .medium)
-        value.textColor = Palette.primaryText
-        value.textAlignment = .right
-
-        let chevron = UIImageView(image: UIImage(systemName: "chevron.up.chevron.down",
-            withConfiguration: UIImage.SymbolConfiguration(pointSize: 11, weight: .semibold)))
-        chevron.tintColor = Palette.tertiaryText
-
-        [labelView, value, chevron].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.isUserInteractionEnabled = false      // let taps fall through to the button
-            row.addSubview($0)
-        }
-        NSLayoutConstraint.activate([
-            labelView.topAnchor.constraint(equalTo: row.topAnchor, constant: 14),
-            labelView.bottomAnchor.constraint(equalTo: row.bottomAnchor, constant: -14),
-            labelView.leadingAnchor.constraint(equalTo: row.leadingAnchor, constant: 16),
-            chevron.centerYAnchor.constraint(equalTo: labelView.centerYAnchor),
-            chevron.trailingAnchor.constraint(equalTo: row.trailingAnchor, constant: -16),
-            value.centerYAnchor.constraint(equalTo: labelView.centerYAnchor),
-            value.trailingAnchor.constraint(equalTo: chevron.leadingAnchor, constant: -8)
-        ])
+    /// Builds one picker card for a `CaseIterable` animation enum. `select`
+    /// persists the choice; `replay` plays it in the card's preview tile.
+    private func animationCard<Option: CaseIterable & Equatable>(
+        title: String,
+        current: Option,
+        label: (Option) -> String,
+        preview: UIView,
+        select: @escaping (Option) -> Void,
+        replay: @escaping () -> Void
+    ) -> AnimationPickerCard where Option.AllCases == [Option] {
+        let options = Option.allCases
+        return AnimationPickerCard(
+            title: title,
+            options: options.map(label),
+            selectedIndex: options.firstIndex(of: current) ?? 0,
+            preview: preview,
+            colors: .init(surface: Palette.surface,
+                          border: Palette.border,
+                          title: Palette.secondaryText,
+                          chipText: Palette.secondaryText,
+                          chipSelectedText: Palette.background,
+                          chipSelectedFill: Palette.primaryText,
+                          chipBorder: Palette.border),
+            onSelect: { select(options[$0]) },
+            onReplay: replay)
     }
 
-    /// (Re)builds both menus so the checkmark tracks the current selection, and
-    /// updates the value labels. Called on load and after every pick.
-    private func refreshAnimationMenus() {
-        let refill = DialAnimationSettings.refillStyle
-        refillValue.text = refill.title
-        refillRow.menu = UIMenu(children: RefillStyle.allCases.map { style in
-            UIAction(title: style.title, state: style == refill ? .on : .off) { [weak self] _ in
-                guard let self else { return }
-                DialAnimationSettings.refillStyle = style
-                self.refreshAnimationMenus()
-                self.delegate?.settingsSheetDidChangeRefillStyle(self)   // live preview
-            }
-        })
+    /// Seeds the three miniature views with representative values: a ring
+    /// that's mostly full, and a small grid part-way through its span.
+    private func configurePreviews() {
+        for dial in [refillPreview, tickPassPreview] {
+            dial.total = 24
+            dial.tickWidth = 1.8
+            dial.tickLengthRatio = 0.3
+            dial.setValue(17, animated: false)
+        }
+        ledgerPreview.columns = 6
+        ledgerPreview.cell = 10
+        ledgerPreview.setValues(total: 24, wholeDays: 15, dayFraction: 0.6, animated: false)
+    }
 
-        let tickPass = DialAnimationSettings.tickPassStyle
-        tickPassValue.text = tickPass.title
-        tickPassRow.menu = UIMenu(children: TickPassStyle.allCases.map { style in
-            UIAction(title: style.title, state: style == tickPass ? .on : .off) { [weak self] _ in
-                guard let self else { return }
-                DialAnimationSettings.tickPassStyle = style
-                self.refreshAnimationMenus()
-            }
-        })
+    /// Repaints every preview tile in `style`'s palette, so the previews match
+    /// the countdown currently showing behind the sheet.
+    private func applyPreviewStyle(_ style: VisualStyle) {
+        animationCards.forEach { $0.tile.backgroundColor = style.background }
+        for dial in [refillPreview, tickPassPreview] {
+            dial.filledColor = style.singleDialFilledColor
+            dial.trackColor = style.trackColor
+            dial.accentColor = style.accent
+        }
+        ledgerPreview.accentColor = style.accent
+        ledgerPreview.strokeColor = style.ledgerStrokeColor
+        ledgerPreview.elapsedColor = style.ledgerElapsedDotColor
+    }
 
-        let ledger = DialAnimationSettings.ledgerLoadStyle
-        ledgerValue.text = ledger.title
-        ledgerRow.menu = UIMenu(children: LedgerLoadStyle.allCases.map { style in
-            UIAction(title: style.title, state: style == ledger ? .on : .off) { [weak self] _ in
-                guard let self else { return }
-                DialAnimationSettings.ledgerLoadStyle = style
-                self.refreshAnimationMenus()
-                self.delegate?.settingsSheetDidChangeLedgerLoadStyle(self)   // live preview
-            }
-        })
+    /// Counts the tick-pass preview down one step, like a seconds ring. Near
+    /// empty it rolls over (a refill), just as the real ring does at :00.
+    private func advanceTickPreview() {
+        let v = tickPassPreview.value
+        tickPassPreview.setValue(v <= 4 ? 17 : v - 1, animated: true)
+    }
+
+    /// Plays a tick immediately (on pick / tap) and restarts the 1 s cadence
+    /// so the next automatic tick doesn't land right on top of it.
+    private func tickPreviewNow() {
+        advanceTickPreview()
+        startTickTimer()
+    }
+
+    private func startTickTimer() {
+        tickTimer?.invalidate()
+        tickTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            self?.advanceTickPreview()
+        }
     }
 
     private func refreshSelection() {
@@ -306,11 +353,193 @@ final class SettingsSheetViewController: UIViewController {
         guard card.style != VisualStyle.saved else { return }
         delegate?.settingsSheet(self, didSelect: card.style)   // applies instantly behind the sheet
         refreshSelection()
+        applyPreviewStyle(card.style)
     }
 
     @objc private func dateChanged(_ picker: UIDatePicker) {
         delegate?.settingsSheet(self, didPick: picker.date)
     }
+}
+
+// MARK: - Animation picker cards
+
+/// One animation setting: a live preview tile on the left, its title and a
+/// scrolling row of option chips on the right. Every choice is one tap away
+/// and visible at once — no menu to open. Picking a chip (or tapping the
+/// tile) replays the preview.
+private final class AnimationPickerCard: UIView {
+
+    struct Colors {
+        let surface, border, title, chipText, chipSelectedText, chipSelectedFill, chipBorder: UIColor
+    }
+
+    /// The preview's backdrop — painted in the current visual style by the sheet.
+    let tile = UIView()
+
+    private let colors: Colors
+    private let onSelect: (Int) -> Void
+    private let onReplay: () -> Void
+    private var selectedIndex: Int
+    private var chips: [UIButton] = []
+    private let chipScroll = UIScrollView()
+    private let edgeFade = CAGradientLayer()
+    private let fadeView = UIView()
+    private var didRevealSelection = false
+
+    init(title: String, options: [String], selectedIndex: Int, preview: UIView, colors: Colors,
+         onSelect: @escaping (Int) -> Void, onReplay: @escaping () -> Void) {
+        self.colors = colors
+        self.onSelect = onSelect
+        self.onReplay = onReplay
+        self.selectedIndex = selectedIndex
+        super.init(frame: .zero)
+
+        backgroundColor = colors.surface
+        layer.cornerRadius = 14
+        layer.borderWidth = 1
+        layer.borderColor = colors.border.cgColor
+        layer.masksToBounds = true
+
+        // Preview tile — the whole tile is the replay target.
+        tile.layer.cornerRadius = 10
+        tile.layer.masksToBounds = true
+        tile.isAccessibilityElement = true
+        tile.accessibilityLabel = "\(title) preview"
+        tile.accessibilityHint = "Plays the selected animation."
+        tile.accessibilityTraits = .button
+        tile.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tileTapped)))
+        preview.isUserInteractionEnabled = false     // taps belong to the tile
+        preview.translatesAutoresizingMaskIntoConstraints = false
+        tile.addSubview(preview)
+
+        let titleLabel = UILabel()
+        titleLabel.text = title
+        titleLabel.font = .systemFont(ofSize: 13, weight: .medium)
+        titleLabel.textColor = colors.title
+
+        // Option chips in a horizontal scroller; the trailing fade hints that
+        // more options sit off the edge.
+        let chipRow = UIStackView()
+        chipRow.axis = .horizontal
+        chipRow.spacing = 6
+        for (i, option) in options.enumerated() {
+            let chip = UIButton(type: .custom)
+            chip.tag = i
+            chip.accessibilityLabel = "\(title): \(option)"
+            chip.addTarget(self, action: #selector(chipTapped(_:)), for: .touchUpInside)
+            var config = UIButton.Configuration.plain()
+            config.title = option
+            config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12)
+            config.background.cornerRadius = 15
+            config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attrs in
+                var attrs = attrs
+                attrs.font = .systemFont(ofSize: 13, weight: .medium)
+                return attrs
+            }
+            chip.configuration = config
+            chips.append(chip)
+            chipRow.addArrangedSubview(chip)
+        }
+        chipScroll.showsHorizontalScrollIndicator = false
+        chipScroll.alwaysBounceHorizontal = true
+        chipScroll.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 24)
+
+        fadeView.isUserInteractionEnabled = false
+        edgeFade.colors = [colors.surface.withAlphaComponent(0).cgColor, colors.surface.cgColor]
+        edgeFade.startPoint = CGPoint(x: 0, y: 0.5)
+        edgeFade.endPoint = CGPoint(x: 1, y: 0.5)
+        fadeView.layer.addSublayer(edgeFade)
+
+        [tile, titleLabel, chipScroll, fadeView].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            addSubview($0)
+        }
+        chipRow.translatesAutoresizingMaskIntoConstraints = false
+        chipScroll.addSubview(chipRow)
+
+        NSLayoutConstraint.activate([
+            tile.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            tile.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            tile.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            tile.widthAnchor.constraint(equalToConstant: 64),
+            tile.heightAnchor.constraint(equalToConstant: 64),
+
+            preview.centerXAnchor.constraint(equalTo: tile.centerXAnchor),
+            preview.centerYAnchor.constraint(equalTo: tile.centerYAnchor),
+
+            titleLabel.topAnchor.constraint(equalTo: tile.topAnchor, constant: 4),
+            titleLabel.leadingAnchor.constraint(equalTo: tile.trailingAnchor, constant: 14),
+
+            chipScroll.leadingAnchor.constraint(equalTo: tile.trailingAnchor, constant: 14),
+            chipScroll.trailingAnchor.constraint(equalTo: trailingAnchor),
+            chipScroll.bottomAnchor.constraint(equalTo: tile.bottomAnchor, constant: -2),
+            chipScroll.heightAnchor.constraint(equalToConstant: 30),
+
+            chipRow.topAnchor.constraint(equalTo: chipScroll.contentLayoutGuide.topAnchor),
+            chipRow.leadingAnchor.constraint(equalTo: chipScroll.contentLayoutGuide.leadingAnchor),
+            chipRow.trailingAnchor.constraint(equalTo: chipScroll.contentLayoutGuide.trailingAnchor),
+            chipRow.bottomAnchor.constraint(equalTo: chipScroll.contentLayoutGuide.bottomAnchor),
+            chipRow.heightAnchor.constraint(equalTo: chipScroll.frameLayoutGuide.heightAnchor),
+
+            fadeView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            fadeView.topAnchor.constraint(equalTo: chipScroll.topAnchor),
+            fadeView.bottomAnchor.constraint(equalTo: chipScroll.bottomAnchor),
+            fadeView.widthAnchor.constraint(equalToConstant: 24)
+        ])
+
+        // Dials fill the tile; the dot grid keeps its intrinsic (cell-based) size.
+        if preview is TickDialView {
+            NSLayoutConstraint.activate([
+                preview.widthAnchor.constraint(equalTo: tile.widthAnchor, constant: -10),
+                preview.heightAnchor.constraint(equalTo: tile.heightAnchor, constant: -10)
+            ])
+        }
+        refreshChips()
+    }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        edgeFade.frame = fadeView.bounds
+        // Bring an off-screen selection (e.g. "Solidify") into view on first layout.
+        if !didRevealSelection, chipScroll.bounds.width > 0 {
+            didRevealSelection = true
+            chipScroll.layoutIfNeeded()
+            revealSelectedChip(animated: false)
+        }
+    }
+
+    private func refreshChips() {
+        for (i, chip) in chips.enumerated() {
+            let on = i == selectedIndex
+            var config = chip.configuration
+            config?.baseForegroundColor = on ? colors.chipSelectedText : colors.chipText
+            config?.background.backgroundColor = on ? colors.chipSelectedFill : .clear
+            config?.background.strokeColor = on ? .clear : colors.chipBorder
+            config?.background.strokeWidth = 1
+            chip.configuration = config
+            chip.accessibilityTraits = on ? [.button, .selected] : .button
+        }
+    }
+
+    private func revealSelectedChip(animated: Bool) {
+        let frame = chips[selectedIndex].frame.insetBy(dx: -24, dy: 0)
+        chipScroll.scrollRectToVisible(frame, animated: animated)
+    }
+
+    @objc private func chipTapped(_ chip: UIButton) {
+        if chip.tag != selectedIndex {
+            selectedIndex = chip.tag
+            refreshChips()
+            UISelectionFeedbackGenerator().selectionChanged()
+            onSelect(chip.tag)
+        }
+        revealSelectedChip(animated: true)
+        onReplay()                                   // re-tapping the current chip replays it too
+    }
+
+    @objc private func tileTapped() { onReplay() }
 }
 
 // MARK: - Style cards
