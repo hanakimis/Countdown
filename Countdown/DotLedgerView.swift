@@ -43,10 +43,10 @@ enum LedgerLoadStyle: String, CaseIterable {
     /// takes to settle once started. The whole load lasts `stagger + span`.
     var timing: (stagger: CFTimeInterval, span: CFTimeInterval) {
         switch self {
-        case .sprinkle: return (0.38, 0.30)
-        case .cascade:  return (0.36, 0.32)
-        case .trace:    return (0.46, 0.20)
-        case .gather:   return (0.24, 0.40)
+        case .sprinkle: return (0.19, 0.15)
+        case .cascade:  return (0.18, 0.16)
+        case .trace:    return (0.23, 0.10)
+        case .gather:   return (0.12, 0.20)
         }
     }
 
