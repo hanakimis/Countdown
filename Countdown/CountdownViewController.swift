@@ -135,7 +135,10 @@ final class CountdownViewController: UIViewController {
         didInitialRefill = true
         // Refill the rings in on first appearance (in the selected style) —
         // slightly delayed so the launch transition doesn't swallow it.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { self.refillAllRings() }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+            self.refillAllRings()
+            self.dotLedger?.replayLoad()
+        }
 
         // Screenshot hook: open the settings sheet (SIMCTL_CHILD_SHOW_SETTINGS=1).
         if ProcessInfo.processInfo.environment["SHOW_SETTINGS"] != nil {
@@ -214,6 +217,9 @@ final class CountdownViewController: UIViewController {
         ledger.accentColor = accent
         ledger.strokeColor = stroke
         ledger.elapsedColor = elapsed
+        // On launch the grid waits for `refillAllRings` (after the open
+        // transition); a ledger rebuilt by a style swap plays straight away.
+        ledger.playsLoadOnAppear = didInitialRefill
         dotLedger = ledger
 
         ledger.translatesAutoresizingMaskIntoConstraints = false
@@ -316,7 +322,7 @@ final class CountdownViewController: UIViewController {
         }
 
         addDotLedger(accent: style.accent,
-                     stroke: white.withAlphaComponent(0.28),
+                     stroke: style.ledgerStrokeColor,
                      elapsed: style.ledgerElapsedDotColor)
 
         // The days block sits just above the dot grid (bottom-up), riding along
@@ -412,7 +418,7 @@ final class CountdownViewController: UIViewController {
         ])
 
         addDotLedger(accent: style.accent,
-                     stroke: ink.withAlphaComponent(0.35),
+                     stroke: style.ledgerStrokeColor,
                      elapsed: style.ledgerElapsedDotColor)
     }
 
@@ -610,7 +616,10 @@ final class CountdownViewController: UIViewController {
     /// changes (the wheel picker fires continuously while decelerating).
     private func scheduleRefillVolley() {
         refillWorkItem?.cancel()
-        let work = DispatchWorkItem { [weak self] in self?.refillAllRings() }
+        let work = DispatchWorkItem { [weak self] in
+            self?.refillAllRings()
+            self?.dotLedger?.replayLoad()        // the restarted span fills in anew
+        }
         refillWorkItem = work
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35, execute: work)
     }

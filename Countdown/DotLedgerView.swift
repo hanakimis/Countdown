@@ -24,8 +24,8 @@ import QuartzCore
 // MARK: - Selectable load animation
 
 /// How the whole grid arrives when the ledger first appears (and on tap-replay).
-/// Persisted under `"ledgerLoadStyle"`; each case's per-dot timing lives in
-/// `DotLedgerView.loadModifiers`.
+/// Persisted under `"ledgerLoadStyle"`; each case's speed lives in `timing`,
+/// its per-dot motion in `DotLedgerView.applyLoad`.
 enum LedgerLoadStyle: String, CaseIterable {
     case sprinkle, cascade, trace, gather
 
@@ -37,6 +37,20 @@ enum LedgerLoadStyle: String, CaseIterable {
         case .gather:   return "Gather"
         }
     }
+
+    /// Absolute timing, in seconds: `stagger` is the window over which dots
+    /// start (first dot at 0, last at `stagger`); `span` is how long each dot
+    /// takes to settle once started. The whole load lasts `stagger + span`.
+    var timing: (stagger: CFTimeInterval, span: CFTimeInterval) {
+        switch self {
+        case .sprinkle: return (0.19, 0.15)
+        case .cascade:  return (0.18, 0.16)
+        case .trace:    return (0.23, 0.10)
+        case .gather:   return (0.12, 0.20)
+        }
+    }
+
+    var duration: CFTimeInterval { timing.stagger + timing.span }
 }
 
 extension DialAnimationSettings {
@@ -68,9 +82,11 @@ final class DotLedgerView: UIView {
 
     // MARK: Geometry
 
-    private let columns = 16
+    /// Configurable so the settings sheet can draw a miniature preview grid;
+    /// the countdown screen uses the defaults.
+    var columns = 16                              { didSet { invalidateIntrinsicContentSize(); setNeedsDisplay() } }
     private let maxRows = 9                       // caps the grid (9 × 16 = 144-day capacity)
-    private let cell: CGFloat = 19                // vertical pitch (row height)
+    var cell: CGFloat = 19                        { didSet { invalidateIntrinsicContentSize(); setNeedsDisplay() } }   // vertical pitch (row height)
     private let dotRadiusRatio: CGFloat = 0.22
     private let strokeWidth: CGFloat = 1.1
     private let gaugeWidth: CGFloat = 1.8
@@ -96,7 +112,6 @@ final class DotLedgerView: UIView {
 
     // MARK: Animation timing constants
 
-    private let loadDuration: CFTimeInterval = 1.4
     private let pulseDuration: CFTimeInterval = 0.38
     private let pulseMaxRadius: CGFloat = 100
     private let pulseBand: CGFloat = 20            // dots this close to the ring's edge swell
@@ -115,6 +130,9 @@ final class DotLedgerView: UIView {
     private var loadOrigin: CGPoint = .zero        // gather origin (grid center, or finger on replay)
     private var loadMaxDist: CGFloat = 1
     private var hasPlayedLoad = false
+    /// When false, the host plays the load itself (e.g. on launch, timed with
+    /// the dial refill so it isn't swallowed by the app-open transition).
+    var playsLoadOnAppear = true
 
     // Touch
     private var isPressed = false
@@ -190,7 +208,7 @@ final class DotLedgerView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         // Play the load animation the first time we have real bounds on screen.
-        if !hasPlayedLoad, window != nil, bounds.width > 0, total > 0 {
+        if playsLoadOnAppear, !hasPlayedLoad, window != nil, bounds.width > 0, total > 0 {
             hasPlayedLoad = true
             replayLoad()
         }
@@ -201,7 +219,7 @@ final class DotLedgerView: UIView {
         if newWindow == nil {
             displayLink?.invalidate()
             displayLink = nil
-        } else if !hasPlayedLoad, bounds.width > 0, total > 0 {
+        } else if playsLoadOnAppear, !hasPlayedLoad, bounds.width > 0, total > 0 {
             hasPlayedLoad = true
             replayLoad()
         }
@@ -228,7 +246,7 @@ final class DotLedgerView: UIView {
     /// True while any time-based effect still has frames to draw.
     private func isAnimating(at now: CFTimeInterval) -> Bool {
         if isPressed { return true }
-        if let s = loadStart, now - s < loadDuration { return true }
+        if let s = loadStart, now - s < loadStyle.duration { return true }
         if let s = pulseStart, now - s < pulseDuration { return true }
         if let s = releaseTime, now - s < springBack { return true }
         if let s = rolloverStart, now - s < rolloverDuration { return true }
@@ -263,7 +281,7 @@ final class DotLedgerView: UIView {
         let reduceMotion = UIAccessibility.isReduceMotionEnabled
 
         // Retire finished timelines so their contribution is zeroed.
-        if let s = loadStart, now - s >= loadDuration { loadStart = nil }
+        if let s = loadStart, now - s >= loadStyle.duration { loadStart = nil }
         if let s = rolloverStart, now - s >= rolloverDuration { rolloverStart = nil; rolloverIndex = -1 }
         if let s = releaseTime, now - s >= springBack { releaseTime = nil }
 
@@ -375,48 +393,52 @@ final class DotLedgerView: UIView {
 
     private func applyLoad(_ mod: inout DotMod, p: Int, now: CFTimeInterval, reduceMotion: Bool) {
         guard let start = loadStart else { return }
-        let e = CGFloat((now - start) / loadDuration)       // overall 0…1
         let col = p % columns, row = p / columns
         let rows = Int(ceil(Double(visibleCount) / Double(columns)))
 
-        // delay(i) / span per style; per-dot t clamps to [0,1].
-        let delay: CGFloat, span: CGFloat
+        // Each style orders its dots with a 0…1 start fraction; the per-style
+        // `timing` turns that into seconds, so speed is tuned in one place.
+        let order: CGFloat
         switch loadStyle {
-        case .sprinkle: delay = DialRing.hash(p) * 0.6;                                   span = 0.4
-        case .cascade:  delay = CGFloat(col + row) / CGFloat(columns + rows) * 0.7;       span = 0.3
-        case .trace:    delay = CGFloat(p) / CGFloat(max(visibleCount, 1)) * 0.78;        span = 0.22
+        case .sprinkle: order = DialRing.hash(p)
+        case .cascade:  order = CGFloat(col + row) / CGFloat(max(columns + rows - 2, 1))
+        case .trace:    order = CGFloat(p) / CGFloat(max(visibleCount - 1, 1))
         case .gather:
             let d = hypot(dotCenter(p).x - loadOrigin.x, dotCenter(p).y - loadOrigin.y)
-            delay = d / loadMaxDist * 0.55;                                                span = 0.45
+            order = d / loadMaxDist
         }
-        let t = DialRing.clamp((e - delay) / span)
+        let timing = loadStyle.timing
+        let t = DialRing.clamp(CGFloat((now - start - Double(order) * timing.stagger) / timing.span))
         if t <= 0 { mod.hidden = true; return }             // not yet arrived
+        let ease = DialRing.easeOutCubic(t)
 
         switch loadStyle {
         case .sprinkle:
             mod.scale = DialRing.easeOutBack(t)
-            mod.alpha = min(1, t * 2.5)
-            mod.flash = max(mod.flash, 1 - t)
+            mod.alpha = min(1, t * 3)
+            mod.flash = max(mod.flash, 1 - ease)
 
         case .cascade:
-            mod.alpha = t
-            if !reduceMotion { mod.dy = 12 * (1 - t) * (1 - t) }   // rise into place (skipped under Reduce Motion)
+            mod.alpha = ease
+            if !reduceMotion {                              // rise + settle (opacity-only under Reduce Motion)
+                mod.scale = 0.6 + 0.4 * DialRing.easeOutBack(t)
+                mod.dy = 8 * (1 - ease)
+            }
 
         case .trace:
-            mod.scale = DialRing.easeOutCubic(t)
+            mod.scale = DialRing.easeOutBack(t)
             mod.alpha = min(1, t * 3)
-            mod.flash = max(mod.flash, 1 - t)
+            mod.flash = max(mod.flash, 1 - ease)
 
         case .gather:
-            let ease = DialRing.easeOutCubic(t)
             let slot = dotCenter(p)
             let x = loadOrigin.x + (slot.x - loadOrigin.x) * ease
             let y = loadOrigin.y + (slot.y - loadOrigin.y) * ease
             mod.dx = x - slot.x
             mod.dy = y - slot.y
-            mod.scale = max(0.05, ease)
-            mod.alpha = min(1, t * 2.5)
-            mod.flash = max(mod.flash, 1 - t)
+            mod.scale = max(0.05, DialRing.easeOutBack(t))
+            mod.alpha = min(1, t * 3)
+            mod.flash = max(mod.flash, 1 - ease)
         }
     }
 
