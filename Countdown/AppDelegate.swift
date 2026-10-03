@@ -9,10 +9,8 @@
 import UIKit
 import UserNotifications
 
-@UIApplicationMain
+@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var window: UIWindow?
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -22,12 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if ProcessInfo.processInfo.environment["SCREENSHOTS"] == nil {
             UNUserNotificationCenter.current().requestAuthorization(options: [.badge]) { _, _ in }
         }
-
-        // The screen is built entirely in code (no storyboard).
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = CountdownViewController()
-        window.makeKeyAndVisible()
-        self.window = window
+        // The window itself is created per scene in `SceneDelegate`.
         return true
     }
 }
