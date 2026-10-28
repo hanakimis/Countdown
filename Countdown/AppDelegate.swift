@@ -23,6 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UNUserNotificationCenter.current().requestAuthorization(options: [.badge]) { _, _ in }
         }
 
+        // Move pre-widget installs' countdown into the App Group before the
+        // screen reads it.
+        CountdownStore.migrateIfNeeded()
+
         // The screen is built entirely in code (no storyboard).
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = CountdownViewController()

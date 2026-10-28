@@ -12,12 +12,12 @@
 
 import UIKit
 import UserNotifications
+import WidgetKit
 
 final class CountdownViewController: UIViewController {
 
     // MARK: - State
 
-    private let defaults = UserDefaults.standard
     private let componentSet: Set<Calendar.Component> = [.day, .hour, .minute, .second]
 
     private var countdownDate = Date()
@@ -89,16 +89,16 @@ final class CountdownViewController: UIViewController {
             styleRoot.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
 
-        if let saved = defaults.object(forKey: "date") as? Date {
+        if let saved = CountdownStore.date {
             countdownDate = saved
         }
         // The dot grid fills in over the whole span, so it needs to know when the
         // countdown began. Existing installs (saved target, no start) seed to now
         // → the grid starts empty today and fills from here.
-        if let savedStart = defaults.object(forKey: "startDate") as? Date {
+        if let savedStart = CountdownStore.startDate {
             startDate = savedStart
         } else {
-            defaults.set(startDate, forKey: "startDate")
+            CountdownStore.startDate = startDate
         }
 
         // Screenshot hook: seed a populated countdown (e.g. SIMCTL_CHILD_SEED_DAYS=64).
@@ -594,8 +594,7 @@ final class CountdownViewController: UIViewController {
         // fills in as days pass: `total − wholeDays` days are already elapsed
         // (filled discs), one is today (the depleting gauge), the rest remain
         // (outlined). `dayFraction` is how much of the current day is still left.
-        let spanDays = Calendar.current.dateComponents([.day], from: startDate, to: countdownDate).day ?? days
-        let totalDays = max(spanDays, days, 1)              // fixed original day count = the grid size
+        let totalDays = DayCount.span(start: startDate, target: countdownDate, remaining: days)  // fixed original day count = the grid size
         let dayFraction = CGFloat(hours * 3600 + minutes * 60 + seconds) / 86_400
         dotLedger?.setValues(total: totalDays, wholeDays: days, dayFraction: dayFraction, animated: animateRollovers)
         updateBadge(days: days)          // keep the home-screen badge in step with the on-screen count
@@ -613,6 +612,17 @@ final class CountdownViewController: UIViewController {
         let work = DispatchWorkItem { [weak self] in self?.refillAllRings() }
         refillWorkItem = work
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35, execute: work)
+    }
+
+    private var widgetReloadWorkItem: DispatchWorkItem?
+
+    /// Coalesces date-picker scrubbing into one widget reload — WidgetKit
+    /// budgets reloads, so don't spend one per wheel step.
+    private func scheduleWidgetReload() {
+        widgetReloadWorkItem?.cancel()
+        let work = DispatchWorkItem { WidgetCenter.shared.reloadAllTimelines() }
+        widgetReloadWorkItem = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6, execute: work)
     }
 
     private var lastBadgeDays: Int?
@@ -636,6 +646,7 @@ extension CountdownViewController: SettingsSheetDelegate {
         VisualStyle.saved = style
         switchStyle(to: style)                 // re-renders instantly behind the sheet
         applyIcon(for: style)                  // swap the home-screen icon to match
+        WidgetCenter.shared.reloadAllTimelines()   // …and the widget
     }
 
     /// Switches the home-screen app icon to match the chosen style.
@@ -670,10 +681,11 @@ extension CountdownViewController: SettingsSheetDelegate {
 
     func settingsSheet(_ sheet: SettingsSheetViewController, didPick date: Date) {
         countdownDate = date
-        defaults.set(date, forKey: "date")
+        CountdownStore.date = date
         startDate = Date()                     // a freshly picked target restarts the span → grid empties, fills anew
-        defaults.set(startDate, forKey: "startDate")
+        CountdownStore.startDate = startDate
         refresh(animateRollovers: false)       // update numerals now, without per-wheel-step volleys
         scheduleRefillVolley()                  // one clean sweep once the wheel settles
+        scheduleWidgetReload()                 // the wheel fires per step; reload once it settles
     }
 }
