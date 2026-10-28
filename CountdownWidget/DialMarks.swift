@@ -21,6 +21,7 @@ struct DialMark: Equatable {
     let kind: Kind
     let first: Int       // index of its first day in the span
     var count: Int       // days it covers
+    var width = 1.0      // slots it takes on the dial; set by `dialMarks`
 
     var last: Int { first + count - 1 }
 
@@ -29,9 +30,9 @@ struct DialMark: Equatable {
         last < todayIndex ? .elapsed : first <= todayIndex ? .today : .ahead
     }
 
-    /// Room on the dial, in day-tick slots. A full block is wider than a tick
-    /// but far narrower than its days, so a long countdown still fits; a block
-    /// clipped by the span or the day ticks shrinks with it.
+    /// Room this mark asks for, in day-tick slots. A full block is wider than
+    /// a tick but far narrower than its days; a block clipped by the span or
+    /// the day ticks shrinks with it.
     var weight: Double {
         switch kind {
         case .day:   return 1
@@ -81,6 +82,15 @@ func dialMarks(total: Int, todayIndex: Int, today: Date, maxTicks: Int, zones: D
             marks.append(DialMark(kind: kind, first: i, count: 1))
         }
         lastBlock = block
+    }
+
+    // Very long spans still ask for more than the dial holds. Squeeze the
+    // blocks into what the day ticks leave, so ticks near today never crowd.
+    let dayWidth = Double(marks.filter { $0.kind == .day }.count)
+    let blockWeight = marks.reduce(0) { $0 + ($1.kind == .day ? 0 : $1.weight) }
+    let squeeze = blockWeight > 0 ? min(1, max(Double(maxTicks) - dayWidth, 0) / blockWeight) : 1
+    for i in marks.indices where marks[i].kind != .day {
+        marks[i].width = marks[i].weight * squeeze
     }
     return marks
 }

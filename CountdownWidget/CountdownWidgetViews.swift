@@ -170,7 +170,7 @@ private struct EditorialWidget: View {
                     .foregroundStyle(ink)
                     .contentTransition(.numericText(countsDown: true))
                     .minimumScaleFactor(0.7)
-                Text("days until\n\(WidgetFormat.until(entry))")
+                Text(entry.target == nil ? "open Countdown\nto set a date" : "days until\n\(WidgetFormat.until(entry))")
                     .font(.serif(11.5 * s).italic())
                     .multilineTextAlignment(.center)
                     .lineSpacing(-1 * s)
@@ -256,13 +256,13 @@ private struct DayDial: View {
 
     var body: some View {
         Canvas { ctx, _ in
-            // Each mark takes `weight` slots: a tick sits at its slot's centre,
+            // Each mark takes `width` slots: a tick sits at its slot's centre,
             // a block spans its slots less a gap at either end.
-            let slots = marks.reduce(0) { $0 + $1.weight }
+            let slots = marks.reduce(0) { $0 + $1.width }
             let steps = closed ? slots : max(slots - 1, 1)   // a full ring doesn't repeat its first slot
             let angle = { (slot: Double) in from + slot / steps * (to - from) }
             // Narrower gaps for clipped blocks, so a one-day partial week stays a box.
-            let gap = { (mark: DialMark) in min(0.55, mark.weight * 0.2) }
+            let gap = { (mark: DialMark) in min(0.55, mark.width * 0.2) }
 
             var ticks: [DialMark.State: Path] = [:], blocks: [DialMark.State: Path] = [:]
             var slot = 0.0
@@ -274,9 +274,9 @@ private struct DayDial: View {
                     ticks[state, default: Path()].addLine(to: point(a, outerRadius))
                 } else {
                     blocks[state, default: Path()].addPath(sector(from: angle(slot - 0.5 + gap(mark)),
-                                                                  to: angle(slot + mark.weight - 0.5 - gap(mark))))
+                                                                  to: angle(slot + mark.width - 0.5 - gap(mark))))
                 }
-                slot += mark.weight
+                slot += mark.width
             }
 
             let round = { (w: CGFloat) in StrokeStyle(lineWidth: w, lineCap: .round) }
