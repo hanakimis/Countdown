@@ -13,10 +13,11 @@ import UIKit
 enum VisualStyle: String, CaseIterable {
     case ledger, editorial, tminus
 
-    /// The persisted, app-wide style.
+    /// The persisted, app-wide style. Lives in the App Group so the home-screen
+    /// widget renders in the same style.
     static var saved: VisualStyle {
-        get { VisualStyle(rawValue: UserDefaults.standard.string(forKey: "visualStyle") ?? "") ?? .ledger }
-        set { UserDefaults.standard.set(newValue.rawValue, forKey: "visualStyle") }
+        get { VisualStyle(rawValue: CountdownStore.visualStyleRawValue ?? "") ?? .ledger }
+        set { CountdownStore.visualStyleRawValue = newValue.rawValue }
     }
 
     var title: String {
