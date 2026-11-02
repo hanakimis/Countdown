@@ -9,10 +9,8 @@
 import UIKit
 import UserNotifications
 
-@UIApplicationMain
+@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var window: UIWindow?
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -24,14 +22,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // Move pre-widget installs' countdown into the App Group before the
-        // screen reads it.
+        // screen reads it. Runs before any scene connects.
         CountdownStore.migrateIfNeeded()
 
-        // The screen is built entirely in code (no storyboard).
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = CountdownViewController()
-        window.makeKeyAndVisible()
-        self.window = window
+        // The window itself is created per scene in `SceneDelegate`.
         return true
     }
 }
