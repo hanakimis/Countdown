@@ -20,6 +20,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if ProcessInfo.processInfo.environment["SCREENSHOTS"] == nil {
             UNUserNotificationCenter.current().requestAuthorization(options: [.badge]) { _, _ in }
         }
+
+        // Move pre-widget installs' countdown into the App Group before the
+        // screen reads it. Runs before any scene connects.
+        CountdownStore.migrateIfNeeded()
+
         // The window itself is created per scene in `SceneDelegate`.
         return true
     }
