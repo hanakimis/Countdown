@@ -207,7 +207,7 @@ final class CountdownViewController: UIViewController {
             date.topAnchor.constraint(equalTo: styleRoot.safeAreaLayoutGuide.topAnchor, constant: 48),
             date.leadingAnchor.constraint(equalTo: styleRoot.leadingAnchor, constant: 32),
             gear.centerYAnchor.constraint(equalTo: date.centerYAnchor),
-            gear.trailingAnchor.constraint(equalTo: styleRoot.trailingAnchor, constant: -32)
+            gear.trailingAnchor.constraint(equalTo: styleRoot.safeAreaLayoutGuide.trailingAnchor, constant: -32)
         ])
     }
 
@@ -226,7 +226,7 @@ final class CountdownViewController: UIViewController {
         styleRoot.addSubview(ledger)
         NSLayoutConstraint.activate([
             ledger.leadingAnchor.constraint(equalTo: styleRoot.leadingAnchor, constant: 32),
-            ledger.trailingAnchor.constraint(equalTo: styleRoot.trailingAnchor, constant: -32),
+            ledger.trailingAnchor.constraint(equalTo: styleRoot.safeAreaLayoutGuide.trailingAnchor, constant: -32),
             ledger.bottomAnchor.constraint(equalTo: styleRoot.bottomAnchor, constant: -56)
         ])
     }
@@ -284,21 +284,20 @@ final class CountdownViewController: UIViewController {
             ])
 
             if hasSeparator {
-                let line = UIView()
+                let line = HairlineView()
                 line.backgroundColor = white.withAlphaComponent(0.08)
                 line.translatesAutoresizingMaskIntoConstraints = false
                 row.addSubview(line)
                 NSLayoutConstraint.activate([
                     line.leadingAnchor.constraint(equalTo: row.leadingAnchor),
                     line.trailingAnchor.constraint(equalTo: row.trailingAnchor),
-                    line.bottomAnchor.constraint(equalTo: row.bottomAnchor),
-                    line.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale)
+                    line.bottomAnchor.constraint(equalTo: row.bottomAnchor)
                 ])
             }
 
             NSLayoutConstraint.activate([
                 row.leadingAnchor.constraint(equalTo: styleRoot.leadingAnchor, constant: 32),
-                row.trailingAnchor.constraint(equalTo: styleRoot.trailingAnchor, constant: -32),
+                row.trailingAnchor.constraint(equalTo: styleRoot.safeAreaLayoutGuide.trailingAnchor, constant: -32),
                 previousRow.map { row.topAnchor.constraint(equalTo: $0.bottomAnchor, constant: 16) }
                     ?? row.topAnchor.constraint(equalTo: headerDateLabel!.bottomAnchor, constant: 36)
             ])
@@ -696,5 +695,21 @@ extension CountdownViewController: SettingsSheetDelegate {
         refresh(animateRollovers: false)       // update numerals now, without per-wheel-step volleys
         scheduleRefillVolley()                  // one clean sweep once the wheel settles
         scheduleWidgetReload()                 // the wheel fires per step; reload once it settles
+    }
+}
+
+/// A one-physical-pixel rule that takes its height from the display it is on,
+/// and re-measures if the scene moves to a display with a different scale.
+private final class HairlineView: UIView {
+    override var intrinsicContentSize: CGSize {
+        // displayScale is 0 until the view has a trait environment.
+        CGSize(width: UIView.noIntrinsicMetric, height: 1 / max(traitCollection.displayScale, 1))
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.displayScale != previousTraitCollection?.displayScale {
+            invalidateIntrinsicContentSize()
+        }
     }
 }
