@@ -3,7 +3,7 @@
 //  Countdown
 //
 //  The foldable layouts. Unfolded (hinge vertical) the screen becomes a
-//  two-panel spread with a settings rail on the trailing edge; half-open with
+//  two-panel spread whose settings gear sits in the system's vertical bar; half-open with
 //  the hinge horizontal it becomes a table-top clock. Nothing interactive, and
 //  no single glyph, sits on the fold: the hinge is always a gutter.
 //
@@ -33,6 +33,19 @@ extension CountdownViewController {
         hingeIsPartiallyOpen && max(view.bounds.width, view.bounds.height) >= 900
     }
 
+    /// The vertical bar can appear or leave without the layout changing.
+    func observeVerticalBar() {
+        guard #available(iOS 27.1, *) else { return }
+        registerForTraitChanges(UITraitCollection.systemTraitsAffectingVerticalBarEdge) { (self: Self, _) in
+            let hosted = self.systemBarGear.map { self.navigationItem.rightBarButtonItems?.contains($0) ?? false } ?? false
+            guard hosted != self.gearInSystemBar else { return }
+            UIView.performWithoutAnimation {
+                self.buildInterface()
+                self.refresh(animateRollovers: false)
+            }
+        }
+    }
+
     func observeHinge() {
         guard #available(iOS 27.1, *) else { return }
         let interaction = UIHingeInteraction { [weak self] _, update in
@@ -41,6 +54,7 @@ extension CountdownViewController {
             guard partial != self.hingeIsPartiallyOpen else { return }
             self.hingeIsPartiallyOpen = partial
             self.setNeedsUpdateOfSupportedInterfaceOrientations()
+            self.navigationController?.setNeedsUpdateOfSupportedInterfaceOrientations()
             self.view.setNeedsLayout()          // viewDidLayoutSubviews re-resolves the layout
         }
         view.addInteraction(interaction)
@@ -218,14 +232,14 @@ extension CountdownViewController {
         return legend
     }
 
-    /// The area right of the fold and left of the rail.
+    /// The area right of the fold and inside the safe area (which already
+    /// stops short of the system's vertical bar).
     private func rightPanelGuide(leadingInset: CGFloat, trailingInset: CGFloat = 24) -> UILayoutGuide {
         let guide = UILayoutGuide()
         styleRoot.addLayoutGuide(guide)
-        let railEdge = duo.rail?.leadingAnchor ?? styleRoot.safeAreaLayoutGuide.trailingAnchor
         NSLayoutConstraint.activate([
             guide.leadingAnchor.constraint(equalTo: styleRoot.centerXAnchor, constant: leadingInset),
-            guide.trailingAnchor.constraint(equalTo: railEdge, constant: -trailingInset),
+            guide.trailingAnchor.constraint(equalTo: styleRoot.safeAreaLayoutGuide.trailingAnchor, constant: -trailingInset),
             guide.topAnchor.constraint(equalTo: styleRoot.topAnchor),
             guide.bottomAnchor.constraint(equalTo: styleRoot.bottomAnchor)
         ])
@@ -363,11 +377,14 @@ extension CountdownViewController {
             meta.trailingAnchor.constraint(equalTo: right.trailingAnchor),
             meta.topAnchor.constraint(equalTo: rule.bottomAnchor, constant: 16),
 
+            // The span follows the figures directly, so a short span leaves
+            // the space below the grid rather than a gap above it.
             span.leadingAnchor.constraint(equalTo: right.leadingAnchor),
-            span.bottomAnchor.constraint(equalTo: ledger.topAnchor, constant: -12),
+            span.topAnchor.constraint(equalTo: meta.bottomAnchor, constant: 28),
+            ledger.topAnchor.constraint(equalTo: span.bottomAnchor, constant: 12),
             ledger.leadingAnchor.constraint(equalTo: right.leadingAnchor),
             ledger.trailingAnchor.constraint(equalTo: right.trailingAnchor),
-            ledger.bottomAnchor.constraint(equalTo: styleRoot.bottomAnchor, constant: -56)
+            ledger.bottomAnchor.constraint(lessThanOrEqualTo: styleRoot.bottomAnchor, constant: -40)
         ])
     }
 
@@ -577,25 +594,47 @@ extension CountdownViewController {
         }
     }
 
-    // MARK: - Settings rail and panel
+    // MARK: - Settings gear and panel
 
-    /// The gear lives on a thin trailing rail in the spread; it slides the
-    /// settings out as a panel over the right page instead of a sheet that
-    /// would straddle the fold.
-    func addSettingsRail() {
-        let ink = style.foreground
-        let rail = SettingsRailView(tint: ink.withAlphaComponent(0.5), lineColor: ink.withAlphaComponent(0.08))
-        rail.button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
-        rail.isOpen = settingsPanel != nil
-        rail.translatesAutoresizingMaskIntoConstraints = false
-        styleRoot.addSubview(rail)
-        NSLayoutConstraint.activate([
-            rail.trailingAnchor.constraint(equalTo: styleRoot.safeAreaLayoutGuide.trailingAnchor),
-            rail.widthAnchor.constraint(equalToConstant: SettingsRailView.width),
-            rail.topAnchor.constraint(equalTo: styleRoot.topAnchor),
-            rail.bottomAnchor.constraint(equalTo: styleRoot.bottomAnchor)
-        ])
-        duo.rail = rail
+    /// Wherever the system shows a vertical bar (both Duo displays), the gear
+    /// is a bar item it hosts there, under the status items. Unfolded it
+    /// slides the settings out as a panel over the right page instead of a
+    /// sheet that would straddle the fold. Without the bar it stays in the header.
+    var gearInSystemBar: Bool {
+        // Table-top keeps its gear in the pill, within reach while flat.
+        guard #available(iOS 27.1, *), layout != .tabletop, navigationController != nil else { return false }
+        return traitCollection.verticalBarEdge != .unspecified
+    }
+
+    /// Adds or removes the bar item and shows the (transparent) navigation
+    /// bar only while it has the gear to hand to the vertical bar.
+    func updateSystemBarGear() {
+        guard let nav = navigationController else { return }
+        if gearInSystemBar, #available(iOS 27.1, *) {
+            let gear = systemBarGear ?? UIBarButtonItem(image: nil, style: .plain,
+                                                        target: self, action: #selector(openSettings))
+            gear.axisBehavior = .verticalPreferred
+            systemBarGear = gear
+            navigationItem.rightBarButtonItems = [gear]
+            setGearOpen(settingsPanel != nil)
+            nav.setNavigationBarHidden(false, animated: false)
+        } else {
+            navigationItem.rightBarButtonItems = nil
+            nav.setNavigationBarHidden(true, animated: false)
+        }
+    }
+
+    /// The gear turns into a close button while the panel is out.
+    func setGearOpen(_ open: Bool) {
+        let image = UIImage(systemName: open ? "xmark" : "gearshape",
+                            withConfiguration: UIImage.SymbolConfiguration(pointSize: 17))
+        let label = open ? "Close settings" : "Settings"
+        systemBarGear?.image = image
+        systemBarGear?.accessibilityLabel = label
+        if layout == .spread, let header = duo.headerGear {
+            header.setImage(image, for: .normal)
+            header.accessibilityLabel = label
+        }
     }
 
     func toggleSettingsPanel(animated: Bool) {
@@ -611,9 +650,9 @@ extension CountdownViewController {
         let panel = SettingsSheetViewController(currentDate: countdownDate, embedded: true)
         panel.delegate = self
         settingsPanel = panel
-        duo.rail?.isOpen = true
+        setGearOpen(true)
 
-        // From the fold to the rail; the container survives style rebuilds
+        // From the fold to the vertical bar; the container survives style rebuilds
         // because it sits on `view`, above `styleRoot`.
         panelContainer.clipsToBounds = true
         panelContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -621,9 +660,12 @@ extension CountdownViewController {
             view.addSubview(panelContainer)
             NSLayoutConstraint.activate([
                 panelContainer.leadingAnchor.constraint(equalTo: view.centerXAnchor),
-                panelContainer.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
-                                                         constant: -SettingsRailView.width),
-                panelContainer.topAnchor.constraint(equalTo: view.topAnchor),
+                panelContainer.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                // Without a vertical bar the gear is in the header, so the
+                // panel starts below it to keep it reachable as the close button.
+                gearInSystemBar
+                    ? panelContainer.topAnchor.constraint(equalTo: view.topAnchor)
+                    : panelContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 96),
                 panelContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
         }
@@ -651,7 +693,7 @@ extension CountdownViewController {
     func closeSettingsPanel(animated: Bool) {
         guard let panel = settingsPanel else { return }
         settingsPanel = nil
-        duo.rail?.isOpen = false
+        setGearOpen(false)
 
         let finish = { [weak self] in
             panel.willMove(toParent: nil)

@@ -20,7 +20,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
         // The screen is built entirely in code (no storyboard).
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = CountdownViewController()
+        // Inside a navigation controller so the settings gear can be a bar item,
+        // which iOS hosts in the vertical bar on an unfolded iPhone Duo.
+        window.rootViewController = CountdownNavigationController(rootViewController: CountdownViewController())
         window.makeKeyAndVisible()
         self.window = window
     }

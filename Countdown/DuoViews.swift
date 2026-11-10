@@ -26,7 +26,8 @@ enum CountdownLayout: Equatable {
 /// Views only the spread / table-top builders create. `refreshDuo` fills in
 /// whichever ones exist, so each builder registers just what it made.
 struct DuoRefs {
-    weak var rail: SettingsRailView?
+    /// The in-content gear (header), when the system bar isn't hosting it.
+    weak var headerGear: UIButton?
     weak var todayGauge: TodayGaugeView?
     weak var todayCaption: UILabel?
     weak var spanCaption: UILabel?
@@ -174,45 +175,28 @@ final class MonthIndexView: UIView {
     }
 }
 
-// MARK: - Settings rail
+// MARK: - Navigation container
 
-/// The thin trailing rail of the unfolded layouts: a hairline and a gear that
-/// slides the settings panel out of the rail (and turns into a close button).
-final class SettingsRailView: UIView {
-    static let width: CGFloat = 48
-
-    let button = UIButton(type: .system)
-    private let line = UIView()
-
-    var isOpen = false {
-        didSet {
-            let name = isOpen ? "xmark" : "gearshape"
-            button.setImage(UIImage(systemName: name,
-                                    withConfiguration: UIImage.SymbolConfiguration(pointSize: 17)), for: .normal)
-            button.accessibilityLabel = isOpen ? "Close settings" : "Settings"
-        }
-    }
-
-    init(tint: UIColor, lineColor: UIColor) {
-        super.init(frame: .zero)
-        button.tintColor = tint
-        line.backgroundColor = lineColor
-        [line, button].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            addSubview($0)
-        }
-        NSLayoutConstraint.activate([
-            line.leadingAnchor.constraint(equalTo: leadingAnchor),
-            line.topAnchor.constraint(equalTo: topAnchor, constant: 32),
-            line.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -32),
-            line.widthAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale),
-            button.centerXAnchor.constraint(equalTo: centerXAnchor),
-            button.centerYAnchor.constraint(equalTo: centerYAnchor),
-            button.widthAnchor.constraint(equalToConstant: 44),
-            button.heightAnchor.constraint(equalToConstant: 44)
-        ])
-        isOpen = false
+/// Exists only so the screen has a `navigationItem` the system can host:
+/// unfolded, the settings gear is a bar item that iOS places in its vertical
+/// bar. The bar itself stays hidden whenever it has nothing to show, and the
+/// content controller keeps the say over status bar and orientation.
+final class CountdownNavigationController: UINavigationController {
+    override init(rootViewController: UIViewController) {
+        super.init(rootViewController: rootViewController)
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        navigationBar.standardAppearance = appearance
+        navigationBar.scrollEdgeAppearance = appearance
+        navigationBar.compactAppearance = appearance
+        isNavigationBarHidden = true
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    override var childForStatusBarStyle: UIViewController? { topViewController }
+    override var childForStatusBarHidden: UIViewController? { topViewController }
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        topViewController?.supportedInterfaceOrientations ?? .portrait
+    }
 }
