@@ -55,8 +55,10 @@ final class CountdownViewController: UIViewController {
     var duo = DuoRefs()
     /// Latest hinge reading; `.partiallyOpen` unlocks the table-top pose.
     var hingeIsPartiallyOpen = false
-    /// The settings panel that slides out of the rail in the spread layout.
+    /// The settings panel that slides out over the right page in the spread layout.
     var settingsPanel: SettingsSheetViewController?
+    /// The gear as a bar item, hosted by the system's vertical bar when unfolded.
+    var systemBarGear: UIBarButtonItem?
     let panelContainer = UIView()
     /// Debug hook: renders a layout regardless of the real size or hinge.
     var forcedLayout: CountdownLayout?
@@ -135,6 +137,7 @@ final class CountdownViewController: UIViewController {
         }
 
         observeHinge()
+        observeVerticalBar()
         layout = resolveLayout(for: view.bounds.size)
         buildInterface()
         updateCountdown()
@@ -214,8 +217,8 @@ final class CountdownViewController: UIViewController {
         duo = DuoRefs()
 
         view.backgroundColor = style.background
-        // The rail goes in first so the spread builders can stop short of it.
-        if layout == .spread { addSettingsRail() }
+        // Decided first, so addHeader knows whether to draw its own gear.
+        updateSystemBarGear()
         switch (layout, style) {
         case (.compact, .ledger):    buildLedger()
         case (.compact, .editorial): buildEditorial()
@@ -251,8 +254,10 @@ final class CountdownViewController: UIViewController {
             date.topAnchor.constraint(equalTo: styleRoot.safeAreaLayoutGuide.topAnchor, constant: layout.isShort ? 32 : 48),
             date.leadingAnchor.constraint(equalTo: styleRoot.leadingAnchor, constant: 32)
         ])
-        // Unfolded, the gear lives on the trailing rail instead.
-        guard layout != .spread else { return }
+        // With a vertical bar, the gear lives in it instead.
+        guard !gearInSystemBar else { return }
+        duo.headerGear = gear
+        if layout == .spread { setGearOpen(settingsPanel != nil) }
         gear.translatesAutoresizingMaskIntoConstraints = false
         styleRoot.addSubview(gear)
         NSLayoutConstraint.activate([
