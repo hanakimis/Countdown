@@ -85,11 +85,16 @@ final class DotLedgerView: UIView {
     /// Configurable so the settings sheet can draw a miniature preview grid;
     /// the countdown screen uses the defaults.
     var columns = 16                              { didSet { invalidateIntrinsicContentSize(); setNeedsDisplay() } }
-    private let maxRows = 9                       // caps the grid (9 × 16 = 144-day capacity)
+    /// Caps the grid (9 × 16 = 144-day capacity on the phone). The unfolded
+    /// layouts give the ledger a whole panel and raise it.
+    var maxRows = 9                               { didSet { invalidateIntrinsicContentSize(); setNeedsDisplay() } }
     var cell: CGFloat = 19                        { didSet { invalidateIntrinsicContentSize(); setNeedsDisplay() } }   // vertical pitch (row height)
     private let dotRadiusRatio: CGFloat = 0.22
     private let strokeWidth: CGFloat = 1.1
     private let gaugeWidth: CGFloat = 1.8
+    /// Rings today's gauge with a faint accent halo, so a matching "today"
+    /// glyph elsewhere on screen (the unfolded hero) reads as the same day.
+    var emphasizesToday = false                   { didSet { setNeedsDisplay() } }
 
     // MARK: Data model
 
@@ -170,12 +175,15 @@ final class DotLedgerView: UIView {
         let newTotal = max(total, 1)
         let newWhole = min(max(wholeDays, 0), newTotal)
         let prevTodayIndex = self.total > 0 ? todayIndex : -1
+        // Compare against the stored span before overwriting it (the bare
+        // `total` here is the parameter, so it can't detect a change).
+        let spanChanged = newTotal != self.total
 
         self.total = newTotal
         self.wholeDays = newWhole
         self.dayFraction = min(max(dayFraction, 0), 1)
 
-        if newTotal != total { invalidateIntrinsicContentSize() }
+        if spanChanged { invalidateIntrinsicContentSize() }
 
         // A day passed: the old "today" dot has just become elapsed. Fade it in.
         if animated, prevTodayIndex >= 0, todayIndex > prevTodayIndex {
@@ -195,6 +203,17 @@ final class DotLedgerView: UIView {
         loadStart = CACurrentMediaTime()
         startLink()
         setNeedsDisplay()
+    }
+
+    /// Today's dot centre in this view's coordinates.
+    var todayCenter: CGPoint { dotCenter(todayIndex) }
+
+    /// Sends the touch pulse ring out from today's dot, as if it were tapped.
+    func pulseToday() {
+        guard total > 0, !UIAccessibility.isReduceMotionEnabled else { return }
+        pulseOrigin = todayCenter
+        pulseStart = CACurrentMediaTime()
+        startLink()
     }
 
     // MARK: Layout / lifecycle
@@ -329,6 +348,11 @@ final class DotLedgerView: UIView {
             circle(center: c, radius: r).fill(elapsedColor.withMultiplied(alpha: a))
 
         case .today:
+            if emphasizesToday {
+                let halo = circle(center: c, radius: r + 4)
+                halo.lineWidth = 1
+                accentColor.withMultiplied(alpha: 0.4 * a).setStroke(); halo.stroke()
+            }
             // Faint full track, then the accent arc = fraction of today remaining.
             let ringR = r - gaugeWidth / 2
             let track = circle(center: c, radius: ringR)
