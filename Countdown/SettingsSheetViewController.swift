@@ -64,9 +64,15 @@ final class SettingsSheetViewController: UIViewController {
     private var tickTimer: Timer?
     private var didPlayIntro = false
 
-    init(currentDate: Date) {
+    /// True when hosted as a child in the unfolded trailing panel rather than
+    /// presented as a bottom sheet: no detents, no grabber.
+    private let isEmbedded: Bool
+
+    init(currentDate: Date, embedded: Bool = false) {
         initialDate = currentDate
+        isEmbedded = embedded
         super.init(nibName: nil, bundle: nil)
+        guard !embedded else { return }
         modalPresentationStyle = .pageSheet
         if let sheet = sheetPresentationController {
             if #available(iOS 16.0, *) {
@@ -200,7 +206,7 @@ final class SettingsSheetViewController: UIViewController {
         NSLayoutConstraint.activate([
             // No title/Done row: the grabber handles dismissal, so the first
             // section starts just below it and reclaims that vertical space.
-            styleCaption.topAnchor.constraint(equalTo: content.topAnchor, constant: 28),
+            styleCaption.topAnchor.constraint(equalTo: content.topAnchor, constant: isEmbedded ? 48 : 28),
             styleCaption.leadingAnchor.constraint(equalTo: content.leadingAnchor, constant: 20),
 
             cardsRow.topAnchor.constraint(equalTo: styleCaption.bottomAnchor, constant: 10),
@@ -228,7 +234,7 @@ final class SettingsSheetViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        guard #available(iOS 16.0, *) else { return }
+        guard !isEmbedded, #available(iOS 16.0, *) else { return }
         // Once Auto Layout has resolved the scroll content, size the fit detent
         // to it so the sheet rests exactly tall enough to show every section.
         // Custom detent heights exclude the bottom safe area — UIKit adds it —

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1226E4650684039DEB144C2C /* CountdownWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16EEE687D32FCF493770692D /* CountdownWidget.swift */; };
+		3BDC3FA62D855F5E5BC0E744 /* CountdownViewController+Duo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14F1A15BC6A9BBC6965956C /* CountdownViewController+Duo.swift */; };
+		5AA4A0D7953F06F850DBFAF0 /* DuoViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DACE2F94DA3AA9E7CA754D8 /* DuoViews.swift */; };
 		8055AC911BCBA56F00FDC2A5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8055AC901BCBA56F00FDC2A5 /* Images.xcassets */; };
 		809C66F21AAD862700B79D17 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809C66F11AAD862700B79D17 /* AppDelegate.swift */; };
 		809C66FC1AAD862700B79D17 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 809C66FA1AAD862700B79D17 /* LaunchScreen.xib */; };
@@ -67,6 +69,7 @@
 		16EEE687D32FCF493770692D /* CountdownWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CountdownWidget.swift; sourceTree = "<group>"; };
 		1AC2829B5DD202BFFDFAEB8B /* CountdownWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CountdownWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4877181044774A26E6783344 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5DACE2F94DA3AA9E7CA754D8 /* DuoViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DuoViews.swift; sourceTree = "<group>"; };
 		7DE1D7C5793CA21DA3F18E07 /* CountdownWidgetViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CountdownWidgetViews.swift; sourceTree = "<group>"; };
 		8055AC901BCBA56F00FDC2A5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		809C66EC1AAD862700B79D17 /* Countdown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Countdown.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,6 +92,7 @@
 		80DA10011C8D6D13002830B5 /* TickDialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TickDialView.swift; sourceTree = "<group>"; };
 		A3E3EE80FFDBA0FCB6BF6201 /* CountdownWidget.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = CountdownWidget.entitlements; sourceTree = "<group>"; };
 		ABC2DB89A515524FF9935FAF /* DialMarks.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DialMarks.swift; sourceTree = "<group>"; };
+		B14F1A15BC6A9BBC6965956C /* CountdownViewController+Duo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "CountdownViewController+Duo.swift"; sourceTree = "<group>"; };
 		FF4B2F3DD65FB7BD6CF06811 /* CountdownStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CountdownStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -163,6 +167,8 @@
 				80AA00000000000000000100 /* AlternateIcons */,
 				809C66EF1AAD862700B79D17 /* Supporting Files */,
 				03C2F81A63CB57B131D13A94 /* Countdown.entitlements */,
+				5DACE2F94DA3AA9E7CA754D8 /* DuoViews.swift */,
+				B14F1A15BC6A9BBC6965956C /* CountdownViewController+Duo.swift */,
 			);
 			path = Countdown;
 			sourceTree = "<group>";
@@ -358,6 +364,8 @@
 				80AA00000000000000000008 /* SettingsSheetViewController.swift in Sources */,
 				80AA0000000000000000000A /* SceneDelegate.swift in Sources */,
 				A9CE4FB1E4CB13C402578F32 /* CountdownStore.swift in Sources */,
+				5AA4A0D7953F06F850DBFAF0 /* DuoViews.swift in Sources */,
+				3BDC3FA62D855F5E5BC0E744 /* CountdownViewController+Duo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

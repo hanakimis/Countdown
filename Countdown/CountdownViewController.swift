@@ -20,47 +20,62 @@ final class CountdownViewController: UIViewController {
 
     private let componentSet: Set<Calendar.Component> = [.day, .hour, .minute, .second]
 
-    private var countdownDate = Date()
-    private var startDate = Date()               // when this countdown began — sizes the dot grid's total span
-    private var style = VisualStyle.saved
-    private var timer: Timer?
-    private var didInitialRefill = false
+    var countdownDate = Date()
+    var startDate = Date()               // when this countdown began — sizes the dot grid's total span
+    var style = VisualStyle.saved
+    var timer: Timer?
+    var didInitialRefill = false
     private var refillWorkItem: DispatchWorkItem?
 
     /// Everything style-specific lives under this root and is rebuilt on
     /// style switch.
-    private let styleRoot = UIView()
+    let styleRoot = UIView()
 
     // MARK: - Style-specific references (populated by the builders)
 
-    private var headerDateLabel: UILabel?
-    private var daysNumeralLabel: UILabel?
-    private var dotLedger: DotLedgerView?
+    var headerDateLabel: UILabel?
+    var daysNumeralLabel: UILabel?
+    var dotLedger: DotLedgerView?
 
     // Ledger
-    private var ledgerDials: [TickDialView] = []          // seconds, minutes, hours
-    private var ledgerNumerals: [UILabel] = []
+    var ledgerDials: [TickDialView] = []          // seconds, minutes, hours
+    var ledgerNumerals: [UILabel] = []
 
     // Editorial + T-Minus
-    private var concentricDial: ConcentricDialView?
-    private var unitValueLabels: [UILabel] = []           // hours, minutes, seconds
-    private var untilLabel: UILabel?
+    var concentricDial: ConcentricDialView?
+    var unitValueLabels: [UILabel] = []           // hours, minutes, seconds
+    var untilLabel: UILabel?
+
+    // MARK: - Foldable layout (see CountdownViewController+Duo.swift)
+
+    /// Which arrangement is on screen: the phone layout, the unfolded
+    /// two-panel spread, or the half-open table-top clock.
+    var layout: CountdownLayout = .compact(short: false)
+    /// Extra views only the spread / table-top builders create.
+    var duo = DuoRefs()
+    /// Latest hinge reading; `.partiallyOpen` unlocks the table-top pose.
+    var hingeIsPartiallyOpen = false
+    /// The settings panel that slides out of the rail in the spread layout.
+    var settingsPanel: SettingsSheetViewController?
+    let panelContainer = UIView()
+    /// Debug hook: renders a layout regardless of the real size or hinge.
+    var forcedLayout: CountdownLayout?
 
     // MARK: - Formatting
 
-    private let shortDateFormatter: DateFormatter = {
+    let shortDateFormatter: DateFormatter = {
         let f = DateFormatter()
         f.dateFormat = "MMM d, yyyy"                       // SEP 15, 2026 (uppercased)
         return f
     }()
 
-    private let longDateFormatter: DateFormatter = {
+    let longDateFormatter: DateFormatter = {
         let f = DateFormatter()
         f.dateFormat = "MMMM d"                            // until September 15
         return f
     }()
 
-    private let timeFormatter: DateFormatter = {
+    let timeFormatter: DateFormatter = {
         let f = DateFormatter()
         f.dateFormat = "h:mm a"                            // 3:30 PM
         return f
@@ -70,7 +85,7 @@ final class CountdownViewController: UIViewController {
     /// showing "12:00 AM" there would be noise, so the time is only surfaced
     /// when the user actually set one. Uses the current calendar/time zone so
     /// "midnight" means midnight where the user is.
-    private func isMidnight(_ date: Date) -> Bool {
+    func isMidnight(_ date: Date) -> Bool {
         let c = Calendar.current.dateComponents([.hour, .minute], from: date)
         return (c.hour ?? 0) == 0 && (c.minute ?? 0) == 0
     }
@@ -119,6 +134,8 @@ final class CountdownViewController: UIViewController {
             style = forced
         }
 
+        observeHinge()
+        layout = resolveLayout(for: view.bounds.size)
         buildInterface()
         updateCountdown()
 
@@ -144,6 +161,28 @@ final class CountdownViewController: UIViewController {
         if ProcessInfo.processInfo.environment["SHOW_SETTINGS"] != nil {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) { self.openSettings() }
         }
+        // Screenshot hook: render the inner-display layouts offscreen.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { self.renderDuoSnapshotsIfRequested() }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // Folding, unfolding and the table-top pose all arrive as a bounds
+        // change; rebuild only when the arrangement actually changes.
+        let next = resolveLayout(for: view.bounds.size)
+        guard next != layout else { return }
+        layout = next
+        if layout != .spread { closeSettingsPanel(animated: false) }
+        UIView.performWithoutAnimation {
+            buildInterface()
+            refresh(animateRollovers: false)
+        }
+    }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        // Portrait everywhere, except that a half-open inner display may turn
+        // sideways so the hinge runs horizontally (the table-top clock).
+        tabletopAllowed ? [.portrait, .landscapeLeft, .landscapeRight] : .portrait
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -162,7 +201,7 @@ final class CountdownViewController: UIViewController {
         }
     }
 
-    private func buildInterface() {
+    func buildInterface() {
         styleRoot.subviews.forEach { $0.removeFromSuperview() }
         headerDateLabel = nil
         daysNumeralLabel = nil
@@ -172,12 +211,19 @@ final class CountdownViewController: UIViewController {
         concentricDial = nil
         unitValueLabels = []
         untilLabel = nil
+        duo = DuoRefs()
 
         view.backgroundColor = style.background
-        switch style {
-        case .ledger:    buildLedger()
-        case .editorial: buildEditorial()
-        case .tminus:    buildTMinus()
+        // The rail goes in first so the spread builders can stop short of it.
+        if layout == .spread { addSettingsRail() }
+        switch (layout, style) {
+        case (.compact, .ledger):    buildLedger()
+        case (.compact, .editorial): buildEditorial()
+        case (.compact, .tminus):    buildTMinus()
+        case (.spread, .ledger):     buildLedgerSpread()
+        case (.spread, .editorial):  buildEditorialSpread()
+        case (.spread, .tminus):     buildTMinusSpread()
+        case (.tabletop, _):         buildTabletop()
         }
     }
 
@@ -185,7 +231,7 @@ final class CountdownViewController: UIViewController {
 
     /// Header row used by Ledger and Editorial: date left, gear right,
     /// 32 pt margins. Tapping either opens the settings sheet.
-    private func addHeader(textColor: UIColor, gearColor: UIColor) {
+    func addHeader(textColor: UIColor, gearColor: UIColor) {
         let date = UILabel()
         date.font = .systemFont(ofSize: 12, weight: .semibold)
         date.textColor = textColor
@@ -199,31 +245,25 @@ final class CountdownViewController: UIViewController {
         gear.tintColor = gearColor
         gear.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
 
-        [date, gear].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            styleRoot.addSubview($0)
-        }
+        date.translatesAutoresizingMaskIntoConstraints = false
+        styleRoot.addSubview(date)
         NSLayoutConstraint.activate([
-            date.topAnchor.constraint(equalTo: styleRoot.safeAreaLayoutGuide.topAnchor, constant: 48),
-            date.leadingAnchor.constraint(equalTo: styleRoot.leadingAnchor, constant: 32),
+            date.topAnchor.constraint(equalTo: styleRoot.safeAreaLayoutGuide.topAnchor, constant: layout.isShort ? 32 : 48),
+            date.leadingAnchor.constraint(equalTo: styleRoot.leadingAnchor, constant: 32)
+        ])
+        // Unfolded, the gear lives on the trailing rail instead.
+        guard layout != .spread else { return }
+        gear.translatesAutoresizingMaskIntoConstraints = false
+        styleRoot.addSubview(gear)
+        NSLayoutConstraint.activate([
             gear.centerYAnchor.constraint(equalTo: date.centerYAnchor),
             gear.trailingAnchor.constraint(equalTo: styleRoot.safeAreaLayoutGuide.trailingAnchor, constant: -32)
         ])
     }
 
     /// The dot ledger block, pinned above the bottom edge.
-    private func addDotLedger(accent: UIColor, stroke: UIColor, elapsed: UIColor) {
-        let ledger = DotLedgerView()
-        ledger.accentColor = accent
-        ledger.strokeColor = stroke
-        ledger.elapsedColor = elapsed
-        // On launch the grid waits for `refillAllRings` (after the open
-        // transition); a ledger rebuilt by a style swap plays straight away.
-        ledger.playsLoadOnAppear = didInitialRefill
-        dotLedger = ledger
-
-        ledger.translatesAutoresizingMaskIntoConstraints = false
-        styleRoot.addSubview(ledger)
+    func addDotLedger(accent: UIColor, stroke: UIColor, elapsed: UIColor) {
+        let ledger = makeDotLedger(accent: accent, stroke: stroke, elapsed: elapsed)
         NSLayoutConstraint.activate([
             ledger.leadingAnchor.constraint(equalTo: styleRoot.leadingAnchor, constant: 32),
             ledger.trailingAnchor.constraint(equalTo: styleRoot.safeAreaLayoutGuide.trailingAnchor, constant: -32),
@@ -231,17 +271,37 @@ final class CountdownViewController: UIViewController {
         ])
     }
 
-    // MARK: - Style 1 · Ledger
+    /// A dot ledger in the given palette, registered as `dotLedger` and added
+    /// to `styleRoot`; the caller positions it.
+    func makeDotLedger(accent: UIColor, stroke: UIColor, elapsed: UIColor) -> DotLedgerView {
+        let ledger = DotLedgerView()
+        ledger.accentColor = accent
+        ledger.strokeColor = stroke
+        ledger.elapsedColor = elapsed
+        // On launch the grid waits for `refillAllRings` (after the open
+        // transition); a ledger rebuilt by a style swap or a fold plays straight away.
+        ledger.playsLoadOnAppear = didInitialRefill
+        dotLedger = ledger
+        ledger.translatesAutoresizingMaskIntoConstraints = false
+        styleRoot.addSubview(ledger)
+        return ledger
+    }
 
-    private func buildLedger() {
-        let white = UIColor.white
-        addHeader(textColor: white.withAlphaComponent(0.45),
-                  gearColor: white.withAlphaComponent(0.45))
-
-        // Unit rows: seconds, minutes, hours (most volatile first).
+    /// Ledger's three unit rows (seconds, minutes, hours: most volatile
+    /// first), each a tick dial, a serif numeral and a name over a hairline.
+    /// Shared by the phone, spread and table-top builders. Returns the last row.
+    @discardableResult
+    func addLedgerUnitRows(below top: NSLayoutYAxisAnchor, gap: CGFloat,
+                           leading: CGFloat = 32,
+                           trailing: NSLayoutXAxisAnchor, trailingInset: CGFloat = 32,
+                           tight: Bool) -> UIView {
+        let ink = style.foreground
         let units: [(total: Int, tickWidth: CGFloat, name: String)] = [
             (60, 1.3, "seconds"), (60, 1.3, "minutes"), (24, 1.6, "hours")
         ]
+        let dialSize: CGFloat = tight ? 44 : 56
+        let separatorGap: CGFloat = tight ? 8 : 14
+        let rowGap: CGFloat = tight ? 10 : 16
 
         var previousRow: UIView?
         for (index, unit) in units.enumerated() {
@@ -252,16 +312,21 @@ final class CountdownViewController: UIViewController {
             let dial = TickDialView()
             dial.total = unit.total
             dial.tickWidth = unit.tickWidth
+            // Ledger's tokens equal the dial's defaults; the other palettes
+            // only reach these rows through the table-top clock.
+            dial.filledColor = style.singleDialFilledColor
+            dial.trackColor = style.trackColor
+            dial.accentColor = style.accent
             ledgerDials.append(dial)
 
             let numeral = UILabel()
-            numeral.font = Fonts.serif(32, tabular: true)
-            numeral.textColor = white
+            numeral.font = Fonts.serif(tight ? 28 : 32, tabular: true)
+            numeral.textColor = ink
             ledgerNumerals.append(numeral)
 
             let name = UILabel()
             name.font = .systemFont(ofSize: 13)
-            name.textColor = white.withAlphaComponent(0.4)
+            name.textColor = ink.withAlphaComponent(0.4)
             name.text = unit.name
 
             [dial, numeral, name].forEach {
@@ -273,19 +338,19 @@ final class CountdownViewController: UIViewController {
             NSLayoutConstraint.activate([
                 dial.topAnchor.constraint(equalTo: row.topAnchor),
                 dial.leadingAnchor.constraint(equalTo: row.leadingAnchor),
-                dial.widthAnchor.constraint(equalToConstant: 56),
-                dial.heightAnchor.constraint(equalToConstant: 56),
+                dial.widthAnchor.constraint(equalToConstant: dialSize),
+                dial.heightAnchor.constraint(equalToConstant: dialSize),
                 numeral.centerYAnchor.constraint(equalTo: dial.centerYAnchor),
                 numeral.leadingAnchor.constraint(equalTo: dial.trailingAnchor, constant: 18),
                 numeral.widthAnchor.constraint(greaterThanOrEqualToConstant: 56),
                 name.centerYAnchor.constraint(equalTo: dial.centerYAnchor),
                 name.leadingAnchor.constraint(equalTo: numeral.trailingAnchor, constant: 18),
-                row.bottomAnchor.constraint(equalTo: dial.bottomAnchor, constant: hasSeparator ? 14 : 0)
+                row.bottomAnchor.constraint(equalTo: dial.bottomAnchor, constant: hasSeparator ? separatorGap : 0)
             ])
 
             if hasSeparator {
                 let line = HairlineView()
-                line.backgroundColor = white.withAlphaComponent(0.08)
+                line.backgroundColor = ink.withAlphaComponent(0.08)
                 line.translatesAutoresizingMaskIntoConstraints = false
                 row.addSubview(line)
                 NSLayoutConstraint.activate([
@@ -296,13 +361,29 @@ final class CountdownViewController: UIViewController {
             }
 
             NSLayoutConstraint.activate([
-                row.leadingAnchor.constraint(equalTo: styleRoot.leadingAnchor, constant: 32),
-                row.trailingAnchor.constraint(equalTo: styleRoot.safeAreaLayoutGuide.trailingAnchor, constant: -32),
-                previousRow.map { row.topAnchor.constraint(equalTo: $0.bottomAnchor, constant: 16) }
-                    ?? row.topAnchor.constraint(equalTo: headerDateLabel!.bottomAnchor, constant: 36)
+                row.leadingAnchor.constraint(equalTo: styleRoot.leadingAnchor, constant: leading),
+                row.trailingAnchor.constraint(equalTo: trailing, constant: -trailingInset),
+                previousRow.map { row.topAnchor.constraint(equalTo: $0.bottomAnchor, constant: rowGap) }
+                    ?? row.topAnchor.constraint(equalTo: top, constant: gap)
             ])
             previousRow = row
         }
+        return previousRow!
+    }
+
+    // MARK: - Style 1 · Ledger
+
+    private func buildLedger() {
+        let white = UIColor.white
+        addHeader(textColor: white.withAlphaComponent(0.45),
+                  gearColor: white.withAlphaComponent(0.45))
+
+        // The Duo's outer display is shorter than any iPhone; at full size the
+        // hours row runs into the days numeral, so the rows tighten there.
+        addLedgerUnitRows(below: headerDateLabel!.bottomAnchor,
+                          gap: layout.isShort ? 24 : 36,
+                          trailing: styleRoot.safeAreaLayoutGuide.trailingAnchor,
+                          tight: layout.isShort)
 
         // Days block
         let days = UILabel()
@@ -396,11 +477,15 @@ final class CountdownViewController: UIViewController {
             $0.translatesAutoresizingMaskIntoConstraints = false
             styleRoot.addSubview($0)
         }
+        // Short screens (Duo outer display, SE) can't fit the 252 pt dial
+        // above a full 9-row ledger, so the dial and its gaps shrink there.
+        let short = layout.isShort
+        let dialSide: CGFloat = short ? 212 : 252
         NSLayoutConstraint.activate([
-            dial.topAnchor.constraint(equalTo: headerDateLabel!.bottomAnchor, constant: 56),
+            dial.topAnchor.constraint(equalTo: headerDateLabel!.bottomAnchor, constant: short ? 36 : 56),
             dial.centerXAnchor.constraint(equalTo: styleRoot.centerXAnchor),
-            dial.widthAnchor.constraint(equalToConstant: 252),
-            dial.heightAnchor.constraint(equalToConstant: 252),
+            dial.widthAnchor.constraint(equalToConstant: dialSide),
+            dial.heightAnchor.constraint(equalToConstant: dialSide),
 
             days.centerXAnchor.constraint(equalTo: dial.centerXAnchor),
             days.centerYAnchor.constraint(equalTo: dial.centerYAnchor, constant: -10),
@@ -410,10 +495,10 @@ final class CountdownViewController: UIViewController {
             daysCaption.topAnchor.constraint(equalTo: days.bottomAnchor, constant: -2),
 
             until.centerXAnchor.constraint(equalTo: styleRoot.centerXAnchor),
-            until.topAnchor.constraint(equalTo: dial.bottomAnchor, constant: 24),
+            until.topAnchor.constraint(equalTo: dial.bottomAnchor, constant: short ? 16 : 24),
 
             unitsRow.centerXAnchor.constraint(equalTo: styleRoot.centerXAnchor),
-            unitsRow.topAnchor.constraint(equalTo: until.bottomAnchor, constant: 28)
+            unitsRow.topAnchor.constraint(equalTo: until.bottomAnchor, constant: short ? 16 : 28)
         ])
 
         addDotLedger(accent: style.accent,
@@ -423,7 +508,9 @@ final class CountdownViewController: UIViewController {
 
     // MARK: - Style 3 · T-Minus
 
-    private func buildTMinus() {
+    /// `placeDial` overrides where the concentric dial goes (the unfolded
+    /// spread shows it whole); by default it is cropped off the right edge.
+    func buildTMinus(placeDial: ((ConcentricDialView) -> [NSLayoutConstraint])? = nil) {
         let white = UIColor.white
         let coral = style.accent
 
@@ -509,12 +596,13 @@ final class CountdownViewController: UIViewController {
             styleRoot.addSubview($0)
         }
 
-        NSLayoutConstraint.activate([
+        NSLayoutConstraint.activate(placeDial?(dial) ?? [
             dial.widthAnchor.constraint(equalToConstant: 620),
             dial.heightAnchor.constraint(equalToConstant: 620),
             dial.centerYAnchor.constraint(equalTo: styleRoot.centerYAnchor),
-            dial.trailingAnchor.constraint(equalTo: styleRoot.trailingAnchor, constant: 230),
-
+            dial.trailingAnchor.constraint(equalTo: styleRoot.trailingAnchor, constant: 230)
+        ])
+        NSLayoutConstraint.activate([
             tminus.topAnchor.constraint(equalTo: styleRoot.safeAreaLayoutGuide.topAnchor, constant: 90),
             tminus.leadingAnchor.constraint(equalTo: styleRoot.leadingAnchor, constant: 28),
             days.topAnchor.constraint(equalTo: tminus.bottomAnchor, constant: 8),
@@ -544,7 +632,11 @@ final class CountdownViewController: UIViewController {
 
     // MARK: - Settings
 
-    @objc private func openSettings() {
+    @objc func openSettings() {
+        if layout == .spread {
+            toggleSettingsPanel(animated: true)
+            return
+        }
         let sheet = SettingsSheetViewController(currentDate: countdownDate)
         sheet.delegate = self
         present(sheet, animated: true)
@@ -559,7 +651,7 @@ final class CountdownViewController: UIViewController {
     /// distinguishes a live second-tick (a value jumping up is a real rollover
     /// → volley) from a silent rebuild or date scrub (seed the values, no
     /// volley); the intentional sweep is driven separately by `refillAllRings`.
-    private func refresh(animateRollovers: Bool) {
+    func refresh(animateRollovers: Bool) {
         let components = Calendar.current.dateComponents(componentSet, from: Date(), to: countdownDate)
         let days = max(0, components.day ?? 0)
         let hours = max(0, components.hour ?? 0)
@@ -571,28 +663,32 @@ final class CountdownViewController: UIViewController {
             shortDate += "  " + timeFormatter.string(from: countdownDate).uppercased()
         }
 
+        // Each builder registers only the views it made, so every layout of a
+        // style (phone, spread, table-top) shares this one update path.
         switch style {
         case .ledger:
             headerDateLabel?.setText(shortDate, kern: 2.5)
             daysNumeralLabel?.setText("\(days)", kern: -2)
-            for (dial, value) in zip(ledgerDials, [seconds, minutes, hours]) { dial.setValue(value, animated: animateRollovers) }
-            for (label, value) in zip(ledgerNumerals, [seconds, minutes, hours]) { label.text = "\(value)" }
         case .editorial:
             headerDateLabel?.setText(shortDate, kern: 2.5)
-            daysNumeralLabel?.text = "\(days)"
-            var until = "until \(longDateFormatter.string(from: countdownDate))"
-            if !isMidnight(countdownDate) {
-                until += " at \(timeFormatter.string(from: countdownDate))"
+            if layout.isCompact {
+                daysNumeralLabel?.text = "\(days)"
+            } else {
+                daysNumeralLabel?.setText("\(days)", kern: -4)   // display-size numeral, tighter
             }
-            untilLabel?.text = until
-            concentricDial?.setValues(seconds: seconds, minutes: minutes, hours: hours, animated: animateRollovers)
-            for (label, value) in zip(unitValueLabels, [hours, minutes, seconds]) { label.text = "\(value)" }
         case .tminus:
             headerDateLabel?.text = shortDate
             daysNumeralLabel?.setText("\(days)", kern: -4)
-            concentricDial?.setValues(seconds: seconds, minutes: minutes, hours: hours, animated: animateRollovers)
-            for (label, value) in zip(unitValueLabels, [hours, minutes, seconds]) { label.text = "\(value)" }
         }
+        var until = "until \(longDateFormatter.string(from: countdownDate))"
+        if !isMidnight(countdownDate) {
+            until += " at \(timeFormatter.string(from: countdownDate))"
+        }
+        untilLabel?.text = until
+        for (dial, value) in zip(ledgerDials, [seconds, minutes, hours]) { dial.setValue(value, animated: animateRollovers) }
+        for (label, value) in zip(ledgerNumerals, [seconds, minutes, hours]) { label.text = "\(value)" }
+        concentricDial?.setValues(seconds: seconds, minutes: minutes, hours: hours, animated: animateRollovers)
+        for (label, value) in zip(unitValueLabels, [hours, minutes, seconds]) { label.text = "\(value)" }
 
         // Grid size is frozen at the original span (start→target, both fixed and
         // persisted, so this never changes over the countdown's life). The grid
@@ -602,10 +698,11 @@ final class CountdownViewController: UIViewController {
         let totalDays = DayCount.span(start: startDate, target: countdownDate, remaining: days)  // fixed original day count = the grid size
         let dayFraction = CGFloat(hours * 3600 + minutes * 60 + seconds) / 86_400
         dotLedger?.setValues(total: totalDays, wholeDays: days, dayFraction: dayFraction, animated: animateRollovers)
+        refreshDuo(totalDays: totalDays, wholeDays: days, dayFraction: dayFraction)
         updateBadge(days: days)          // keep the home-screen badge in step with the on-screen count
     }
 
-    private func refillAllRings() {
+    func refillAllRings() {
         ledgerDials.forEach { $0.refill() }
         concentricDial?.refillAll()
     }
@@ -700,7 +797,7 @@ extension CountdownViewController: SettingsSheetDelegate {
 
 /// A one-physical-pixel rule that takes its height from the display it is on,
 /// and re-measures if the scene moves to a display with a different scale.
-private final class HairlineView: UIView {
+final class HairlineView: UIView {
     override var intrinsicContentSize: CGSize {
         // displayScale is 0 until the view has a trait environment.
         CGSize(width: UIView.noIntrinsicMetric, height: 1 / max(traitCollection.displayScale, 1))
